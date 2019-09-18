@@ -1,0 +1,28 @@
+const express = require("express");
+const router = new express.Router();
+const db = require("../DB/repositories/compoundRepo");
+
+router.get("/", (req, res) => {
+  db.getAllCompounds(function(errors, compounds) {
+    if (errors.length == 0) {
+      res.status(200).json(compounds);
+    } else {
+      res.status(500).end();
+    }
+  });
+});
+
+// get compound by id
+router.get("/:id", (req, res) => {
+  const compoundId = req.params.id;
+  db.getSurveyById(compoundId, function(errors, compound) {
+    if (errors.length == 0) {
+      res.status(200).json(compound);
+    } else if (errors.includes("databaseError")) {
+    } else {
+      res.status(500).end();
+    }
+  });
+});
+
+module.exports = router;

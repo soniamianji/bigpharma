@@ -1,8 +1,31 @@
 const express = require("express");
-const path = require("path");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
-const logger = require("morgan");
-const config = require("./config");
 
-console.log("hello");
+//middleware
+app.use(bodyParser.json());
+app.use(cors());
+
+app.get("/", function(request, response) {
+  response.send("Hello, World");
+});
+
+const accounts = require("./routes/accounts");
+app.use("/accounts", accounts);
+
+const compounds = require("./routes/compounds");
+app.use("/compounds", compounds);
+
+const observations = require("./routes/observations");
+app.use("/observations", observations);
+
+const effects = require("./routes/effects");
+app.use("/effects", effects);
+
+const surveys = require("./routes/surveys");
+app.use("/surveys", surveys);
+
+const port = 3000;
+
+app.listen(port, () => console.log(`server is running on port ${port}`));
