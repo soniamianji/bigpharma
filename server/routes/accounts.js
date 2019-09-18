@@ -93,13 +93,11 @@ router.post("/login-session", (req, res) => {
             },
             secretTokenKey
           );
-          res
-            .status(200)
-            .json({
-              message: "Auth Success.",
-              id_token: id_token,
-              access_token: access_token
-            });
+          res.status(200).json({
+            message: "Auth Success.",
+            id_token: id_token,
+            access_token: access_token
+          });
         } else {
           res.status(401).json({ message: "Auth failed." });
         }
@@ -137,6 +135,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
+//delete account
 router.delete("/:id", (req, res) => {
   const accountId = req.params.id;
   db.deleteAccountsById(accountId, (errors, accountExisted) => {
