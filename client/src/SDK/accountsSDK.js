@@ -5,7 +5,7 @@ module.exports.getAllAccounts = async function(callback) {
   let response;
 
   try {
-    response = await sendRequest("GET", "/accounts");
+    response = await sendRequest.sendRequest("GET", "/accounts");
   } catch (errors) {
     callback(errors);
     return;
@@ -24,7 +24,7 @@ module.exports.getAllAccounts = async function(callback) {
       break;
 
     default:
-      displayError(response);
+      errors = ["unknown status code"];
   }
 
   callback(errors, accounts);
@@ -34,7 +34,7 @@ module.exports.getAccountById = async function(id, callback) {
   let response;
 
   try {
-    response = await sendRequest("GET", "/accounts/" + id);
+    response = await sendRequest.sendRequest("GET", "/accounts/" + id);
   } catch (errors) {
     callback(errors);
     return;
@@ -57,7 +57,7 @@ module.exports.getAccountById = async function(id, callback) {
       break;
 
     default:
-      displayError(response);
+      errors = ["unknown response code"];
   }
 
   callback(errors, account);
@@ -95,7 +95,7 @@ module.exports.createAccount = async function(account, callback) {
       break;
 
     default:
-      displayError(response);
+      errors = ["unknown response code"];
   }
 
   callback(errors, id);
@@ -136,9 +136,9 @@ module.exports.logIn = async function(email, username, password, callback) {
 
       accessToken = body.access_token;
 
-      //   const payload = jwtDecode(body.id_token);
-      //   account.id = payload.sub;
-      //   account.username = payload.preferred_username;
+      const payload = jwtDecode(body.id_token);
+      account.id = payload.sub;
+      account.username = payload.preferred_username;
 
       break;
 
@@ -152,16 +152,12 @@ module.exports.logIn = async function(email, username, password, callback) {
 
         default:
           errors = ["unknownErrorGettingToken: " + body.error];
-          alert(`
-                          SDK has not been programmed to handle error ${body.error}
-                          when failing to login.
-                      `);
       }
 
       break;
 
     default:
-      displayError(response);
+      errors = response;
   }
 
   callback(errors, account);
@@ -170,4 +166,39 @@ module.exports.logIn = async function(email, username, password, callback) {
 module.exports.signOut = async function(callback) {
   accessToken = null;
   callback();
+};
+
+module.exports.deleteAccountById = async function(id, callback) {
+  let response;
+
+  try {
+    response = await sendRequest("DELETE", "/accounts/" + id);
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+
+  switch (response.status) {
+    case 204:
+      break;
+
+    case 401:
+      errors = await response.json();
+      break;
+
+    case 404:
+      errors = ["notFound"];
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = ["unknown error"];
+  }
+
+  callback(errors);
 };

@@ -2,10 +2,6 @@ const express = require("express");
 const router = new express.Router();
 const db = require("../DB/repositories/effectRepo");
 
-// router.get("/", function(request, response) {
-//   response.send("this is compounds");
-// });
-
 router.get("/", (req, res) => {
   db.getAlleffects(function(errors, effects) {
     if (errors.length == 0) {

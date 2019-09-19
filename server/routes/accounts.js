@@ -93,13 +93,11 @@ router.post("/login-session", (req, res) => {
             },
             secretTokenKey
           );
-          res
-            .status(200)
-            .json({
-              message: "Auth Success.",
-              id_token: id_token,
-              access_token: access_token
-            });
+          res.status(200).json({
+            message: "Auth Success.",
+            id_token: id_token,
+            access_token: access_token
+          });
         } else {
           res.status(401).json({ message: "Auth failed." });
         }
@@ -137,6 +135,44 @@ router.get("/:id", (req, res) => {
   });
 });
 
+//update account
+router.put("/:id", (req, res) => {
+  const id = this.params.id;
+  const username = req.body;
+
+  const userNameType = {
+    username: String
+  };
+  if (!hasTypes(username, userNameType)) {
+    response.status(422).end();
+    return;
+  }
+
+  if (username.length < USERNAME_MIN_LENGTH) {
+    validationErrors.push("usernameTooShort");
+  } else if (USERNAME_MAX_LENGTH < username.length) {
+    validationErrors.push("usernameTooLong");
+  }
+
+  if (0 < validationErrors.length) {
+    response.status(400).json(validationErrors);
+    return;
+  }
+
+  db.updateAccountById(id, username, (errors, didExist) => {
+    if (errors.length == 0) {
+      if (didExist) {
+        response.status(204).end();
+      } else {
+        response.status(404).end();
+      }
+    } else {
+      response.status(500).end();
+    }
+  });
+});
+
+//delete account
 router.delete("/:id", (req, res) => {
   const accountId = req.params.id;
   db.deleteAccountsById(accountId, (errors, accountExisted) => {

@@ -89,6 +89,20 @@ exports.getAllAccounts = function(callback) {
   });
 };
 
+//update account
+exports.updateAccountById = function(id, username, callback) {
+  const query = `Update accounts SET username=? WHERE id = ? `;
+  const values = [username, id];
+  db.run(query, values, error => {
+    if (error) {
+      callback([error]);
+    } else {
+      const accountExisted = this.changes == 1;
+      callback([], accountExisted);
+    }
+  });
+};
+
 //Delete account by id
 exports.deleteAccountsById = function(id, callback) {
   const query = `

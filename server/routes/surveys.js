@@ -61,7 +61,7 @@ router.get("/", (req, res) => {
 router.get("/", (req, res) => {
   if (req.query.status) {
     const status = req.query.status;
-    db.getSurveyByCompoundId(status, function(errors, survey) {
+    db.getSurveyByStatus(status, function(errors, survey) {
       if (errors.length == 0) {
         res.status(200).json(survey);
       } else {

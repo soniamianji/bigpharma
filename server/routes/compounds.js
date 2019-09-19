@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const db = require("../DB/repositories/compoundRepo");
 
+//get all compounds
 router.get("/", (req, res) => {
   db.getAllCompounds(function(errors, compounds) {
     if (errors.length == 0) {
@@ -15,7 +16,7 @@ router.get("/", (req, res) => {
 // get compound by id
 router.get("/:id", (req, res) => {
   const compoundId = req.params.id;
-  db.getSurveyById(compoundId, function(errors, compound) {
+  db.getCompoundById(compoundId, function(errors, compound) {
     if (errors.length == 0) {
       res.status(200).json(compound);
     } else if (errors.includes("databaseError")) {
