@@ -1,5 +1,4 @@
-
-    <template>
+<template>
   <div>
     <v-app-bar app>
       <router-link to="/">Home</router-link>
