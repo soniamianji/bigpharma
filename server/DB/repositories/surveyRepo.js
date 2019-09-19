@@ -98,18 +98,19 @@ exports.getSurveyByStatus = function(status, callback) {
 //create a new survey
 exports.createSurvey = function(survey, callback) {
   const query = `
-    INSERT INTO surveys (userId, compoundId)
+    INSERT INTO surveys (userId, compoundId, completed)
     VALUES
-    (?, ?)`;
-  const values = [survey.userId, survey.compoundId];
+    (?, ?, ?)`;
+  const values = [survey.userId, survey.compoundId, survey.completed];
 
-  db.all(query, values, err => {
+  db.run(query, values, function(err) {
     if (err) {
       if (true) {
-        callback(["account or user or effect NotFound"]);
+        callback(["compound or user NotFound"]);
       }
       callback(["databaseError"]);
     } else {
+      console.log(this.lastID);
       callback([], this.lastID);
     }
   });

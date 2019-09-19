@@ -175,7 +175,7 @@ module.exports.createSurvey = async function(survey, callback) {
   let response;
 
   try {
-    response = await sendRequest("POST", "/surveys", survey);
+    response = await sendRequest.sendRequest("POST", "/surveys", survey);
   } catch (errors) {
     callback(errors);
     return;
