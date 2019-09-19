@@ -101,17 +101,16 @@ module.exports.createAccount = async function(account, callback) {
   callback(errors, id);
 };
 
-module.exports.logIn = async function(email, username, password, callback) {
+module.exports.logIn = async function(email, password, callback) {
   const bodyToSend = {
     email,
-    username,
     password
   };
 
   let response;
 
   try {
-    response = await sendRequest(
+    response = await sendRequest.sendRequest(
       "POST",
       "/accounts/login-session",
       bodyToSend,
@@ -125,7 +124,7 @@ module.exports.logIn = async function(email, username, password, callback) {
   let errors = [];
   let account = {
     id: -1,
-    username: ""
+    email: ""
   };
 
   let body;
@@ -138,7 +137,7 @@ module.exports.logIn = async function(email, username, password, callback) {
 
       const payload = jwtDecode(body.id_token);
       account.id = payload.sub;
-      account.username = payload.preferred_username;
+      account.email = payload.preferred_email;
 
       break;
 
