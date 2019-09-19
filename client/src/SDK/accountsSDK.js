@@ -1,4 +1,16 @@
 const sendRequest = require("./sendRequest");
+const jwtDecode = require("jwt-decode");
+
+const account = {
+  id: "",
+  email: "",
+  username: "",
+  accessToken: ""
+};
+
+//parse info localstorage
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+module.exports.userInfo = userInfo;
 
 //get all accounts
 module.exports.getAllAccounts = async function(callback) {
@@ -114,7 +126,7 @@ module.exports.logIn = async function(email, password, callback) {
       "POST",
       "/accounts/login-session",
       bodyToSend,
-      "application/x-www-form-urlencoded"
+      "application/json"
     );
   } catch (errors) {
     callback(errors);
@@ -122,10 +134,11 @@ module.exports.logIn = async function(email, password, callback) {
   }
 
   let errors = [];
-  let account = {
-    id: -1,
-    email: ""
-  };
+  // let account = {
+  //   id: -1,
+  //   email: "",
+  //   username: ""
+  // };
 
   let body;
 
@@ -133,11 +146,14 @@ module.exports.logIn = async function(email, password, callback) {
     case 200:
       body = await response.json();
 
-      accessToken = body.access_token;
+      account.accessToken = body.access_token;
 
       const payload = jwtDecode(body.id_token);
-      account.id = payload.sub;
-      account.email = payload.preferred_email;
+      account.id = payload.id;
+      account.email = payload.email;
+      account.username = payload.username;
+      account.idToken = payload;
+      localStorage.setItem("userInfo", JSON.stringify(account));
 
       break;
 

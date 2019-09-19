@@ -5,6 +5,9 @@ const app = express();
 
 //middleware
 app.use(bodyParser.json());
+
+//recieve the other one
+
 app.use(cors());
 
 app.get("/", function(request, response) {

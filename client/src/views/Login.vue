@@ -7,11 +7,11 @@
         </v-card-title>
         <v-card-text>
           <v-form @submit.prevent="signIn">
-            <v-text-field label="email" :v-model="email" prepend-icon="mdi-account-circle" />
+            <v-text-field label="email" v-model="email" prepend-icon="mdi-account-circle" />
             <v-text-field
               :type="showPassword ? 'text' : 'password'"
               label="password"
-              :v-model="password"
+              v-model="password"
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
@@ -44,6 +44,7 @@ export default {
       client.logIn(this.email, this.password, (err, account) => {
         if (err.length == 0) {
           console.log(account);
+          this.$router.push({ path: "/" });
         } else {
           console.log(err);
         }
