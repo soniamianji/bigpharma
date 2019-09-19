@@ -42,7 +42,7 @@ module.exports.getCompoundById = async function(id, callback) {
   }
 
   let errors = [];
-  let account = null;
+  let compound = null;
 
   switch (response.status) {
     case 200:

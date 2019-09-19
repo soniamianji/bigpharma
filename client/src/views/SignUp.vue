@@ -3,7 +3,7 @@
     <v-content>
       <v-card width="400" class="mx-auto mt-5">
         <v-card-title>
-          <h1 class="display-1">Login</h1>
+          <h1 class="display-1">Register</h1>
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -17,9 +17,9 @@
             />
             <v-devider></v-devider>
             <v-card-actions>
-              <v-btn color="success">Login</v-btn>
+              <v-btn color="success">Register</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="info">Register</v-btn>
+              <v-btn color="info">Login</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
