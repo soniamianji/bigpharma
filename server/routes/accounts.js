@@ -73,11 +73,24 @@ router.post("/", (request, response, next) => {
 
 //login to the account
 router.post("/login-session", (req, res) => {
-  db.getAccountByEmail(req.body.email, (err, account) => {
+  const grantInfo = req.body;
+
+  // Check that grantInfo contains all expected properties.
+  const grantInfoTypes = {
+    email: String,
+    password: String
+  };
+
+  if (!hasTypes(grantInfo, grantInfoTypes)) {
+    res.status(400).json({ error: "invalid_request, stuck here" });
+    return;
+  }
+
+  db.getAccountByEmail(grantInfo.email, (err, account) => {
     console.log(account);
     if (err.length == 0 && account) {
       //verify hashed password
-      bcrypt.compare(req.body.password, account.password, function(
+      bcrypt.compare(grantInfo.password, account.password, function(
         err,
         result
       ) {
@@ -99,11 +112,11 @@ router.post("/login-session", (req, res) => {
             access_token: access_token
           });
         } else {
-          res.status(401).json({ message: "Auth failed." });
+          res.status(401).json({ message: "Auth failed. token issue" });
         }
       });
     } else if (!account) {
-      res.status(401).json({ message: "Auth failed." });
+      res.status(401).json({ message: "Auth failed. email not found" });
     } else {
       res.status(500).end();
     }

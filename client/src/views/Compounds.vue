@@ -30,22 +30,20 @@
                 </v-toolbar>
 
                 <v-list two-line subheader>
-                  <v-list-item v-for="item in compounds" :key="item.id" @click="gotothis">
+                  <v-list-item v-for="item in compounds" :key="item.id">
                     <!-- <v-list-item-avatar>
                       <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
                     </v-list-item-avatar>-->
 
                     <v-list-item-content>
-                      <router-link :to="'/compounds/' + item.id">
-                        <v-list-item-title v-text="item.compoundName"></v-list-item-title>
+                      <router-link :to="'/compounds/' + item.id" class="customColor">
+                        <v-list-item-title v-text="item.compoundName" class="customColor"></v-list-item-title>
                       </router-link>
                       <v-list-item-subtitle v-text="item.indicationName"></v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-list-item-action>
-                      <v-btn icon>
-                        <v-icon color="grey lighten-1">mdi-information</v-icon>
-                      </v-btn>
+                    <v-list-item-action v-if="isUserSignedIn === true">
+                      <v-btn text rounded color="teal">Contribute</v-btn>
                     </v-list-item-action>
                   </v-list-item>
 
@@ -65,6 +63,7 @@
 import HeadPic from "../components/HeadPic";
 
 export default {
+  props: ["account", "isUserSignedIn"],
   components: { HeadPic },
   data() {
     return {

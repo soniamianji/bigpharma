@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 });
 
 //create new Observation
-router.post("/", (req, res) => {
+router.post("/", checkAauth, (req, res) => {
   const observation = req.body;
 
   // Check that the activity contains all expected properties.
@@ -83,7 +83,7 @@ router.get("/", (req, res) => {
 });
 
 //To update an observation based on observationId
-router.put("/:id", function(request, response) {
+router.put("/:id", checkAauth, function(request, response) {
   const id = request.params.id;
   const updatedObservation = request.body;
   //Check that the observation contains all expected properties.
@@ -163,7 +163,7 @@ router.get("/:id", (req, res) => {
 });
 
 //delete obs by Id
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   db.deleteObservationById(id, function(errors, observationExisted) {
     if (errors.length == 0) {

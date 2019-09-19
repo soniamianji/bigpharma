@@ -1,34 +1,33 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "chart.js": "^2.8.0",
-    "lodash": "^4.17.15",
-    "simple-statistics": "^7.0.5",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.3",
-    "vuetify": "^2.0.0"
-  },
-  "devDependencies": {
-    "@vue/cli-service": "^3.11.0",
-    "sass": "^1.17.4",
-    "sass-loader": "^7.1.0",
-    "vue-cli-plugin-vuetify": "^0.6.3",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+	"name": "client",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build"
+	},
+	"dependencies": {
+		"chart.js": "^2.8.0",
+		"lodash": "^4.17.15",
+		"simple-statistics": "^7.0.5",
+		"jsonwebtoken": "^8.5.1",
+		"jwt-decode": "^2.2.0",
+		"vue": "^2.6.10",
+		"vue-router": "^3.0.3",
+		"vuetify": "^2.0.0"
+	},
+	"devDependencies": {
+		"@vue/cli-service": "^3.11.0",
+		"sass": "^1.17.4",
+		"sass-loader": "^7.1.0",
+		"vue-cli-plugin-vuetify": "^0.6.3",
+		"vue-template-compiler": "^2.6.10",
+		"vuetify-loader": "^1.2.2"
+	},
+	"postcss": {
+		"plugins": {
+			"autoprefixer": {}
+		}
+	},
+	"browserslist": [ "> 1%", "last 2 versions" ]
 }
