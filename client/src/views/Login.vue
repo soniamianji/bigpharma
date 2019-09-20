@@ -6,8 +6,14 @@
           <h1 class="display-1">Login</h1>
         </v-card-title>
         <v-card-text>
-          <v-form @submit.prevent="signIn">
-            <v-text-field label="email" v-model="email" prepend-icon="mdi-account-circle" />
+          <v-form @submit.prevent="signIn" ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              label="email"
+              v-model="email"
+              :rules="emailRules"
+              required
+              prepend-icon="mdi-account-circle"
+            />
             <v-text-field
               :type="showPassword ? 'text' : 'password'"
               label="password"
@@ -15,10 +21,13 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
+              :rules="[v => !!v || 'Password is required']"
+              required
             />
+            <p v-if="errors !== ''" class="red--text pl-8">{{errors[0]}}</p>
             <v-devider></v-devider>
             <v-card-actions>
-              <v-btn type="submit" color="success">Login</v-btn>
+              <v-btn type="submit" :disabled="!valid" color="success">Login</v-btn>
               <v-spacer></v-spacer>
               <v-btn color="info" @click="goToSignUp">Register</v-btn>
             </v-card-actions>
@@ -34,9 +43,14 @@ const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ],
       email: "",
       password: "",
-      showPassword: false
+      showPassword: false,
+      errors: ""
     };
   },
   methods: {
@@ -47,7 +61,7 @@ export default {
           this.$emit("isSignedIn", account);
           this.$router.push({ path: "/" });
         } else {
-          console.log(err);
+          this.errors = err;
         }
       });
     },

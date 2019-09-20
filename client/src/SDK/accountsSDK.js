@@ -134,11 +134,6 @@ module.exports.logIn = async function(email, password, callback) {
   }
 
   let errors = [];
-  // let account = {
-  //   id: -1,
-  //   email: "",
-  //   username: ""
-  // };
 
   let body;
 
@@ -157,12 +152,24 @@ module.exports.logIn = async function(email, password, callback) {
 
       break;
 
+    case 400:
+      body = await response.json();
+
+      switch (body.error) {
+        case "invalid_grant":
+          errors = ["Incorrect email or password."];
+          break;
+
+        default:
+          errors = ["unknown error " + body.error];
+      }
+      break;
     case 401:
       body = await response.json();
 
       switch (body.error) {
         case "invalid_grant":
-          errors = ["Incorrect emai or password."];
+          errors = ["Incorrect email or password."];
           break;
 
         default:
@@ -214,6 +221,47 @@ module.exports.deleteAccountById = async function(id, callback) {
 
     default:
       errors = ["unknown error"];
+  }
+
+  callback(errors);
+};
+
+module.exports.updateAccountById = async function(id, username, callback) {
+  let response;
+  const bodyToSend = {
+    username
+  };
+
+  try {
+    response = await sendRequest.sendRequest(
+      "PUT",
+      "/accounts/" + id,
+      bodyToSend
+    );
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+
+  switch (response.status) {
+    case 204:
+      const updateduserInfo = JSON.parse(localStorage.getItem("userInfo"));
+      updateduserInfo.username = bodyToSend.username;
+      localStorage.setItem("userInfo", JSON.stringify(updateduserInfo));
+      break;
+
+    case 422:
+      errors = ["invalidUsername"];
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = ["unknown response code"];
   }
 
   callback(errors);

@@ -6,9 +6,21 @@
           <h1 class="display-1">Register</h1>
         </v-card-title>
         <v-card-text>
-          <v-form @submit.prevent="signUp">
-            <v-text-field label="email" v-model="email" prepend-icon="mdi-email" />
-            <v-text-field label="username" v-model="username" prepend-icon="mdi-account-circle" />
+          <v-form @submit.prevent="signUp" ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              label="email"
+              v-model="email"
+              prepend-icon="mdi-email"
+              :rules="emailRules"
+              required
+            />
+            <v-text-field
+              label="username"
+              v-model="username"
+              prepend-icon="mdi-account-circle"
+              :rules="nameRules"
+              required
+            />
             <v-text-field
               :type="showPassword ? 'text' : 'password'"
               label="password"
@@ -16,6 +28,8 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
+              :rules="[v => !!v || 'Password is required']"
+              required
             />
             <v-devider></v-devider>
             <v-card-actions>
@@ -35,6 +49,14 @@ const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ],
+      nameRules: [
+        v => !!v || "Name is required",
+        v => (v && v.length <= 10) || "Name must be less than 10 characters"
+      ],
       id: "",
       showPassword: false,
       email: "",

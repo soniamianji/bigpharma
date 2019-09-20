@@ -8,7 +8,7 @@ const checkAauth = require("../middleware/check-auth");
 
 // Constants used for validation of resources.
 const USERNAME_MIN_LENGTH = 3;
-const USERNAME_MAX_LENGTH = 9;
+const USERNAME_MAX_LENGTH = 10;
 const MIN_PASSWORD_LENGTH = 6;
 
 //this has to be saved as environmental variable
@@ -87,8 +87,11 @@ router.post("/login-session", (req, res) => {
   }
 
   db.getAccountByEmail(grantInfo.email, (err, account) => {
-    console.log(account);
-    if (err.length == 0 && account) {
+    if (err.includes("databaseError")) {
+      res.status(500).end();
+    } else if (!account) {
+      res.status(400).json({ error: "invalid_grant" });
+    } else if (err.length == 0) {
       //verify hashed password
       bcrypt.compare(grantInfo.password, account.password, function(
         err,
@@ -115,8 +118,6 @@ router.post("/login-session", (req, res) => {
           res.status(401).json({ message: "Auth failed. token issue" });
         }
       });
-    } else if (!account) {
-      res.status(401).json({ message: "Auth failed. email not found" });
     } else {
       res.status(500).end();
     }
@@ -150,14 +151,17 @@ router.get("/:id", (req, res) => {
 
 //update account
 router.put("/:id", (req, res) => {
-  const id = this.params.id;
+  const id = req.params.id;
   const username = req.body;
 
+  console.log(id, username);
   const userNameType = {
     username: String
   };
+  const validationErrors = [];
+
   if (!hasTypes(username, userNameType)) {
-    response.status(422).end();
+    res.status(422).end();
     return;
   }
 
@@ -168,19 +172,19 @@ router.put("/:id", (req, res) => {
   }
 
   if (0 < validationErrors.length) {
-    response.status(400).json(validationErrors);
+    res.status(400).json(validationErrors);
     return;
   }
 
-  db.updateAccountById(id, username, (errors, didExist) => {
+  db.updateAccountById(id, username, function(errors, didExist) {
     if (errors.length == 0) {
       if (didExist) {
-        response.status(204).end();
+        res.status(204).end();
       } else {
-        response.status(404).end();
+        res.status(404).end();
       }
     } else {
-      response.status(500).end();
+      res.status(500).end();
     }
   });
 });

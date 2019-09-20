@@ -14,12 +14,9 @@
         <router-link to="/compounds" class="customColor">Compounds</router-link>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn
-        v-if="isUserSignedIn === true"
-        text
-        rounded
-        color="primary"
-      >Hey,{{account.id}} {{account.username}}</v-btn>
+      <v-btn v-if="isUserSignedIn === true" text rounded color="primary">
+        <router-link :to="'/profile/' + account.id" class="customColor">Hey {{account.username}}</router-link>
+      </v-btn>
       <v-btn v-if="isUserSignedIn === true" text rounded color="primary" @click="logOut">Log out</v-btn>
     </v-app-bar>
     <router-view
@@ -51,6 +48,7 @@ export default {
       this.account.username = client.userInfo.username;
       this.account.id = client.userInfo.id;
       this.account.email = client.userInfo.email;
+      console.log(this.account.email);
     }
   },
   methods: {

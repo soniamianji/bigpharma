@@ -92,8 +92,9 @@ exports.getAllAccounts = function(callback) {
 //update account
 exports.updateAccountById = function(id, username, callback) {
   const query = `Update accounts SET username=? WHERE id = ? `;
-  const values = [username, id];
-  db.run(query, values, error => {
+  const values = [username.username, id];
+
+  db.run(query, values, function(error) {
     if (error) {
       callback([error]);
     } else {

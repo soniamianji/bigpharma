@@ -194,7 +194,11 @@ module.exports.updateObservationById = async function(
   let response;
 
   try {
-    response = await sendRequest("PUT", "/observations", observation);
+    response = await sendRequest.sendRequest(
+      "PUT",
+      "/observations",
+      observation
+    );
   } catch (errors) {
     callback(errors);
     return;
