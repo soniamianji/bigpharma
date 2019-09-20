@@ -39,6 +39,7 @@ export default {
       this.account.username = client.userInfo.username;
       this.account.id = client.userInfo.id;
       this.account.email = client.userInfo.email;
+      console.log(this.account.email);
     }
   },
   methods: {
