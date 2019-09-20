@@ -20,7 +20,7 @@
             <v-card-actions>
               <v-btn type="submit" color="success">Login</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="info">Register</v-btn>
+              <v-btn color="info" @click="goToSignUp">Register</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
@@ -40,15 +41,18 @@ export default {
   },
   methods: {
     signIn() {
-      const client = require("../SDK/accountsSDK");
       client.logIn(this.email, this.password, (err, account) => {
         if (err.length == 0) {
           console.log(account);
+          this.$emit("isSignedIn", account);
           this.$router.push({ path: "/" });
         } else {
           console.log(err);
         }
       });
+    },
+    goToSignUp() {
+      this.$router.push({ path: "/signup" });
     }
   }
 };

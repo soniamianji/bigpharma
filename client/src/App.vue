@@ -20,8 +20,13 @@
         rounded
         color="primary"
       >Hey,{{account.id}} {{account.username}}</v-btn>
+      <v-btn v-if="isUserSignedIn === true" text rounded color="primary" @click="logOut">Log out</v-btn>
     </v-app-bar>
-    <router-view :isUserSignedIn="isUserSignedIn" :account="account" />
+    <router-view
+      @isSignedIn="setAuthenticated"
+      :isUserSignedIn="isUserSignedIn"
+      :account="account"
+    />
   </div>
 </template>
 
@@ -49,19 +54,18 @@ export default {
     }
   },
   methods: {
-    // setAuthenticated(status) {
-    //   if (status !== undefined) {
-    //     this.user.isSignedIn = true;
-    //     this.user.name = status.username;
-    //     this.user.id = status.id;
-    //   }
-
-    //   console.log(status);
-    // },
-    logout() {
-      this.user.isSignedIn = false;
-      localStorage.removeItem("userToken");
-      path: "/signout/", this.$router.push({ path: "/signout" });
+    setAuthenticated(status) {
+      if (status !== undefined) {
+        this.isUserSignedIn = true;
+        this.account.username = status.username;
+        this.account.id = status.id;
+      }
+    },
+    logOut() {
+      client.signOut(() => {
+        this.isUserSignedIn = false;
+        this.$router.push({ path: "/login" });
+      });
     }
   }
 };
