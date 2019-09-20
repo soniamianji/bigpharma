@@ -12,11 +12,11 @@
               <div class="overline font-weight-ligh mt-0">
                 You are evaluating
                 <span class="font-weight-bold">{{compoundName}}</span> for
-                <span class="font-weight-bold">{{indication}}</span>.
+                <span class="font-weight-bold">{{indication}}</span>
               </div>
               <div
                 class="caption mt-4"
-              >Begin by setting the intensity of the {{indication}} you are experience and press the "add observation"-button. If you at any time experience an increase or decrease of {{indication}} choose {{indication}} from the list of effects and adjust the intensity slider accordingly before you press the "add"-button again. If you experince any other effect, choose them from the list, adjust intensity and press the "add"-button.</div>
+              >Begin by setting the intensity of the {{indication}} you are experiencing and press the "add observation"-button. If you at any time experience an increase or decrease of {{indication}} choose {{indication}} from the list of effects and adjust the intensity slider accordingly before you press the "add"-button again. If you experince any other effect, choose them from the list, adjust intensity and press the "add"-button.</div>
             </div>
           </div>
         </v-flex>
