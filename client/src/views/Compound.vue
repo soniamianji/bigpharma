@@ -1,22 +1,22 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <HeadPic></HeadPic>
     <!-- Provides the application the proper gutter -->
-    <v-container fluid>
-      <v-card class="customNegMarg">
-        <v-layout row class="mx-auto">
-          <v-flex xs12>
-            <div class="pa-12">
-              <v-alert class="mx-auto text-center" width="600">
-                <div class="title">{{compound.compoundName}}</div>
-              </v-alert>
-              <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
-              <canvas id="compoundChart"></canvas>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-card>
+    <v-layout row class="mx-auto mt-10">
+      <v-flex xs12>
+        <div class="pa-12">
+          <div class="mx-auto text-center" width="800">
+            <div class="headline">{{compound.compoundName}}</div>
+            <div
+              class="overline font-weight-ligh mt-0"
+            >Data have been compiled from dataset of over x surveys with above y datapoints.</div>
+          </div>
+        </div>
+      </v-flex>
+    </v-layout>
+    <v-container fluid class="mt-n5">
+      <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
+      <canvas id="compoundChart" class></canvas>
     </v-container>
   </v-app>
 </template>
