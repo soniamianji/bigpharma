@@ -56,6 +56,7 @@ export default {
         if (err.length == 0) {
           this.isFormHidden = !this.isFormHidden;
         } else {
+          //do nothing for now
         }
       });
     }
