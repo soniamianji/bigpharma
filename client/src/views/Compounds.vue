@@ -1,10 +1,9 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <HeadPic></HeadPic>
     <!-- Provides the application the proper gutter -->
-    <v-container fluid>
-      <v-card class="customNegMarg">
+    <v-container fluid class="mt-12">
+      <v-card>
         <v-layout row class="mx-auto">
           <v-flex xs12>
             <div class="pa-12">
@@ -31,10 +30,6 @@
 
                 <v-list two-line subheader>
                   <v-list-item v-for="item in compounds" :key="item.id">
-                    <!-- <v-list-item-avatar>
-                      <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
-                    </v-list-item-avatar>-->
-
                     <v-list-item-content>
                       <router-link :to="'/compounds/' + item.id" class="customColor">
                         <v-list-item-title v-text="item.compoundName" class="customColor"></v-list-item-title>
