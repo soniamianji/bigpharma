@@ -78,7 +78,7 @@ router.post("/", (req, res) => {
     if (errors.length == 0) {
       res.setHeader("Location", "/surveys/" + id);
       res.status(201).end();
-    } else if (errors.includes("account or user or effect NotFound")) {
+    } else if (errors.includes("compound or user NotFound")) {
       res.status(400).json(errors);
     } else {
       res.status(500).end();

@@ -98,14 +98,15 @@
 <script>
 export default {
   props: ["account"],
-
   data() {
     return {
       value: 0,
       fruits: 0,
       ticksLabels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
       items: ["Headache", "Anxiety", "Gastro Intestinal Pain"],
-      time: "00:00:00"
+      time: "00:00:00",
+      surveyId: this.$route.query.surveyId,
+      compoundId: this.$route.query.compoundId
     };
   }
 };

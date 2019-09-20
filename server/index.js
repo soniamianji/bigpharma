@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 //recieve the other one
 
-app.use(cors());
+app.use(cors({ exposedHeaders: ["Location"] }));
 
 app.get("/", function(request, response) {
   response.send("Hello, World");

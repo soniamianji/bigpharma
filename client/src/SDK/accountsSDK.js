@@ -79,7 +79,7 @@ module.exports.createAccount = async function(account, callback) {
   let response;
 
   try {
-    response = await sendRequest("POST", "/accounts", account);
+    response = await sendRequest.sendRequest("POST", "/accounts", account);
   } catch (errors) {
     callback(errors);
     return;
@@ -180,6 +180,7 @@ module.exports.logIn = async function(email, password, callback) {
 
 module.exports.signOut = async function(callback) {
   accessToken = null;
+  localStorage.removeItem("userInfo");
   callback();
 };
 

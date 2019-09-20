@@ -43,7 +43,7 @@
                     </v-list-item-content>
 
                     <v-list-item-action v-if="isUserSignedIn === true">
-                      <v-btn text rounded color="teal">Contribute</v-btn>
+                      <v-btn text rounded color="teal" @click="createSurvey(item.id)">Contribute</v-btn>
                     </v-list-item-action>
                   </v-list-item>
 
@@ -61,7 +61,8 @@
 
 <script>
 import HeadPic from "../components/HeadPic";
-
+const compound = require("../SDK/compoundSDK");
+const survey = require("../SDK/surveySDK");
 export default {
   props: ["account", "isUserSignedIn"],
   components: { HeadPic },
@@ -72,9 +73,7 @@ export default {
     };
   },
   created() {
-    const client = require("../SDK/compoundSDK");
-
-    client.getAllCompounds((errors, compounds) => {
+    compound.getAllCompounds((errors, compounds) => {
       if (errors.length == 0) {
         this.compounds = compounds;
         console.log(compounds);
@@ -83,6 +82,29 @@ export default {
         console.log(errors);
       }
     });
+  },
+  methods: {
+    createSurvey(compoundId) {
+      const surveyObj = {
+        userId: this.account.id,
+        compoundId: compoundId
+      };
+      console.log(surveyObj);
+
+      survey.createSurvey(surveyObj, (error, id) => {
+        if (error.length == 0) {
+          const surveyId = id;
+          const compoundId = surveyObj.compoundId;
+          console.log(compoundId);
+          this.$router.push({
+            path:
+              "/observations?surveyId=" + surveyId + "&compoundId=" + compoundId
+          });
+        } else {
+          console.log(error);
+        }
+      });
+    }
   }
 };
 </script>
