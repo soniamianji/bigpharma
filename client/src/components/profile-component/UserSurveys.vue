@@ -14,11 +14,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in compoundArr" :key="item.compound_id">
-              <td>{{ item.surveyId }}</td>
-              <td>{{ item.name }}</td>
-              <td v-if="item.status === 0">Not completed</td>
-              <td v-else>completed</td>
+            <tr v-for="item in compoundArr" :key="item.compound_id  ">
+              <router-link
+                :to="'/observations?surveyId=' + item.surveyId + '&compoundId=' + item.compound_id"
+              >
+                <td>{{ item.surveyId }}</td>
+                <td>{{ item.name }}</td>
+                <td v-if="item.status === 0">Not completed</td>
+                <td v-else>completed</td>
+              </router-link>
             </tr>
           </tbody>
         </template>
