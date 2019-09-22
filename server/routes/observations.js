@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 });
 
 //create new Observation
-router.post("/", checkAauth, (req, res) => {
+router.post("/", (req, res) => {
   const observation = req.body;
 
   // Check that the activity contains all expected properties.
@@ -32,6 +32,7 @@ router.post("/", checkAauth, (req, res) => {
     userId: Number,
     entryTime: Number,
     effectId: Number,
+    effectName: String,
     effectIntensity: Number
   };
   if (!hasTypes(observation, observationTypes)) {
@@ -44,6 +45,7 @@ router.post("/", checkAauth, (req, res) => {
     observation.userId == "" ||
     observation.entryTime == "" ||
     observation.effectId == "" ||
+    observation.effectName == "" ||
     observation.effectIntensity == ""
   ) {
     res.status(422).end();
@@ -52,7 +54,7 @@ router.post("/", checkAauth, (req, res) => {
   //create the observation.
   db.createObservation(observation, function(errors, id) {
     if (errors.length == 0) {
-      res.setHeader("Location", "/observation/" + id);
+      res.setHeader("Location", "/observations/" + id);
       res.status(201).end();
     } else if (errors.includes("account, user , survey or effect NotFound")) {
       res.status(400).json(errors);
@@ -83,7 +85,7 @@ router.get("/", (req, res) => {
 });
 
 //To update an observation based on observationId
-router.put("/:id", checkAauth, function(request, response) {
+router.put("/:id", function(request, response) {
   const id = request.params.id;
   const updatedObservation = request.body;
   //Check that the observation contains all expected properties.
@@ -93,6 +95,7 @@ router.put("/:id", checkAauth, function(request, response) {
     userId: Number,
     entryTime: Number,
     effectId: Number,
+    effectName: String,
     effectIntensity: Number
   };
 
@@ -107,6 +110,7 @@ router.put("/:id", checkAauth, function(request, response) {
     observation.userId == "" ||
     observation.entryTime == "" ||
     observation.effectId == "" ||
+    observation.effectName == "" ||
     observation.effectIntensity == ""
   ) {
     res.status(422).end();
@@ -163,7 +167,7 @@ router.get("/:id", (req, res) => {
 });
 
 //delete obs by Id
-router.delete("/:id", checkAauth, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
   db.deleteObservationById(id, function(errors, observationExisted) {
     if (errors.length == 0) {

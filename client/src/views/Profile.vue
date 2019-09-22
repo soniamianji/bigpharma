@@ -26,41 +26,39 @@
                   <v-list-item-title>Username</v-list-item-title>
                   <v-list-item-subtitle>{{account.username}}</v-list-item-subtitle>
 
-                  <UpdateUsername :@newUserName="newUsername"></UpdateUsername>
+                  <UpdateUsername @usernameUpdated="newUsername"></UpdateUsername>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-card-text>
       </v-card>
-      <v-card width="600" class="mx-auto mt-5">
-        <v-card-title>
-          <p>You can delete your account by clicking the button below, but be aware once you delete your account all your information will be deleted and there is no reverting it back.</p>
-        </v-card-title>
-        <v-card-text>
-          <v-btn class="red text--white">Delete Account</v-btn>
-        </v-card-text>
-      </v-card>
-      <v-card width="600" class="mx-auto mt-5">
-        <v-card-title>
-          <h6>The list of surveys that you have contributed so far</h6>
-        </v-card-title>
-      </v-card>
+      <DeleteAccount></DeleteAccount>
+      <UserSurveys></UserSurveys>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import UpdateUsername from "../components/UpdateUsername";
+import UpdateUsername from "../components/userAccount/UpdateUsername";
+import DeleteAccount from "../components/userAccount/DeleteAccount";
+import UserSurveys from "../components/userAccount/UserSurveys";
 const client = require("../SDK/accountsSDK");
 export default {
-  props: ["account", "newUsername"],
-  components: { UpdateUsername },
+  props: ["account"],
+  components: { UpdateUsername, DeleteAccount, UserSurveys },
   data() {
     return {
       id: this.$route.params.id,
+      UpdatedUsername: "",
       errors: ""
     };
+  },
+  methods: {
+    newUsername(value) {
+      this.UpdatedUsername = value;
+      this.$emit("userUpdate", this.UpdatedUsername);
+    }
   }
 };
 </script>

@@ -3,17 +3,6 @@ const router = new express.Router();
 const db = require("../DB/repositories/surveyRepo");
 const checkAauth = require("../middleware/check-auth");
 
-//get all surveys
-router.get("/", function(request, response) {
-  db.getAllSurveys(function(errors, surveys) {
-    if (errors.length == 0) {
-      response.status(200).json(surveys);
-    } else {
-      response.status(500).end();
-    }
-  });
-});
-
 //get surveys by id
 router.get("/:id", (req, res) => {
   const surveyId = req.params.id;
@@ -31,20 +20,18 @@ router.get("/:id", (req, res) => {
 router.get("/", (req, res) => {
   if (req.query.userId) {
     const userId = req.query.userId;
-    db.getSurveyByUserId(userId, function(errors, survey) {
+    db.getSurveyByUserId(userId, function(errors, surveys) {
       if (errors.length == 0) {
-        res.status(200).json(survey);
+        res.status(200).json(surveys);
       } else if (errors.includes("userNotFound")) {
+        res.status(404).end();
       } else {
         res.status(500).end();
       }
     });
-  }
-});
 
-//get surveys by compoundId
-router.get("/", (req, res) => {
-  if (req.query.compoundId) {
+    //get surveys by compund Id
+  } else if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
     db.getSurveyByCompoundId(compoundId, function(errors, survey) {
       if (errors.length == 0) {
@@ -55,15 +42,21 @@ router.get("/", (req, res) => {
       }
     });
   }
-});
-
-//get surveys by status
-router.get("/", (req, res) => {
-  if (req.query.status) {
+  //get surveys by status
+  else if (req.query.status) {
     const status = req.query.status;
     db.getSurveyByStatus(status, function(errors, survey) {
       if (errors.length == 0) {
         res.status(200).json(survey);
+      } else {
+        res.status(500).end();
+      }
+    });
+  } else {
+    //get all surveys
+    db.getAllSurveys(function(errors, surveys) {
+      if (errors.length == 0) {
+        res.status(200).json(surveys);
       } else {
         res.status(500).end();
       }

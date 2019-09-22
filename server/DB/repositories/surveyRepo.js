@@ -16,8 +16,9 @@ db.run(`
 `);
 
 exports.getAllSurveys = function(callback) {
+  console.log("im here");
   const query = `
-          SELECT * FROM surveys ORDER BY id
+          SELECT * FROM surveys
       `;
   const values = [];
 
@@ -48,6 +49,7 @@ exports.getSurveyById = function(surveyId, callback) {
 
 //get surveys by user Id
 exports.getSurveyByUserId = function(userId, callback) {
+  console.log("im in get survey by user id ");
   const query = `
     SELECT * FROM surveys WHERE userId=? ORDER BY id`;
   const values = [userId];
@@ -59,6 +61,7 @@ exports.getSurveyByUserId = function(userId, callback) {
       }
     } else {
       callback([], surveys);
+      console.log(surveys);
     }
   });
 };
@@ -98,9 +101,9 @@ exports.getSurveyByStatus = function(status, callback) {
 //create a new survey
 exports.createSurvey = function(survey, callback) {
   const query = `
-    INSERT INTO surveys (userId, compoundId, completed)
+    INSERT INTO surveys (userId, compoundId)
     VALUES
-    (?, ?, ?)`;
+    (?, ?)`;
   const values = [survey.userId, survey.compoundId, survey.completed];
 
   db.run(query, values, function(err) {

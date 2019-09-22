@@ -77,15 +77,15 @@ module.exports.getSurveyByUserId = async function(userId, callback) {
   }
 
   let errors = [];
-  let survey = null;
+  let surveys = null;
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      surveys = await response.json();
       break;
 
     case 404:
-      errors = ["notFound"];
+      errors = ["userNotFound"];
       break;
 
     case 500:
@@ -96,7 +96,7 @@ module.exports.getSurveyByUserId = async function(userId, callback) {
       errors = ["unknown response code"];
   }
 
-  callback(errors, survey);
+  callback(errors, surveys);
 };
 
 module.exports.getSurveyByCompoundId = async function(compoundId, callback) {

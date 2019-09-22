@@ -23,6 +23,7 @@
       @isSignedIn="setAuthenticated"
       :isUserSignedIn="isUserSignedIn"
       :account="account"
+      @userUpdate="newName"
     />
   </div>
 </template>
@@ -30,6 +31,7 @@
 
 
 <script>
+import UpdateUsernameVue from "./components/userAccount/UpdateUsername.vue";
 const client = require("./SDK/accountsSDK");
 export default {
   data() {
@@ -48,10 +50,12 @@ export default {
       this.account.username = client.userInfo.username;
       this.account.id = client.userInfo.id;
       this.account.email = client.userInfo.email;
-      console.log(this.account.email);
     }
   },
   methods: {
+    newName(value) {
+      this.account.username = value;
+    },
     setAuthenticated(status) {
       if (status !== undefined) {
         this.isUserSignedIn = true;

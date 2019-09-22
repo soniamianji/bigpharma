@@ -152,7 +152,11 @@ module.exports.createObservation = async function(observation, callback) {
   let response;
 
   try {
-    response = await sendRequest("POST", "/observations", observation);
+    response = await sendRequest.sendRequest(
+      "POST",
+      "/observations",
+      observation
+    );
   } catch (errors) {
     callback(errors);
     return;
@@ -235,7 +239,7 @@ module.exports.deleteObservationById = async function(id, callback) {
   let response;
 
   try {
-    response = await sendRequest("DELETE", "/observations/" + id);
+    response = await sendRequest.sendRequest("DELETE", "/observations/" + id);
   } catch (errors) {
     callback(errors);
     return;

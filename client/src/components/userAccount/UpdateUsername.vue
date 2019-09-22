@@ -25,13 +25,12 @@
 </template>
 
 <script>
-const client = require("../SDK/accountsSDK");
+const client = require("../../SDK/accountsSDK");
 export default {
   data() {
     return {
       valid: true,
       accountId: this.$route.params.id,
-      newUsername: "",
       updatedUsername: "",
       isFormHidden: true,
       nameRules: [
@@ -55,6 +54,8 @@ export default {
       client.updateAccountById(id, updatedUsername, err => {
         if (err.length == 0) {
           this.isFormHidden = !this.isFormHidden;
+          this.$emit("usernameUpdated", this.updatedUsername);
+          this.$refs.form.reset();
         } else {
           //do nothing for now
         }

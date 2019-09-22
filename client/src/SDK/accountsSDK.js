@@ -195,7 +195,7 @@ module.exports.deleteAccountById = async function(id, callback) {
   let response;
 
   try {
-    response = await sendRequest("DELETE", "/accounts/" + id);
+    response = await sendRequest.sendRequest("DELETE", "/accounts/" + id);
   } catch (errors) {
     callback(errors);
     return;
@@ -207,10 +207,6 @@ module.exports.deleteAccountById = async function(id, callback) {
     case 204:
       break;
 
-    case 401:
-      errors = await response.json();
-      break;
-
     case 404:
       errors = ["notFound"];
       break;
@@ -220,7 +216,7 @@ module.exports.deleteAccountById = async function(id, callback) {
       break;
 
     default:
-      errors = ["unknown error"];
+      errors = ["unknown error" + erors];
   }
 
   callback(errors);

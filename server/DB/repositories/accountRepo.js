@@ -110,7 +110,7 @@ exports.deleteAccountsById = function(id, callback) {
 		DELETE FROM accounts WHERE id = ?
 	`;
   const values = [id];
-
+  console.log(values);
   db.run(query, values, function(error) {
     if (error) {
       console.log(error);

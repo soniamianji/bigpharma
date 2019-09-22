@@ -11,6 +11,7 @@ db.run(`
         userId INTEGER ,
         entryTime INTEGER,
         effectId INTEGER,
+        effectName TEXT,
         effectIntensity INTEGER, 
         FOREIGN KEY(surveyId) REFERENCES surveys(id)
         FOREIGN KEY(userId) REFERENCES accounts(id)
@@ -78,9 +79,9 @@ exports.getObsByCompoundAndUserId = function(compoundId, userId, callback) {
 //create obs
 exports.createObservation = function(observation, callback) {
   const query = `INSERT INTO observations
-			(surveyId, compoundId, userId, entryTime, effectId, effectIntensity)
+			(surveyId, compoundId, userId, entryTime, effectId, effectName, effectIntensity)
 		VALUES
-      (?, ?, ?, ?, ?, ?)
+      (?, ?, ?, ?, ?, ?, ?)
       `;
   const values = [
     observation.surveyId,
@@ -88,6 +89,7 @@ exports.createObservation = function(observation, callback) {
     observation.userId,
     observation.entryTime,
     observation.effectId,
+    observation.effectName,
     observation.effectIntensity
   ];
 
@@ -113,7 +115,8 @@ exports.editObservationById = function(id, updatedobservation, callback) {
     compoundId = ?,
     userId = ?,
     entryTime = ?,
-		effectId = ?,
+    effectId = ?,
+    effectName = ?,
 		effectIntensity = ?
 		WHERE
 			id = ?
@@ -124,6 +127,7 @@ exports.editObservationById = function(id, updatedobservation, callback) {
     updatedobservation.userId,
     updatedobservation.entryTime,
     updatedobservation.effectId,
+    updatedobservation.effectName,
     updatedobservation.effectIntensity,
     id
   ];
