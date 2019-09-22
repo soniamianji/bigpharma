@@ -118,3 +118,20 @@ exports.createSurvey = function(survey, callback) {
     }
   });
 };
+
+//Update survey
+exports.updateSurveyById = function(id, callback) {
+  const query = `
+  UPDATE surveys SET completed = 1 WHERE id= ?`;
+  const values = [id];
+
+  db.run(query, values, function(error) {
+    if (error) {
+      console.log(error);
+      callback(["databaseError"]);
+    } else {
+      const SurveyExisted = this.changes == 1;
+      callback([], SurveyExisted);
+    }
+  });
+};

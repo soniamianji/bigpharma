@@ -208,3 +208,34 @@ module.exports.createSurvey = async function(survey, callback) {
 
   callback(errors, id);
 };
+
+module.exports.updateSurveyById = async function(id, callback) {
+  let response;
+
+  try {
+    response = await sendRequest.sendRequest("PUT", "/surveys/" + id);
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+
+  switch (response.status) {
+    case 204:
+      break;
+
+    case 404:
+      errors = ["notFound"];
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = [response];
+  }
+
+  callback(errors);
+};

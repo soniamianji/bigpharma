@@ -200,7 +200,7 @@ module.exports.updateObservationById = async function(
   try {
     response = await sendRequest.sendRequest(
       "PUT",
-      "/observations",
+      "/observations/" + id,
       observation
     );
   } catch (errors) {
@@ -211,9 +211,7 @@ module.exports.updateObservationById = async function(
   let errors = [];
 
   switch (response.status) {
-    case 201:
-      const locationHeader = response.headers.get("Location");
-      id = parseInt(locationHeader.substr("/observations/".length));
+    case 204:
       break;
 
     case 400:
@@ -232,7 +230,7 @@ module.exports.updateObservationById = async function(
       errors = ["unknown response code"];
   }
 
-  callback(errors, id);
+  callback(errors);
 };
 
 module.exports.deleteObservationById = async function(id, callback) {

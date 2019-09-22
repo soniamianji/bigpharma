@@ -111,9 +111,6 @@ exports.createObservation = function(observation, callback) {
 exports.editObservationById = function(id, updatedobservation, callback) {
   const query = `
     UPDATE observations SET
-    surveyId = ?,
-    compoundId = ?,
-    userId = ?,
     entryTime = ?,
     effectId = ?,
     effectName = ?,
@@ -122,9 +119,6 @@ exports.editObservationById = function(id, updatedobservation, callback) {
 			id = ?
 	`;
   const values = [
-    updatedobservation.surveyId,
-    updatedobservation.compoundId,
-    updatedobservation.userId,
     updatedobservation.entryTime,
     updatedobservation.effectId,
     updatedobservation.effectName,

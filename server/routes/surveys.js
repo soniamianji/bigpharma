@@ -79,5 +79,20 @@ router.post("/", (req, res) => {
   });
 });
 
-// delete surveys
+// Update surveys
+
+router.put("/:id", (req, res) => {
+  const surveyId = req.params.id;
+  db.updateSurveyById(surveyId, function(errors, didExist) {
+    if (errors.length == 0) {
+      if (didExist) {
+        res.status(204).end();
+      } else {
+        res.status(404).end();
+      }
+    } else {
+      res.status(500).end();
+    }
+  });
+});
 module.exports = router;

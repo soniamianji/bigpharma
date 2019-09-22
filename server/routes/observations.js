@@ -90,9 +90,6 @@ router.put("/:id", function(request, response) {
   const updatedObservation = request.body;
   //Check that the observation contains all expected properties.
   const observationTypes = {
-    surveyId: Number,
-    compoundId: Number,
-    userId: Number,
     entryTime: Number,
     effectId: Number,
     effectName: String,
@@ -105,15 +102,12 @@ router.put("/:id", function(request, response) {
   }
 
   if (
-    observation.surveyId == "" ||
-    observation.compoundId == "" ||
-    observation.userId == "" ||
-    observation.entryTime == "" ||
-    observation.effectId == "" ||
-    observation.effectName == "" ||
-    observation.effectIntensity == ""
+    updatedObservation.entryTime == "" ||
+    updatedObservation.effectId == "" ||
+    updatedObservation.effectName == "" ||
+    updatedObservation.effectIntensity == ""
   ) {
-    res.status(422).end();
+    response.status(422).end();
     return;
   }
 

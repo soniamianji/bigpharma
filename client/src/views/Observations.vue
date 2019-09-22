@@ -24,6 +24,8 @@
         :obsCreated="obsCreated"
         :key="componentKey"
         @obsDeleted="obsDeleted"
+        @obsUpdated="obsUpdated"
+        @finalise="finaliseSurvey"
       ></ShowObs>
       <v-divider></v-divider>
     </v-content>
@@ -32,9 +34,10 @@
 
 
 <script>
-import ObservationForm from "../components/obsComponent/ObservationForm";
-import ShowObs from "../components/obsComponent/ShowObs";
+import ObservationForm from "../components/obs-components/ObservationForm";
+import ShowObs from "../components/obs-components/ShowObs";
 const compoundClient = require("../SDK/compoundSDK");
+const surveyClient = require("../SDK/surveySDK");
 export default {
   props: ["account"],
   components: { ObservationForm, ShowObs },
@@ -63,6 +66,19 @@ export default {
     },
     obsDeleted(value) {
       this.componentKey += 1;
+    },
+    obsUpdated() {
+      this.componentKey += 1;
+    },
+    finaliseSurvey() {
+      surveyClient.updateSurveyById(this.surveyId, err => {
+        if (err.length == 0) {
+          console.log("successfully updated survey");
+          this.$router.push({ path: "/compounds" });
+        } else {
+          console.log(err);
+        }
+      });
     }
   }
 };

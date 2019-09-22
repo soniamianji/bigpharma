@@ -17,6 +17,7 @@
         <v-card-text>
           <v-select
             :items="effects"
+            :hint="`${selectedEffect.id}, ${selectedEffect.effectName}`"
             item-text="effectName"
             item-value="id"
             v-model="selectedEffect"

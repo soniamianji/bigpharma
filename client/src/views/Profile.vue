@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import UpdateUsername from "../components/userAccount/UpdateUsername";
-import DeleteAccount from "../components/userAccount/DeleteAccount";
-import UserSurveys from "../components/userAccount/UserSurveys";
+import UpdateUsername from "../components/profile-component/UpdateUsername";
+import DeleteAccount from "../components/profile-component/DeleteAccount";
+import UserSurveys from "../components/profile-component/UserSurveys";
 const client = require("../SDK/accountsSDK");
 export default {
   props: ["account"],
