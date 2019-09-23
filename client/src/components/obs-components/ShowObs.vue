@@ -57,6 +57,7 @@
           @click="finalizeSurvey"
           :disabled="noObservationsEntered"
         >Finalize Survey</v-btn>
+        <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
       </v-card>
     </div>
   </v-app>
@@ -77,7 +78,8 @@ export default {
       surveyId: this.$route.query.surveyId,
       compoundId: this.$route.query.compoundId,
       isLoading: true,
-      noObservationsEntered: false
+      noObservationsEntered: false,
+      errors: ""
     };
   },
   created() {
@@ -115,7 +117,7 @@ export default {
             this.noObservationsEntered = true;
           }
         } else {
-          console.log(err);
+          this.errors = err;
         }
       }
     );

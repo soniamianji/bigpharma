@@ -45,6 +45,7 @@
     <v-card max-width="300" class="mx-auto mt-5 mb-10">
       <v-btn width="100%" @click="createObservation" text>Add Observation</v-btn>
     </v-card>
+    <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
   </v-container>
 </template>
 
@@ -59,11 +60,12 @@ export default {
       intensity: 0,
       ticksLabels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
       time: "",
-      effects: "",
+      effects: [],
       selectedEffect: "",
       surveyId: this.$route.query.surveyId,
       compoundId: this.$route.query.compoundId,
-      newObsCreated: false
+      newObsCreated: false,
+      errors: ""
     };
   },
   created() {
@@ -73,7 +75,7 @@ export default {
         this.effects = effects;
         console.log(this.effects);
       } else {
-        console.log(err);
+        this.errors = err;
       }
     });
     this.showTime();

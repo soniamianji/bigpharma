@@ -11,7 +11,10 @@
                 <div class="title">Lorem Ipsum</div>
                 <div>Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Duis vel nibh at velit scelerisque suscipit. Praesent blandit laoreet nibh. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Etiam sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante odio sit amet eros.</div>
               </v-alert>
-              <v-card max-width="600" class="mx-auto">
+              <v-card v-if="errors.length !== 0">
+                <v-card-text>{{errors[0]}}</v-card-text>
+              </v-card>
+              <v-card v-else max-width="600" class="mx-auto">
                 <v-toolbar dark>
                   <v-app-bar-nav-icon></v-app-bar-nav-icon>
 

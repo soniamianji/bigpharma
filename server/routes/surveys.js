@@ -65,8 +65,9 @@ router.get("/", (req, res) => {
 });
 
 //create new Survey
-router.post("/", (req, res) => {
+router.post("/", checkAauth, (req, res) => {
   const survey = req.body;
+  console.log(survey);
   db.createSurvey(survey, function(errors, id) {
     if (errors.length == 0) {
       res.setHeader("Location", "/surveys/" + id);

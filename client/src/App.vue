@@ -31,7 +31,6 @@
 
 
 <script>
-import UpdateUsernameVue from "./components/userAccount/UpdateUsername.vue";
 const client = require("./SDK/accountsSDK");
 export default {
   data() {

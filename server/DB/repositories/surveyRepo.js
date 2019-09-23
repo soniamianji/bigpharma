@@ -104,16 +104,15 @@ exports.createSurvey = function(survey, callback) {
     INSERT INTO surveys (userId, compoundId)
     VALUES
     (?, ?)`;
-  const values = [survey.userId, survey.compoundId, survey.completed];
-
+  const values = [survey.userId, survey.compoundId];
   db.run(query, values, function(err) {
     if (err) {
+      console.log(err);
       if (true) {
         callback(["compound or user NotFound"]);
       }
       callback(["databaseError"]);
     } else {
-      console.log(this.lastID);
       callback([], this.lastID);
     }
   });

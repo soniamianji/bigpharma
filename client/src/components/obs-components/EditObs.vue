@@ -50,6 +50,7 @@
       <v-btn width="100%" @click="cancelObs">Cancel</v-btn>
       <v-btn width="100%" @click="updateObs" text>Update Observation</v-btn>
     </v-card>
+    <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
   </v-container>
 </template>
 
@@ -64,18 +65,19 @@ export default {
       intensity: "",
       ticksLabels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
       time: "",
-      effects: "",
+      effects: [],
       selectedEffect: ""
     };
   },
   created() {
+    this.errors = "";
     EffectClient.getAllEffects((err, effects) => {
       const effectArr = [];
       if (err.length == 0) {
         this.effects = effects;
         console.log(this.effects);
       } else {
-        console.log(err);
+        this.errors = err;
       }
     });
     this.intensity = this.obs.effectIntensity;
@@ -109,12 +111,13 @@ export default {
 
       console.log(updatedObs);
       //finally updating the obs
+      this.errors = "";
       ObservationClient.updateObservationById(this.obs.id, updatedObs, err => {
         if (err.length == 0) {
           console.log("successfuly edited");
           this.$emit("updateSuccessful", this.obs.id);
         } else {
-          console.log(err);
+          this.errors = err;
         }
       });
     },

@@ -194,8 +194,8 @@ module.exports.createSurvey = async function(survey, callback) {
       errors = await response.json();
       break;
 
-    case 422:
-      errors = ["invalidAccount"];
+    case 401:
+      errors = ["You are not authorised."];
       break;
 
     case 500:

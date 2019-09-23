@@ -14,6 +14,7 @@
               <div v-if="isUserSignedIn === true">
                 <v-btn text rounded color="teal" @click="contribute()">Contribute</v-btn>
               </div>
+              <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
               <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
               <canvas id="compoundChart"></canvas>
             </div>
@@ -66,12 +67,12 @@ export default {
         options: chartData.options
       });
     },
-    contribute: function(msg) {
+    contribute: function() {
+      const userId = this.account.id;
       const surveyObj = {
-        userId: this.account.id,
+        userId: userId.toString(),
         compoundId: this.id
       };
-      console.log(surveyObj);
 
       surveyClient.createSurvey(surveyObj, (error, id) => {
         if (error.length == 0) {
@@ -82,7 +83,7 @@ export default {
               "/observations?surveyId=" + surveyId + "&compoundId=" + compoundId
           });
         } else {
-          console.log(error);
+          this.errors = error;
         }
       });
     }

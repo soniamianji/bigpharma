@@ -18,6 +18,7 @@
           </div>
         </v-flex>
       </v-layout>
+      <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
       <ObservationForm :account="account" @obsCretaed="newObscreated"></ObservationForm>
       <ShowObs
         :account="account"
@@ -48,7 +49,8 @@ export default {
       indication: "",
       surveyId: this.$route.query.surveyId,
       compoundId: this.$route.query.compoundId,
-      obsCreated: ""
+      obsCreated: "",
+      errors: ""
     };
   },
   created() {
@@ -56,6 +58,8 @@ export default {
       if (err.length == 0) {
         this.compoundName = compound.compoundName;
         this.indication = compound.indicationName;
+      } else {
+        this.errors = err;
       }
     });
   },
