@@ -186,7 +186,7 @@ module.exports.logIn = async function(email, password, callback) {
 };
 
 module.exports.signOut = async function(callback) {
-  accessToken = null;
+  account.accessToken = null;
   localStorage.removeItem("userInfo");
   callback();
 };

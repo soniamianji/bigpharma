@@ -81,11 +81,9 @@ export default {
     };
   },
   created() {
-    const userId = this.account.id;
-    const compoundId = this.compoundId;
-    observationClient.getObservationsByUserIdAndCompoundId(
-      userId,
-      compoundId,
+    //by survey Id
+    observationClient.getObservationsBySurveyId(
+      this.surveyId,
       (err, observations) => {
         if (err.length == 0) {
           //create an object for every observation so a new property of isEdit clicked can be added.

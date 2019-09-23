@@ -125,7 +125,7 @@ router.post("/login-session", (req, res) => {
 });
 
 //get all the accounts
-router.get("/", function(request, response) {
+router.get("/", checkAauth, function(request, response) {
   db.getAllAccounts(function(errors, accounts) {
     if (errors.length == 0) {
       accounts.forEach(account => delete account.password);
@@ -137,7 +137,7 @@ router.get("/", function(request, response) {
 });
 
 //get account by id
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAauth, (req, res) => {
   const accountId = req.params.id;
   db.getAccountById(accountId, function(errors, accountId) {
     if (errors.length == 0) {
@@ -150,7 +150,7 @@ router.get("/:id", (req, res) => {
 });
 
 //update account
-router.put("/:id", (req, res) => {
+router.put("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   const username = req.body;
 

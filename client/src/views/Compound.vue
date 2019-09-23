@@ -77,7 +77,6 @@ export default {
         if (error.length == 0) {
           const surveyId = id;
           const compoundId = surveyObj.compoundId;
-          console.log(compoundId);
           this.$router.push({
             path:
               "/observations?surveyId=" + surveyId + "&compoundId=" + compoundId

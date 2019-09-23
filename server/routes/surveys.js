@@ -4,7 +4,7 @@ const db = require("../DB/repositories/surveyRepo");
 const checkAauth = require("../middleware/check-auth");
 
 //get surveys by id
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAauth, (req, res) => {
   const surveyId = req.params.id;
   db.getSurveyById(surveyId, function(errors, survey) {
     if (errors.length == 0) {
@@ -80,8 +80,7 @@ router.post("/", (req, res) => {
 });
 
 // Update surveys
-
-router.put("/:id", (req, res) => {
+router.put("/:id", checkAauth, (req, res) => {
   const surveyId = req.params.id;
   db.updateSurveyById(surveyId, function(errors, didExist) {
     if (errors.length == 0) {

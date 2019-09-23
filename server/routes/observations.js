@@ -6,8 +6,8 @@ const checkAauth = require("../middleware/check-auth");
 
 //validate timestamps and check inputs not empty before populating the database
 
-//get obs by compoundid
-router.get("/", (req, res) => {
+//get obs
+router.get("/", checkAauth, (req, res) => {
   if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
     db.getObservationsByCompoundId(compoundId, function(errors, observations) {
@@ -18,11 +18,38 @@ router.get("/", (req, res) => {
         res.status(500).end();
       }
     });
+
+    // get observation by compound id and user id
+  } else if (req.query.compoundId && req.query.userId) {
+    compoundId = req.query.compoundId;
+    userId = req.query.userId;
+    db.getObsByCompoundAndUserId(compoundId, userId, function(
+      errors,
+      observations
+    ) {
+      if (errors.length == 0) {
+        res.status(200).json(observations);
+      } else if (errors.includes("compoundId or userId Not Found")) {
+        response.status(400).json(errors);
+      } else {
+        res.status(500).end();
+      }
+    });
+  } else if (req.query.surveyId) {
+    const surveyId = req.query.surveyId;
+    db.getObservationsBySurveyId(surveyId, function(errors, survey) {
+      if (errors.length == 0) {
+        res.status(200).json(survey);
+      } else if (errors.includes("databaseError")) {
+      } else {
+        res.status(500).end();
+      }
+    });
   }
 });
 
 //create new Observation
-router.post("/", (req, res) => {
+router.post("/", checkAauth, (req, res) => {
   const observation = req.body;
 
   // Check that the activity contains all expected properties.
@@ -64,28 +91,8 @@ router.post("/", (req, res) => {
   });
 });
 
-// get observation by compound id and user id
-router.get("/", (req, res) => {
-  if (req.query.compoundId && req.query.userId) {
-    compoundId = req.query.compoundId;
-    userId = req.query.userId;
-    db.getObsByCompoundAndUserId(compoundId, userId, function(
-      errors,
-      observations
-    ) {
-      if (errors.length == 0) {
-        res.status(200).json(observations);
-      } else if (errors.includes("compoundId or userId Not Found")) {
-        response.status(400).json(errors);
-      } else {
-        res.status(500).end();
-      }
-    });
-  }
-});
-
 //To update an observation based on observationId
-router.put("/:id", function(request, response) {
+router.put("/:id", checkAauth, function(request, response) {
   const id = request.params.id;
   const updatedObservation = request.body;
   //Check that the observation contains all expected properties.
@@ -131,7 +138,7 @@ router.put("/:id", function(request, response) {
 });
 
 //get observation by id
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   console.log(id);
   db.getObservationById(id, (err, observation) => {
@@ -147,21 +154,8 @@ router.get("/:id", (req, res) => {
   });
 });
 
-//get obs by surveyId
-router.get("/:id", (req, res) => {
-  const surveyId = req.params.id;
-  db.getObservationsBySurveyId(surveyId, function(errors, survey) {
-    if (errors.length == 0) {
-      res.status(200).json(survey);
-    } else if (errors.includes("databaseError")) {
-    } else {
-      res.status(500).end();
-    }
-  });
-});
-
 //delete obs by Id
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   db.deleteObservationById(id, function(errors, observationExisted) {
     if (errors.length == 0) {

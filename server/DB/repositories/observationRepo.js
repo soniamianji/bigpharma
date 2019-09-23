@@ -26,7 +26,7 @@ exports.getObservationsBySurveyId = function(surveyId, callback) {
 		SELECT * FROM observations WHERE surveyId=? ORDER BY id
 	`;
   const values = [surveyId];
-
+  console.log(surveyId);
   db.all(query, values, function(error, observations) {
     if (error) {
       //check foreignkey violation
@@ -36,6 +36,7 @@ exports.getObservationsBySurveyId = function(surveyId, callback) {
         callback(["databaseError"]);
       }
     } else {
+      console.log(observations);
       callback([], observations);
     }
   });
