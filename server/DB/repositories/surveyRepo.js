@@ -9,9 +9,10 @@ db.run(`
         id INTEGER PRIMARY KEY,
         userId INTEGER,
         compoundId INTEGER,
+        createdAt INTEGER,
         completed INTEGER DEFAULT 0,
-        FOREIGN KEY(userId) REFERENCES accounts(id)
         FOREIGN KEY(compoundId) REFERENCES compounds(id)
+        FOREIGN KEY(userId) REFERENCES accounts(id) ON DELETE SET NULL 
 	)
 `);
 
@@ -101,17 +102,17 @@ exports.getSurveyByStatus = function(status, callback) {
 //create a new survey
 exports.createSurvey = function(survey, callback) {
   const query = `
-    INSERT INTO surveys (userId, compoundId)
+    INSERT INTO surveys (userId, compoundId, createdAt)
     VALUES
-    (?, ?)`;
-  const values = [survey.userId, survey.compoundId];
+    (?, ?, ?)`;
+  const values = [survey.userId, survey.compoundId, survey.createdAt];
   db.run(query, values, function(err) {
     if (err) {
-      console.log(err);
       if (true) {
         callback(["compound or user NotFound"]);
       }
       callback(["databaseError"]);
+      console.log(err);
     } else {
       callback([], this.lastID);
     }
@@ -131,6 +132,24 @@ exports.updateSurveyById = function(id, callback) {
     } else {
       const SurveyExisted = this.changes == 1;
       callback([], SurveyExisted);
+    }
+  });
+};
+
+//Delete observation by id
+exports.deleteSurveyById = function(id, callback) {
+  const query = `
+		DELETE FROM surveys WHERE id = ?
+	`;
+  const values = [id];
+
+  db.run(query, values, function(error) {
+    if (error) {
+      console.log(error);
+      callback(["databaseError"]);
+    } else {
+      const surveyExisted = this.changes == 1;
+      callback([], surveyExisted);
     }
   });
 };

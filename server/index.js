@@ -5,7 +5,11 @@ const app = express();
 
 //middleware
 app.use(bodyParser.json());
-
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
 //recieve the other one
 
 // app.use(cors({ exposedHeaders: ["Location"] }));

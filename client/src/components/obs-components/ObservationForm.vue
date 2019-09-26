@@ -1,50 +1,53 @@
 <template>
   <v-container fluid class="mt-12">
     <!--START of INPUTS -->
-    <v-card max-width="600" class="mx-auto mt-n3 grey lighten-4">
-      <v-menu bottom left>
-        <template v-slot:activator="{ on }">
-          <v-btn text small v-on="on">
-            <v-icon left>mdi-clock</v-icon>
-            {{time}}
-          </v-btn>
-        </template>
-        <v-time-picker v-model="time" format="24hr" use-seconds></v-time-picker>
-      </v-menu>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-card max-width="600" class="mx-auto mt-n3 grey lighten-4">
+        <v-menu bottom left>
+          <template v-slot:activator="{ on }">
+            <v-btn text small v-on="on">
+              <v-icon left>mdi-clock</v-icon>
+              {{time}}
+            </v-btn>
+          </template>
+          <v-time-picker v-model="time" format="24hr" use-seconds></v-time-picker>
+        </v-menu>
 
-      <v-divider></v-divider>
-      <v-card class="d-flex justify-space-between" flat tile>
-        <v-card-text>
-          <v-select
-            :items="effects"
-            :hint="`${selectedEffect.id}, ${selectedEffect.effectName}`"
-            item-text="effectName"
-            item-value="id"
-            v-model="selectedEffect"
-            label="Effect"
-          ></v-select>
-        </v-card-text>
+        <v-divider></v-divider>
+        <v-card class="d-flex justify-space-between" flat tile>
+          <v-card-text>
+            <v-select
+              :items="effects"
+              item-text="effectName"
+              item-value="id"
+              v-model="selectedEffect"
+              label="Effect"
+              :rules="[v => !!v || 'effect is required']"
+              required
+            ></v-select>
+          </v-card-text>
+        </v-card>
+        <v-card class="d-flex justify-space-between mt-n8" flat tile>
+          <v-card-text>
+            <v-slider
+              class="pa-2"
+              v-model="intensity"
+              :tick-labels="ticksLabels"
+              :max="10"
+              step="1"
+              ticks="always"
+              tick-size="4"
+              label="Intensity"
+            ></v-slider>
+          </v-card-text>
+        </v-card>
       </v-card>
-      <v-card class="d-flex justify-space-between mt-n8" flat tile>
-        <v-card-text>
-          <v-slider
-            class="pa-2"
-            v-model="intensity"
-            :tick-labels="ticksLabels"
-            :max="10"
-            step="1"
-            ticks="always"
-            tick-size="4"
-            label="Intensity"
-          ></v-slider>
-        </v-card-text>
-      </v-card>
-    </v-card>
 
-    <!--END OF INPUTS -->
-    <v-card max-width="300" class="mx-auto mt-5 mb-10">
-      <v-btn width="100%" @click="createObservation" text>Add Observation</v-btn>
-    </v-card>
+      <!--END OF INPUTS -->
+      <v-card max-width="300" class="mx-auto mt-5 mb-10">
+        <v-btn width="100%" @click="createObservation" text :disabled="!valid">Add Observation</v-btn>
+      </v-card>
+    </v-form>
     <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
   </v-container>
 </template>
@@ -56,6 +59,7 @@ export default {
   props: ["account"],
   data() {
     return {
+      valid: true,
       value: 0,
       intensity: 0,
       ticksLabels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -95,6 +99,7 @@ export default {
         mixdate.toLocaleTimeString(),
         this.time
       );
+      // the object with the observation data to be inserted
       const formData = {
         surveyId: Number(this.surveyId),
         compoundId: Number(this.compoundId),
@@ -104,7 +109,8 @@ export default {
         effectName: "",
         effectIntensity: this.intensity
       };
-      console.log(formData);
+
+      //get the effectTime according to the effect Id
       for (var i = 0; i < this.effects.length; i++) {
         if (this.selectedEffect === this.effects[i].id) {
           formData.effectName = this.effects[i].effectName;
@@ -114,8 +120,8 @@ export default {
       // once we have all these data we can create it
       ObservationClient.createObservation(formData, (err, id) => {
         if (err.length == 0) {
-          console.log("success");
           this.newObsCreated = true;
+          this.$refs.form.reset();
           this.$emit("obsCretaed", this.newObsCreated);
         } else {
           console.log(err);

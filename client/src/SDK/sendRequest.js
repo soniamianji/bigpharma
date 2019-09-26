@@ -1,7 +1,14 @@
 const rootPath = "http://localhost:3000";
 
+let accessToken;
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-let accessToken = userInfo.accessToken;
+if (userInfo && userInfo.accessToken !== null) {
+  accessToken = userInfo.accessToken;
+  console.log("giving access");
+} else {
+  accessToken = null;
+}
+
 async function sendRequest(
   method,
   uri,

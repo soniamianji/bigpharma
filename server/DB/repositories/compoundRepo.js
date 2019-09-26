@@ -6,10 +6,9 @@ db.run("PRAGMA foreign_keys = ON");
 
 db.run(`
 	CREATE TABLE IF NOT EXISTS compounds (
-        id INTEGER PRIMARY KEY,
-        compoundName TEXT,
+    id INTEGER PRIMARY KEY,
+    compoundName TEXT,
 		indicationName TEXT
-		
 	)
 `);
 

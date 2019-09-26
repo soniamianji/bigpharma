@@ -7,11 +7,11 @@ db.run("PRAGMA foreign_keys = ON");
 // Create the database tables if they don't exist.
 db.run(`
 	CREATE TABLE IF NOT EXISTS accounts (
-        id INTEGER PRIMARY KEY,
-        email TEXT,
+    id INTEGER PRIMARY KEY,
+    email TEXT,
 		username TEXT,
 		password TEXT,
-		CONSTRAINT uniqueEmail UNIQUE(email)
+    CONSTRAINT uniqueEmail UNIQUE(email)
 	)
 `);
 
