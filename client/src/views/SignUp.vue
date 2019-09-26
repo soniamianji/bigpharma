@@ -31,11 +31,11 @@
               :rules="[v => !!v || 'Password is required']"
               required
             />
-
+            <v-devider></v-devider>
             <v-card-actions>
               <v-btn type="submit" color="success">Register</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="info" @click="goToLogin()" text>Login</v-btn>
+              <v-btn color="info" @click="goToLogin()">Login</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -49,7 +49,6 @@ const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
-      valid: true,
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -86,10 +85,10 @@ export default {
           this.errors = errors;
         }
       });
-    },
-    goToLogin() {
-      this.$router.push({ path: "/login" });
     }
+  },
+  goToLogin() {
+    this.$router.push({ path: "/login" });
   }
 };
 </script>

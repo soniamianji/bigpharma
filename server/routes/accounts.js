@@ -78,17 +78,11 @@ router.post("/login-session", (req, res) => {
   // Check that grantInfo contains all expected properties.
   const grantInfoTypes = {
     email: String,
-    password: String,
-    grant_type: String
+    password: String
   };
 
   if (!hasTypes(grantInfo, grantInfoTypes)) {
-    res.status(400).json({ error: "invalid_request" });
-    return;
-  }
-  // Check that the grant type is supported.
-  if (grantInfo.grant_type != "password") {
-    res.status(400).json({ error: "unsupported_grant_type" });
+    res.status(400).json({ error: "invalid_request, stuck here" });
     return;
   }
 
@@ -104,7 +98,9 @@ router.post("/login-session", (req, res) => {
         result
       ) {
         if (result) {
-          const access_token = jwt.sign({ id: account.id }, secretTokenKey);
+          const access_token = jwt.sign({ id: account.id }, secretTokenKey, {
+            expiresIn: "1h"
+          });
           const id_token = jwt.sign(
             {
               email: account.email,
@@ -194,7 +190,7 @@ router.put("/:id", checkAauth, (req, res) => {
 });
 
 //delete account
-router.delete("/:id", checkAauth, (req, res) => {
+router.delete("/:id", (req, res) => {
   const accountId = req.params.id;
   db.deleteAccountsById(accountId, (errors, accountExisted) => {
     if (errors.length == 0) {

@@ -85,10 +85,9 @@ export default {
       const userId = this.account.id;
       const surveyObj = {
         userId: userId.toString(),
-        compoundId: this.id,
-        createdAt: Date.parse(new Date())
+        compoundId: this.id
       };
-      console.log(surveyObj.createdAt);
+
       surveyClient.createSurvey(surveyObj, (error, id) => {
         if (error.length == 0) {
           const surveyId = id;

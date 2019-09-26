@@ -35,13 +35,11 @@ export default {
     };
   },
   created() {
-    if (client.userInfo) {
-      if (client.userInfo.username !== "") {
-        this.isUserSignedIn = true;
-        this.account.username = client.userInfo.username;
-        this.account.id = client.userInfo.id;
-        this.account.email = client.userInfo.email;
-      }
+    if (client.userInfo.username !== "") {
+      this.isUserSignedIn = true;
+      this.account.username = client.userInfo.username;
+      this.account.id = client.userInfo.id;
+      this.account.email = client.userInfo.email;
     }
   },
   methods: {

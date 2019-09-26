@@ -35,9 +35,6 @@ export default {
       client.deleteAccountById(id, err => {
         if (err.length == 0) {
           console.log("success");
-          client.signOut(() => {
-            this.$router.push({ path: "/signup" });
-          });
         } else {
           console.log(err);
         }

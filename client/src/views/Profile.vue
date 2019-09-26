@@ -34,7 +34,7 @@
         </v-card-text>
       </v-card>
       <DeleteAccount></DeleteAccount>
-      <UserSurveys @surveyDeleted="surveysDeleted" :key="componnetKey"></UserSurveys>
+      <UserSurveys></UserSurveys>
     </v-content>
   </v-app>
 </template>
@@ -51,17 +51,13 @@ export default {
     return {
       id: this.$route.params.id,
       UpdatedUsername: "",
-      errors: "",
-      componnetKey: 0
+      errors: ""
     };
   },
   methods: {
     newUsername(value) {
       this.UpdatedUsername = value;
       this.$emit("userUpdate", this.UpdatedUsername);
-    },
-    surveysDeleted(value) {
-      this.componnetKey += 1;
     }
   }
 };

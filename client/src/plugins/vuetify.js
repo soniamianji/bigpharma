@@ -6,7 +6,7 @@ const opts = {};
 
 export default new Vuetify({
   icons: {
-    iconfont: "mdiSvg"
+    iconfont: "mdi"
   },
   opts
 });

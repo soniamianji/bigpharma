@@ -25,11 +25,11 @@
               required
             />
             <p v-if="errors !== ''" class="red--text pl-8">{{errors[0]}}</p>
-            <v-divider class="mx-4" horizontal></v-divider>
+            <v-devider></v-devider>
             <v-card-actions>
               <v-btn type="submit" :disabled="!valid" color="success">Login</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="info" @click="goToSignUp" text>Register</v-btn>
+              <v-btn color="info" @click="goToSignUp">Register</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -43,7 +43,6 @@ const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
-      valid: true,
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -63,7 +62,6 @@ export default {
           this.$router.push({ path: "/" });
         } else {
           this.errors = err;
-          console.log(err);
         }
       });
     },

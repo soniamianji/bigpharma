@@ -109,10 +109,12 @@ export default {
         }
       }
 
+      console.log(updatedObs);
       //finally updating the obs
       this.errors = "";
       ObservationClient.updateObservationById(this.obs.id, updatedObs, err => {
         if (err.length == 0) {
+          console.log("successfuly edited");
           this.$emit("updateSuccessful", this.obs.id);
         } else {
           this.errors = err;

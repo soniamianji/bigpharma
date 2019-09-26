@@ -11,11 +11,4 @@ module.exports = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ message: "Auth failed." });
   }
-  if (req.userData) {
-    console.log("we recieved valid token");
-  } else {
-    console.log(
-      "We didn't receive an access token or the received access token was invalid "
-    );
-  }
 };

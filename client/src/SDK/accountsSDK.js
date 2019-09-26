@@ -116,8 +116,7 @@ module.exports.createAccount = async function(account, callback) {
 module.exports.logIn = async function(email, password, callback) {
   const bodyToSend = {
     email,
-    password,
-    grant_type: "password"
+    password
   };
 
   let response;
@@ -127,7 +126,7 @@ module.exports.logIn = async function(email, password, callback) {
       "POST",
       "/accounts/login-session",
       bodyToSend,
-      "application/x-www-form-urlencoded"
+      "application/json"
     );
   } catch (errors) {
     callback(errors);
@@ -143,6 +142,7 @@ module.exports.logIn = async function(email, password, callback) {
       body = await response.json();
 
       account.accessToken = body.access_token;
+
       const payload = jwtDecode(body.id_token);
       account.id = payload.id;
       account.email = payload.email;
@@ -161,7 +161,7 @@ module.exports.logIn = async function(email, password, callback) {
           break;
 
         default:
-          errors = [body.error];
+          errors = ["unknown error " + body.error];
       }
       break;
     case 401:
