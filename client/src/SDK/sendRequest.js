@@ -1,7 +1,5 @@
 const rootPath = "http://localhost:3000";
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-let accessToken = userInfo.accessToken;
 async function sendRequest(
   method,
   uri,
@@ -11,10 +9,17 @@ async function sendRequest(
   let bodyToSend = "";
   const headers = new Headers();
 
-  // Add the access token if signed in.
-  if (accessToken != null) {
+  // let accessToken = null;
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo && userInfo.accessToken !== null) {
+    let accessToken = userInfo.accessToken;
     headers.append("Authorization", "Bearer " + accessToken);
+    console.log("giving access");
   }
+  // // Add the access token if signed in.
+  // if (accessToken != null) {
+  //   headers.append("Authorization", "Bearer " + accessToken);
+  // }
 
   // Add the body if available.
   if (body != null) {

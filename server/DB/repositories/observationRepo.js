@@ -12,12 +12,11 @@ db.run(`
         entryTime INTEGER,
         effectId INTEGER,
         effectName TEXT,
-        effectIntensity INTEGER, 
-        FOREIGN KEY(surveyId) REFERENCES surveys(id)
-        FOREIGN KEY(userId) REFERENCES accounts(id)
+        effectIntensity INTEGER,
+        FOREIGN KEY(surveyId) REFERENCES surveys(id) ON DELETE CASCADE
         FOREIGN KEY(compoundId) REFERENCES compounds(id)
-		FOREIGN KEY(effectId) REFERENCES effects(id)
-
+        FOREIGN KEY(effectId) REFERENCES effects(id)
+        FOREIGN KEY(userId) REFERENCES accounts(id) ON DELETE SET NULL 
 	)
 `);
 

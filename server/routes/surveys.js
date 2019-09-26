@@ -17,7 +17,7 @@ router.get("/:id", checkAauth, (req, res) => {
 });
 
 //get surveys by userid
-router.get("/", (req, res) => {
+router.get("/", checkAauth, (req, res) => {
   if (req.query.userId) {
     const userId = req.query.userId;
     db.getSurveyByUserId(userId, function(errors, surveys) {
@@ -86,6 +86,22 @@ router.put("/:id", checkAauth, (req, res) => {
   db.updateSurveyById(surveyId, function(errors, didExist) {
     if (errors.length == 0) {
       if (didExist) {
+        res.status(204).end();
+      } else {
+        res.status(404).end();
+      }
+    } else {
+      res.status(500).end();
+    }
+  });
+});
+
+//delete obs by Id
+router.delete("/:id", checkAauth, (req, res) => {
+  const id = req.params.id;
+  db.deleteSurveyById(id, function(errors, surveyExisted) {
+    if (errors.length == 0) {
+      if (surveyExisted) {
         res.status(204).end();
       } else {
         res.status(404).end();

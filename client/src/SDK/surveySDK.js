@@ -88,6 +88,10 @@ module.exports.getSurveyByUserId = async function(userId, callback) {
       errors = ["userNotFound"];
       break;
 
+    case 401:
+      errors = ["Authorization error"];
+      break;
+
     case 500:
       errors = ["backendError"];
       break;
@@ -124,6 +128,10 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
       errors = ["notFound"];
       break;
 
+    case 401:
+      errors = ["Authorization error"];
+      break;
+
     case 500:
       errors = ["backendError"];
       break;
@@ -158,6 +166,10 @@ module.exports.getSurveyByStatus = async function(status, callback) {
 
     case 404:
       errors = ["notFound"];
+      break;
+
+    case 401:
+      errors = ["Authorization error"];
       break;
 
     case 500:
@@ -235,6 +247,42 @@ module.exports.updateSurveyById = async function(id, callback) {
 
     default:
       errors = [response];
+  }
+
+  callback(errors);
+};
+
+module.exports.deleteSurveyById = async function(id, callback) {
+  let response;
+
+  try {
+    response = await sendRequest.sendRequest("DELETE", "/surveys/" + id);
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+
+  switch (response.status) {
+    case 204:
+      break;
+
+    case 401:
+      errors = await response.json();
+      break;
+
+    case 404:
+      errors = ["notFound"];
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = ["unknown response code"];
+      break;
   }
 
   callback(errors);

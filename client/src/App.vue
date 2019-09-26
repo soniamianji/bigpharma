@@ -1,14 +1,23 @@
 <template>
   <div>
     <v-app-bar app>
-      <v-btn text to="/">Home</v-btn>
-      <v-btn text to="/compounds">Compounds</v-btn>
-
-      <v-btn text to="/login" v-if="isUserSignedIn == false">Login</v-btn>
-      <v-btn text to="/signup" v-if="isUserSignedIn == false">Register</v-btn>
+      <v-btn text rounded color="teal">
+        <router-link to="/" class="customColor">Home</router-link>
+      </v-btn>
+      <v-btn text rounded v-if="isUserSignedIn == false">
+        <router-link to="/login" class="customColor">Login</router-link>
+      </v-btn>
+      <v-btn text rounded v-if="isUserSignedIn == false">
+        <router-link to="/signup" class="customColor">Register</router-link>
+      </v-btn>
+      <v-btn text rounded>
+        <router-link to="/compounds" class="customColor">Compounds</router-link>
+      </v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-if="isUserSignedIn === true" text>Hello {{account.username}}</v-btn>
-      <v-btn v-if="isUserSignedIn === true" text @click="logOut">Log out</v-btn>
+      <v-btn v-if="isUserSignedIn === true" text rounded color="primary">
+        <router-link :to="'/profile/' + account.id" class="customColor">Hey {{account.username}}</router-link>
+      </v-btn>
+      <v-btn v-if="isUserSignedIn === true" text rounded color="primary" @click="logOut">Log out</v-btn>
     </v-app-bar>
     <router-view
       @isSignedIn="setAuthenticated"
@@ -35,11 +44,13 @@ export default {
     };
   },
   created() {
-    if (client.userInfo.username !== "") {
-      this.isUserSignedIn = true;
-      this.account.username = client.userInfo.username;
-      this.account.id = client.userInfo.id;
-      this.account.email = client.userInfo.email;
+    if (client.userInfo) {
+      if (client.userInfo.username !== "") {
+        this.isUserSignedIn = true;
+        this.account.username = client.userInfo.username;
+        this.account.id = client.userInfo.id;
+        this.account.email = client.userInfo.email;
+      }
     }
   },
   methods: {
@@ -62,3 +73,9 @@ export default {
   }
 };
 </script>
+<style >
+.customColor {
+  text-decoration: none;
+  color: black;
+}
+</style>
