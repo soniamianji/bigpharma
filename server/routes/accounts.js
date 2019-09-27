@@ -119,7 +119,7 @@ router.post("/login-session", (req, res) => {
             access_token: access_token
           });
         } else {
-          res.status(401).json({ message: "Auth failed. token issue" });
+          res.status(401).json({ error: "invalid_grant" });
         }
       });
     } else {
