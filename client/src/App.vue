@@ -2,17 +2,20 @@
   <v-app>
     <v-content>
       <v-app-bar app>
-        <v-toolbar-title>Big Pharma</v-toolbar-title>
-        <v-btn text>
-          <router-link to="/" class="customColor">Home</router-link>
-        </v-btn>
+        <v-toolbar-title class="mr-8">
+          <v-icon class="mr-2">mdi-pill</v-icon>bigpharma
+        </v-toolbar-title>
 
-        <v-btn text>
-          <router-link to="/compounds" class="customColor">Compounds</router-link>
-        </v-btn>
+        <v-toolbar-items class>
+          <v-divider vertical></v-divider>
+          <v-btn to="/" text>Home</v-btn>
+          <v-divider vertical></v-divider>
+          <v-btn to="/compounds" text>Compounds</v-btn>
+          <v-divider vertical></v-divider>
+        </v-toolbar-items>
 
         <v-spacer></v-spacer>
-        <v-toolbar-title v-if="isUserSignedIn == true">Hi, {{account.username}}</v-toolbar-title>
+        <v-toolbar-title v-if="isUserSignedIn == true">{{account.username}}</v-toolbar-title>
 
         <v-menu offset-y>
           <template v-slot:activator="{ on }">

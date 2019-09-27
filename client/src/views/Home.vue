@@ -7,7 +7,7 @@
       <div class="customNegMarg">
         <v-layout row wrap>
           <v-flex xs12 md4>
-            <div class="mr-3 ml-3">
+            <div class="mr-3 ml-3 mt-3">
               <v-card class="mx-auto text-center" height="280">
                 <v-icon x-large class="mt-12 mb-8" color="blue lighten-1">mdi-rhombus-split</v-icon>
                 <div class="headline font-weight-light">COLLECT</div>
@@ -18,7 +18,7 @@
             </div>
           </v-flex>
           <v-flex xs12 md4>
-            <div class="mr-3 ml-3">
+            <div class="mr-3 ml-3 mt-3">
               <v-card class="mx-auto text-center p-12" height="280">
                 <v-icon x-large class="mt-12 mb-8" color="purple lighten-2">mdi-hexagon-multiple</v-icon>
                 <div class="headline font-weight-light">CURATE</div>
@@ -29,7 +29,7 @@
             </div>
           </v-flex>
           <v-flex xs12 md4>
-            <div class="mr-3 ml-3">
+            <div class="mr-3 ml-3 mt-3">
               <v-card class="mx-auto text-center" height="280">
                 <v-icon x-large class="mt-12 mb-8" color="green lighten-2">mdi-chart-bell-curve</v-icon>
                 <div class="headline font-weight-light">ANALYZE</div>
