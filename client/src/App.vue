@@ -1,31 +1,64 @@
 <template>
-  <div>
+  <v-app>
     <v-app-bar app>
-      <v-btn text rounded color="teal">
+      <v-toolbar-title>Big Pharma</v-toolbar-title>
+      <v-btn text>
         <router-link to="/" class="customColor">Home</router-link>
       </v-btn>
-      <v-btn text rounded v-if="isUserSignedIn == false">
-        <router-link to="/login" class="customColor">Login</router-link>
-      </v-btn>
-      <v-btn text rounded v-if="isUserSignedIn == false">
-        <router-link to="/signup" class="customColor">Register</router-link>
-      </v-btn>
-      <v-btn text rounded>
+
+      <v-btn text>
         <router-link to="/compounds" class="customColor">Compounds</router-link>
       </v-btn>
+
       <v-spacer></v-spacer>
-      <v-btn v-if="isUserSignedIn === true" text rounded color="primary">
-        <router-link :to="'/profile/' + account.id" class="customColor">Hey {{account.username}}</router-link>
-      </v-btn>
-      <v-btn v-if="isUserSignedIn === true" text rounded color="primary" @click="logOut">Log out</v-btn>
+      <v-toolbar-title v-if="isUserSignedIn == true">Hi, {{account.username}}</v-toolbar-title>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-if="isUserSignedIn == true">
+            <v-list-item-title>
+              <v-btn text>
+                <router-link :to="'/profile/' + account.id" class="customColor">Profile</router-link>
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="isUserSignedIn == true">
+            <v-list-item-title>
+              <v-btn text rounded color="primary" @click="logOut">Log out</v-btn>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="isUserSignedIn == false">
+            <v-list-item-title>
+              <v-btn text>
+                <router-link to="/login" class="customColor">Login</router-link>
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="isUserSignedIn == false">
+            <v-list-item-title>
+              <v-btn text>
+                <router-link to="/signup" class="customColor">Register</router-link>
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
-    <router-view
-      @isSignedIn="setAuthenticated"
-      :isUserSignedIn="isUserSignedIn"
-      :account="account"
-      @userUpdate="newName"
-    />
-  </div>
+    <v-content>
+      <router-view
+        @isSignedIn="setAuthenticated"
+        :isUserSignedIn="isUserSignedIn"
+        :account="account"
+        @userUpdate="newName"
+      />
+    </v-content>
+  </v-app>
 </template>
 
 
@@ -77,5 +110,9 @@ export default {
 .customColor {
   text-decoration: none;
   color: black;
+}
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>
