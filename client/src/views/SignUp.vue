@@ -31,7 +31,7 @@
               :rules="[v => !!v || 'Password is required']"
               required
             />
-
+            <p class="red--text pl-8">{{errors[0]}}</p>
             <v-card-actions>
               <v-btn type="submit" color="success">Register</v-btn>
               <v-spacer></v-spacer>

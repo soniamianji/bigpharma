@@ -6,7 +6,7 @@
           <div class="pa-12">
             <div class="mx-auto text-center" width="800">
               <div class="headline">Welcome {{account.username}}</div>
-              <div class="overline font-weight-ligh mt-0">
+              <div class="font-weight-light mt-0">
                 You are evaluating
                 <span class="font-weight-bold">{{compoundName}}</span> for
                 <span class="font-weight-bold">{{indication}}</span>

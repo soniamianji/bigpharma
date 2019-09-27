@@ -2,15 +2,22 @@
   <v-content>
     <!-- Sizes your content based upon application components -->
 
-    <v-parallax
-      dark
-      src="https://img.thedailybeast.com/image/upload/c_crop,d_placeholder_euli9k,h_1687,w_3000,x_0,y_0/dpr_1.5/c_limit,w_908/fl_lossy,q_auto/v1556161625/190425-clift-congress-big-pharma-hero_gdaeyp"
-    >
-      <v-row align="center" justify="center">
-        <h1 class="display-2 font-weight-thin mb-4">BIGPHARMA</h1>
-        <br />
-        <h4 class="subheading">Clinical trials Informatics</h4>
-      </v-row>
+    <v-parallax dark src="../assets/homebg.png">
+      <v-container fluid>
+        <v-layout row wrap mr-12 ml-0 mt-n12>
+          <v-flex xs12 md4 ml-12>
+            <div class="display-3 font-weight-thin mb-5">Bigpharma</div>
+            <div class="headline font-weight-thin mb-5">
+              <span class="font-weight-bold">Collect</span>,
+              <span class="font-weight-bold">curate</span> &
+              <span class="font-weight-bold">analyze</span> the results of your trial data.
+            </div>
+            <div class="mt-10">
+              <v-btn outlined width color="grey lighten-1">Signup</v-btn>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-parallax>
     <!-- Provides the application the proper gutter -->
   </v-content>
