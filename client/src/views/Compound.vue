@@ -8,7 +8,7 @@
           <v-banner class="headline font-weight-light" dark single-line width="100%">
             {{compound.compoundName}}
             <span class="font-weight-thin">for</span>
-            indicationX
+            {{compound.indicationName}}
             <template v-slot:actions>
               <div v-if="isUserSignedIn === true">
                 <v-btn text outlined @click="contribute()">Participate</v-btn>

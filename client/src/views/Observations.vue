@@ -1,36 +1,35 @@
 <template>
-  <v-app>
-    <v-content>
-      <v-layout row class="mx-auto">
-        <v-flex xs12>
-          <div class="pa-12">
-            <div class="mx-auto text-center" width="800">
-              <div class="headline">Welcome {{account.username}}</div>
-              <div class="font-weight-light mt-0">
-                You are evaluating
-                <span class="font-weight-bold">{{compoundName}}</span> for
-                <span class="font-weight-bold">{{indication}}</span>
-              </div>
-              <div
-                class="caption mt-4"
-              >Begin by setting the intensity of the {{indication}} you are experiencing and press the "add observation"-button. If you at any time experience an increase or decrease of {{indication}} choose {{indication}} from the list of effects and adjust the intensity slider accordingly before you press the "add"-button again. If you experince any other effect, choose them from the list, adjust intensity and press the "add"-button.</div>
+  <div>
+    <v-layout row class="mx-auto">
+      <v-flex xs12>
+        <div class="pa-12">
+          <div class="mx-auto text-center" width="800">
+            <div class="headline">Welcome {{account.username}}</div>
+            <div class="font-weight-light mt-0">
+              You are evaluating
+              <span class="font-weight-bold">{{compoundName}}</span> for
+              <span class="font-weight-bold">{{indication}}</span>
             </div>
+            <div
+              class="caption mt-4"
+            >Begin by setting the intensity of the {{indication}} you are experiencing and press the "add observation"-button. If you at any time experience an increase or decrease of {{indication}} choose {{indication}} from the list of effects and adjust the intensity slider accordingly before you press the "add"-button again. If you experince any other effect, choose them from the list, adjust intensity and press the "add"-button.</div>
           </div>
-        </v-flex>
-      </v-layout>
-      <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
-      <ObservationForm :account="account" @obsCretaed="newObscreated"></ObservationForm>
-      <ShowObs
-        :account="account"
-        :obsCreated="obsCreated"
-        :key="componentKey"
-        @obsDeleted="obsDeleted"
-        @obsUpdated="obsUpdated"
-        @finalise="finaliseSurvey"
-      ></ShowObs>
-      <v-divider></v-divider>
-    </v-content>
-  </v-app>
+        </div>
+      </v-flex>
+    </v-layout>
+    <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
+    <ObservationForm :account="account" @obsCretaed="newObscreated"></ObservationForm>
+    <ShowObs
+      class="customHeight"
+      :account="account"
+      :obsCreated="obsCreated"
+      :key="componentKey"
+      @obsDeleted="obsDeleted"
+      @obsUpdated="obsUpdated"
+      @finalise="finaliseSurvey"
+    ></ShowObs>
+    <v-divider></v-divider>
+  </div>
 </template>
 
 

@@ -1,10 +1,7 @@
 <template>
-  <v-app>
+  <div>
     <v-text-field v-if="isLoading" color="success" loading disabled></v-text-field>
-
-    <div v-else class="grey darken-3">
-      <!--START of INPUTS -->
-
+    <div v-else-if="noObservationsEntered == false" class="grey darken-3 pt-5">
       <div v-for="(obs) in observationsArr" :key="obs.id">
         <EditObs
           v-if="obs.isEditClicked ==true"
@@ -49,18 +46,19 @@
           </v-card>
         </v-card>
       </div>
-      <v-card flat max-width="175" class="mx-auto mt-5 mb-10 grey darken-3">
-        <v-btn
-          outlined
-          width="100%"
-          color="grey lighten-1"
-          @click="finalizeSurvey"
-          :disabled="noObservationsEntered"
-        >Finalize Survey</v-btn>
-        <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
-      </v-card>
+      <div v-if="noObservationsEntered == false">
+        <v-card flat max-width="175" class="mx-auto mt-5 pt-2 pb-12 grey darken-3">
+          <v-btn
+            outlined
+            width="100%"
+            color="grey lighten-1"
+            @click="finalizeSurvey"
+          >Finalize Survey</v-btn>
+          <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
+        </v-card>
+      </div>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
