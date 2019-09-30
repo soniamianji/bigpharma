@@ -8,11 +8,12 @@
 	},
 	"dependencies": {
 		"chart.js": "^2.8.0",
-		"lodash": "^4.17.15",
-		"simple-statistics": "^7.0.5",
 		"jsonwebtoken": "^8.5.1",
 		"jwt-decode": "^2.2.0",
+		"lodash": "^4.17.15",
+		"simple-statistics": "^7.0.5",
 		"vue": "^2.6.10",
+		"vue-gapi": "0.0.10",
 		"vue-router": "^3.0.3",
 		"vuetify": "^2.0.0"
 	},

@@ -11,7 +11,7 @@ router.get("/", checkAauth, (req, res) => {
   if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
     db.getObservationsByCompoundId(compoundId, function(errors, observations) {
-      if (errors.length == 0) {
+      if (observations) {
         res.status(200).json(observations);
       } else if (errors.includes("compoundId Not Found")) {
       } else {

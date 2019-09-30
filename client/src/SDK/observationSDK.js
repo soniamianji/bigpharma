@@ -42,7 +42,7 @@ module.exports.getObservationsByCompoundId = async function(
   try {
     response = await sendRequest.sendRequest(
       "GET",
-      "/observations?compoundId" + compoundId
+      "/observations?compoundId=" + compoundId
     );
   } catch (errors) {
     callback(errors);

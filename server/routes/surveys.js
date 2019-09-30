@@ -96,7 +96,7 @@ router.put("/:id", checkAauth, (req, res) => {
   });
 });
 
-//delete obs by Id
+//delete survey by Id
 router.delete("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   db.deleteSurveyById(id, function(errors, surveyExisted) {

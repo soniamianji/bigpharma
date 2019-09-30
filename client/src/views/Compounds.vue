@@ -7,69 +7,107 @@
             <div class="title">Lorem Ipsum</div>
             <div>Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Duis vel nibh at velit scelerisque suscipit. Praesent blandit laoreet nibh. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Etiam sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante odio sit amet eros.</div>
           </v-alert>
-          <v-card v-if="errors.length !== 0">
-            <v-card-text>{{errors[0]}}</v-card-text>
-          </v-card>
-          <v-card v-else max-width="600" class="mx-auto">
-            <v-toolbar dark>
-              <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-              <v-toolbar-title>Compounds</v-toolbar-title>
-
+          <v-card>
+            <v-card-title>
+              Compounds
               <div class="flex-grow-1"></div>
-
-              <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-view-module</v-icon>
-              </v-btn>
-            </v-toolbar>
-
-            <v-list two-line subheader>
-              <v-list-item v-for="item in compounds" :key="item.id">
-                <v-list-item-content>
-                  <router-link :to="'/compounds/' + item.id" class="customColor">
-                    <v-list-item-title v-text="item.compoundName" class="customColor"></v-list-item-title>
-                  </router-link>
-                  <v-list-item-subtitle v-text="item.indicationName"></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-divider inset></v-divider>
-            </v-list>
+              <v-text-field
+                v-model="search"
+                append-icon="fa-search"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table v-model="selected" :headers="headers" :items="items" :search="search">
+              <template v-slot:body="{ items }">
+                <tbody>
+                  <tr
+                    v-for="item in items"
+                    :key="item.name"
+                    @click="selectItem(item)"
+                    v-bind:class="{'selectedRow': (item === selectedItem)}"
+                  >
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.indication }}</td>
+                    <td>{{ item.numberOfParticipants }}</td>
+                    <td>{{ item.numberOfObservations }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-data-table>
           </v-card>
         </div>
       </v-flex>
     </v-layout>
   </v-app>
 </template>
+             
 
 
 <script>
 import HeadPic from "../components/HeadPic";
 const compound = require("../SDK/compoundSDK");
-
+const obsClient = require("../SDK/observationSDK");
 export default {
   props: ["account", "isUserSignedIn"],
   components: { HeadPic },
   data() {
     return {
-      compounds: [],
-      errors: ""
+      selected: [],
+      errors: "",
+      search: "",
+      headers: [
+        {
+          text: "Dessert (100g serving)",
+          align: "center",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Indication", value: "indication" },
+        { text: "Number Of Participants", value: "numberOfParticipants" },
+        { text: "Number Of Observations", value: "numberOfObservations" }
+      ],
+      items: []
     };
   },
   created() {
     compound.getAllCompounds((errors, compounds) => {
       if (errors.length == 0) {
-        this.compounds = compounds;
         console.log(compounds);
+        for (var i = 0; i < compounds.length; i++) {
+          const compoundObj = {
+            name: compounds[i].compoundName,
+            indication: compounds[i].indicationName,
+            numberOfParticipants: 0,
+            numberOfObservations: "",
+            id: compounds[i].id
+          };
+          obsClient.getObservationsByCompoundId(compoundObj.id, (err, obs) => {
+            if (err.length == 0) {
+              if (obs !== null) {
+              } else {
+                compoundObj.numberOfObservations = 0;
+              }
+            } else {
+              console.log(err);
+            }
+          });
+
+          this.items.push(compoundObj);
+        }
+        console.log(this.items);
       } else {
         this.errors = errors;
         console.log(errors);
       }
     });
+  },
+  methods: {
+    selectItem(item) {
+      console.log("Item selected: " + item.id);
+      this.$router.push({ path: "/compounds/" + item.id });
+    }
   }
 };
 </script>
