@@ -30,6 +30,8 @@
               <v-btn type="submit" :disabled="!valid" color="success">Login</v-btn>
               <v-spacer></v-spacer>
               <v-btn color="info" @click="goToSignUp" text>Register</v-btn>
+              <v-divider class="mx-4" horizontal></v-divider>
+              <v-btn @click="googleLogin">Google sign in</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -40,9 +42,11 @@
 
 <script>
 const client = require("../SDK/accountsSDK");
+
 export default {
   data() {
     return {
+      name: "login-shortcut",
       valid: true,
       emailRules: [
         v => !!v || "E-mail is required",
@@ -69,6 +73,9 @@ export default {
     },
     goToSignUp() {
       this.$router.push({ path: "/signup" });
+    },
+    googleLogin() {
+      this.$login();
     }
   }
 };

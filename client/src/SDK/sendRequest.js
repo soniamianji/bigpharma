@@ -1,4 +1,5 @@
 const rootPath = "http://localhost:3000";
+// const yaml = require("js-yaml");
 
 async function sendRequest(
   method,
@@ -38,8 +39,14 @@ async function sendRequest(
         bodyToSend = data.toString();
         break;
 
+      // case "application/x-yaml":
+      //   const data = yaml.safeLoad(
+      //     bodyToSend.readFileSync("/home/ixti/example.yml", "utf8")
+      //   );
+      //   break;
+
       default:
-        alert("ERROR, unknown Content-Type to send body with.");
+        console.log("ERROR, unknown Content-Type to send body with.");
     }
   }
 
@@ -58,12 +65,5 @@ async function sendRequest(
     throw ["networkError"];
   }
 }
-
-// function displayError(response) {
-//   alert(`
-// 		SDK has not been programmed to handle status code ${response.status}
-// 		for the last request sent.
-// 	`);
-// }
 
 module.exports.sendRequest = sendRequest;
