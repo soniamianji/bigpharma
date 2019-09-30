@@ -15,16 +15,37 @@ var computation = {
 			{
 				// One line on the graph (set of effects)
 				label: 'Headache',
-				data: [ 9, 5, 4, 3, 0 ],
-				backgroundColor: [ 'rgba(54,73,93,.25)' ]
+				data: [ 9, 5, 4, 3, 0 ]
 			},
 			{
 				// Another line graph (set of effects)
 				label: 'Tooth ache',
-				data: [ 6, 8, 3, 2, 0 ],
-				backgroundColor: [
-					'rgba(71, 183,132,.25)' // Green
-				]
+				data: [ 6, 9, 3, 2, 0 ]
+			},
+			{
+				// Another line graph (set of effects)
+				label: 'X9292',
+				data: [ 2, 3, 7, 1, 0 ]
+			},
+			{
+				// Another line graph (set of effects)
+				label: 'Viwewew',
+				data: [ 0, 1, 2, 9, 0 ]
+			},
+			{
+				// One line on the graph (set of effects)
+				label: 'Hwewe',
+				data: [ 9, 5, 4, 3, 0 ]
+			},
+			{
+				// Another line graph (set of effects)
+				label: 'Twewewe',
+				data: [ 6, 9, 3, 2, 0 ]
+			},
+			{
+				// Another line graph (set of effects)
+				label: 'Pweweewe',
+				data: [ 2, 4, 8, 2, 1 ]
 			}
 		]
 	},
@@ -32,7 +53,47 @@ var computation = {
 		responsive: true,
 		legend: {
 			display: true,
-			position: 'right'
+			position: 'right',
+			labels: {
+				fontColor: 'white'
+			}
+		},
+		scales: {
+			xAxes: [
+				{
+					display: true,
+					gridLines: {
+						display: true,
+						color: '#7c7c7c'
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Time',
+						color: '#7c7c7c'
+					}
+				}
+			],
+			yAxes: [
+				{
+					display: true,
+					gridLines: {
+						display: true,
+						color: '#7c7c7c',
+						fontColor: 'white'
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Intensity',
+						color: '#7c7c7c'
+					}
+				}
+			]
+		},
+
+		plugins: {
+			colorschemes: {
+				scheme: 'office.Aspect6'
+			}
 		}
 	}
 };

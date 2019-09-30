@@ -1,32 +1,37 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <HeadPic></HeadPic>
     <!-- Provides the application the proper gutter -->
-    <v-container fluid>
-      <v-card class="customNegMarg">
+    <v-container fluid dark class="grey darken-3">
+      <v-sheet flat class="customNegMarg mt-12 grey darken-3">
         <v-layout row class="mx-auto">
+          <v-banner class="headline font-weight-light" dark single-line width="100%">
+            {{compound.compoundName}}
+            <span class="font-weight-thin">for</span>
+            indicationX
+            <template v-slot:actions>
+              <div v-if="isUserSignedIn === true">
+                <v-btn text outlined @click="contribute()">Participate</v-btn>
+              </div>
+              <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
+            </template>
+          </v-banner>
           <v-flex xs12>
             <div class="pa-12">
-              <v-alert class="mx-auto text-center" width="600">
-                <div class="title">{{compound.compoundName}}</div>
-              </v-alert>
-              <div v-if="isUserSignedIn === true">
-                <v-btn text rounded color="teal" @click="contribute()">Contribute</v-btn>
-              </div>
               <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
               <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
               <canvas id="compoundChart"></canvas>
             </div>
           </v-flex>
         </v-layout>
-      </v-card>
+      </v-sheet>
     </v-container>
   </v-app>
 </template>
 
 
 <script>
+import "chartjs-plugin-colorschemes";
 import HeadPic from "../components/HeadPic";
 import Chart from "chart.js";
 import chartData from "../chart-data.js";
