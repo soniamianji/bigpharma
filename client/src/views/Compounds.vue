@@ -22,12 +22,7 @@
             <v-data-table v-model="selected" :headers="headers" :items="items" :search="search">
               <template v-slot:body="{ items }">
                 <tbody>
-                  <tr
-                    v-for="item in items"
-                    :key="item.name"
-                    @click="selectItem(item)"
-                    v-bind:class="{'selectedRow': (item === selectedItem)}"
-                  >
+                  <tr v-for="item in items" :key="item.id" @click="selectItem(item)">
                     <td>{{ item.name }}</td>
                     <td>{{ item.indication }}</td>
                     <td>{{ item.numberOfParticipants }}</td>
