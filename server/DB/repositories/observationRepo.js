@@ -30,6 +30,7 @@ exports.getObservationsBySurveyId = function(surveyId, callback) {
     if (error) {
       //check foreignkey violation
       if (true) {
+        console.log(error);
         callback(["compoundId Not Found"]);
       } else {
         callback(["databaseError"]);

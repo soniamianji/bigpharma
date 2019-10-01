@@ -40,7 +40,6 @@ const surveyClient = require("../SDK/surveySDK");
 export default {
   components: { HeadPic },
   props: ["account", "isUserSignedIn"],
-
   data() {
     return {
       id: this.$route.params.id,
@@ -75,11 +74,12 @@ export default {
     contribute: function() {
       const userId = this.account.id;
       const surveyObj = {
-        userId: userId.toString(),
+        userId: userId,
         compoundId: this.id,
         createdAt: Date.parse(new Date())
       };
-      console.log(surveyObj.createdAt);
+      console.log(surveyObj.userId);
+      console.log(surveyObj.compoundId);
       surveyClient.createSurvey(surveyObj, (error, id) => {
         if (error.length == 0) {
           const surveyId = id;

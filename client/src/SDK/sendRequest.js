@@ -1,5 +1,5 @@
 const rootPath = "http://localhost:3000";
-// const yaml = require("js-yaml");
+const yaml = require("js-yaml");
 
 async function sendRequest(
   method,
@@ -17,10 +17,6 @@ async function sendRequest(
     headers.append("Authorization", "Bearer " + accessToken);
     console.log("giving access");
   }
-  // // Add the access token if signed in.
-  // if (accessToken != null) {
-  //   headers.append("Authorization", "Bearer " + accessToken);
-  // }
 
   // Add the body if available.
   if (body != null) {
@@ -39,7 +35,8 @@ async function sendRequest(
         bodyToSend = data.toString();
         break;
 
-      // case "application/x-yaml":
+      case "application/x-yaml":
+      //stringifythe yaml data
       //   const data = yaml.safeLoad(
       //     bodyToSend.readFileSync("/home/ixti/example.yml", "utf8")
       //   );

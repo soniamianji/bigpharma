@@ -20,6 +20,7 @@
 <script>
 const client = require("../../SDK/accountsSDK");
 export default {
+  props: ["isUserSignedIn"],
   data() {
     return {
       accountId: this.$route.params.id,
@@ -36,6 +37,7 @@ export default {
         if (err.length == 0) {
           console.log("success");
           client.signOut(() => {
+            this.$emit("accountDeleted", true);
             this.$router.push({ path: "/signup" });
           });
         } else {

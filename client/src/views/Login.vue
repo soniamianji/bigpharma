@@ -33,7 +33,7 @@
             </v-card-actions>
           </v-form>
 
-          <v-btn v-google-signin-button="clientId" class="red--text mt-4" block>Continue with Google</v-btn>
+          <v-btn @click="gotoGoogleSignIn" class="red--text mt-4" block>Continue with Google</v-btn>
         </v-card-text>
       </v-card>
     </v-content>
@@ -42,16 +42,10 @@
 
 <script>
 const client = require("../SDK/accountsSDK");
-const jwtDecode = require("jwt-decode");
-import GoogleSignInButton from "vue-google-signin-button-directive";
+const clientGoogle = require("../SDK/googleLoginSDK");
 export default {
-  directives: {
-    GoogleSignInButton
-  },
   data() {
     return {
-      clientId:
-        "915574057626-gsaemb5fgstrn2fr3kf8h46r8oirmfau.apps.googleusercontent.com",
       valid: true,
       emailRules: [
         v => !!v || "E-mail is required",
@@ -79,15 +73,19 @@ export default {
     goToSignUp() {
       this.$router.push({ path: "/signup" });
     },
-    OnGoogleAuthSuccess(idToken) {
-      alert("google login successfull.");
-      console.log(idToken);
-      const payload = jwtDecode(idToken);
-      // localStorage.setItem("userInfo", JSON.stringify(account));
-      // Receive the idToken and make your magic with the backend
-    },
-    OnGoogleAuthFail(error) {
-      console.log(error);
+    gotoGoogleSignIn() {
+      this.$gAuth.getAuthCode().then(Authcode => {
+        console.log(Authcode);
+        clientGoogle.googleAuthentication(Authcode, (err, account) => {
+          if (err.length == 0) {
+            console.log("success");
+            this.$emit("isSignedIn", account);
+            this.$router.push({ path: "/" });
+          } else {
+            console.log(err);
+          }
+        });
+      });
     }
   }
 };

@@ -56,20 +56,6 @@ export default {
       errors: ""
     };
   }
-
-  // created() {
-  //   const client = require("../SDK/accountsSDK");
-
-  //   client.getAllAccounts((errors, accounts) => {
-  //     if (errors.length == 0) {
-  //       this.allAccounts = accounts;
-  //       console.log(accounts);
-  //     } else {
-  //       this.errors = errors;
-  //       console.log(errors);
-  //     }
-  //   });
-  // }
 };
 </script>
 <style >

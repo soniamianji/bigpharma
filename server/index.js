@@ -5,6 +5,9 @@ const app = express();
 
 //middleware
 app.use(bodyParser.json());
+
+//parse the yaml
+
 app.use(
   express.urlencoded({
     extended: false
@@ -12,29 +15,6 @@ app.use(
 );
 
 app.use(cors({ exposedHeaders: ["Location"] }));
-// app.use(function(request, response, next) {
-//   // Allow client-side JS from the following websites to send requests to us:
-//   // (not optimal, for better security, change * to the URI of your frontend)
-//   response.setHeader("Access-Control-Allow-Origin", "*");
-
-//   // Allow client-side JS to send requests with the following methods:
-//   response.setHeader("Access-Control-Allow-Methods", "*");
-
-//   // Allow client-side JS to send requests with the following headers:
-//   // (needed for the Authorization and Content-Type headers)
-//   response.setHeader("Access-Control-Allow-Headers", "*");
-
-//   // Allow client-side JS to read the following headers in the response:
-//   // (in addition to Cache-Control, Content-Language, Content-Type
-//   // Expires, Last-Modified, Pragma).
-//   // (needed for the Location header)
-//   response.setHeader("Access-Control-Expose-Headers", "*");
-
-//   next();
-// });
-app.get("/", function(request, response) {
-  response.send("Hello, World");
-});
 
 const accounts = require("./routes/accounts");
 app.use("/accounts", accounts);
@@ -50,6 +30,9 @@ app.use("/effects", effects);
 
 const surveys = require("./routes/surveys");
 app.use("/surveys", surveys);
+
+const google = require("./routes/google");
+app.use("/google", google);
 
 const port = 3000;
 

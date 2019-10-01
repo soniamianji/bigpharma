@@ -32,7 +32,7 @@
         </v-list>
       </v-card-text>
     </v-card>
-    <DeleteAccount></DeleteAccount>
+    <DeleteAccount @accountDeleted="accountDeleted"></DeleteAccount>
     <UserSurveys @surveyDeleted="surveysDeleted" :key="componnetKey"></UserSurveys>
   </v-app>
 </template>
@@ -43,7 +43,7 @@ import DeleteAccount from "../components/profile-component/DeleteAccount";
 import UserSurveys from "../components/profile-component/UserSurveys";
 const client = require("../SDK/accountsSDK");
 export default {
-  props: ["account"],
+  props: ["account", "isUserSignedIn"],
   components: { UpdateUsername, DeleteAccount, UserSurveys },
   data() {
     return {
@@ -60,6 +60,9 @@ export default {
     },
     surveysDeleted(value) {
       this.componnetKey += 1;
+    },
+    accountDeleted(value) {
+      this.$emit("accountDeleted", value);
     }
   }
 };

@@ -59,6 +59,7 @@
         :isUserSignedIn="isUserSignedIn"
         :account="account"
         @userUpdate="newName"
+        @accountDeleted="accountDeleted"
       />
     </v-content>
   </v-app>
@@ -68,6 +69,7 @@
 
 <script>
 const client = require("./SDK/accountsSDK");
+const clientGoogle = require("./SDK/googleLoginSDK");
 export default {
   data() {
     return {
@@ -86,6 +88,7 @@ export default {
         this.account.username = client.userInfo.username;
         this.account.id = client.userInfo.id;
         this.account.email = client.userInfo.email;
+        console.log(this.account);
       }
     }
   },
@@ -98,6 +101,13 @@ export default {
         this.isUserSignedIn = true;
         this.account.username = status.username;
         this.account.id = status.id;
+      } else {
+        this.isUserSignedIn = false;
+      }
+    },
+    accountDeleted(value) {
+      if (value == true) {
+        this.isUserSignedIn = false;
       }
     },
     logOut() {

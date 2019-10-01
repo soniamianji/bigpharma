@@ -10,7 +10,8 @@ db.run(`
     id INTEGER PRIMARY KEY,
     email TEXT,
 		username TEXT,
-		password TEXT,
+    password TEXT,
+    googleId INTEGER DEFAULT NULL,
     CONSTRAINT uniqueEmail UNIQUE(email)
 	)
 `);
@@ -18,11 +19,16 @@ db.run(`
 exports.createAccount = function(account, callback) {
   const query = `
           INSERT INTO accounts
-              (email, username, password)
+              (email, username, password, googleId)
           VALUES
-              (?, ?, ?)
+              (?, ?, ?, ?)
       `;
-  const values = [account.email, account.username, account.password];
+  const values = [
+    account.email,
+    account.username,
+    account.password,
+    account.googleId
+  ];
 
   db.run(query, values, function(error) {
     if (error) {
@@ -118,6 +124,22 @@ exports.deleteAccountsById = function(id, callback) {
     } else {
       const accountExisted = this.changes == 1;
       callback([], accountExisted);
+    }
+  });
+};
+
+exports.getAccountByGoogleId = function(googleId, callback) {
+  const query = `
+          SELECT * FROM accounts WHERE googleId = ?
+      `;
+  const values = [googleId];
+
+  db.get(query, values, function(error, account) {
+    if (error) {
+      console.log(error);
+      callback(["databaseError"]);
+    } else {
+      callback([], account);
     }
   });
 };
