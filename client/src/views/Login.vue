@@ -30,10 +30,10 @@
               <v-btn type="submit" :disabled="!valid" color="success">Login</v-btn>
               <v-spacer></v-spacer>
               <v-btn color="info" @click="goToSignUp" text>Register</v-btn>
-              <v-divider class="mx-4" horizontal></v-divider>
-              <v-btn @click="googleLogin">Google sign in</v-btn>
             </v-card-actions>
           </v-form>
+
+          <v-btn v-google-signin-button="clientId" class="red--text mt-4" block>Continue with Google</v-btn>
         </v-card-text>
       </v-card>
     </v-content>
@@ -42,11 +42,16 @@
 
 <script>
 const client = require("../SDK/accountsSDK");
-
+const jwtDecode = require("jwt-decode");
+import GoogleSignInButton from "vue-google-signin-button-directive";
 export default {
+  directives: {
+    GoogleSignInButton
+  },
   data() {
     return {
-      name: "login-shortcut",
+      clientId:
+        "915574057626-gsaemb5fgstrn2fr3kf8h46r8oirmfau.apps.googleusercontent.com",
       valid: true,
       emailRules: [
         v => !!v || "E-mail is required",
@@ -74,8 +79,15 @@ export default {
     goToSignUp() {
       this.$router.push({ path: "/signup" });
     },
-    googleLogin() {
-      this.$login();
+    OnGoogleAuthSuccess(idToken) {
+      alert("google login successfull.");
+      console.log(idToken);
+      const payload = jwtDecode(idToken);
+      // localStorage.setItem("userInfo", JSON.stringify(account));
+      // Receive the idToken and make your magic with the backend
+    },
+    OnGoogleAuthFail(error) {
+      console.log(error);
     }
   }
 };
