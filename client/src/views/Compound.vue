@@ -20,6 +20,7 @@
             <div class="pa-12">
               <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
               <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
+              <LineChart></LineChart>
               <canvas id="compoundChart"></canvas>
             </div>
           </v-flex>
@@ -33,23 +34,18 @@
 <script>
 import "chartjs-plugin-colorschemes";
 import HeadPic from "../components/HeadPic";
-import Chart from "chart.js";
-import chartData from "../chart-data.js";
+import LineChart from "../components/LineChart";
 const compoundClient = require("../SDK/compoundSDK");
 const surveyClient = require("../SDK/surveySDK");
 export default {
-  components: { HeadPic },
+  components: { HeadPic, LineChart },
   props: ["account", "isUserSignedIn"],
   data() {
     return {
       id: this.$route.params.id,
       compound: "",
-      errors: "",
-      chartData: chartData
+      errors: ""
     };
-  },
-  mounted() {
-    this.createChart("compoundChart", this.chartData);
   },
   created() {
     compoundClient.getCompoundById(this.id, (errors, compound) => {
@@ -63,14 +59,6 @@ export default {
     });
   },
   methods: {
-    createChart(chartId, chartData) {
-      const ctx = document.getElementById(chartId);
-      const myChart = new Chart(ctx, {
-        type: chartData.type,
-        data: chartData.data,
-        options: chartData.options
-      });
-    },
     contribute: function() {
       const userId = this.account.id;
       const surveyObj = {
