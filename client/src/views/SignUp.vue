@@ -1,10 +1,16 @@
 <template>
   <v-app>
-    <v-content>
-      <v-card width="400" class="mx-auto mt-5">
-        <v-card-title>
-          <h1 class="display-1">Register</h1>
-        </v-card-title>
+    <v-content class="grey darken-3">
+      <v-layout row class="mx-auto">
+        <v-flex xs12>
+          <div class="pa-5">
+            <div class="mx-auto text-center" width="800">
+              <div class="display-1 white--text font-weight-thin">Register</div>
+            </div>
+          </div>
+        </v-flex>
+      </v-layout>
+      <v-card width="400" class="mx-auto mt-0">
         <v-card-text>
           <v-form @submit.prevent="signUp" ref="form" v-model="valid" lazy-validation>
             <v-text-field
@@ -33,13 +39,20 @@
             />
             <p class="red--text pl-8">{{errors[0]}}</p>
             <v-card-actions>
-              <v-btn type="submit" color="success">Register</v-btn>
+              <v-btn outlined type="submit" class="mt-n2" block>Register</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="info" @click="goToLogin()" text>Login</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
       </v-card>
+      <div class="caption text-center mt-3">
+        <v-btn
+          text
+          x-small
+          @click="goToLogin"
+          class="grey--text text--lighten-2"
+        >Have an account? Login</v-btn>
+      </div>
     </v-content>
   </v-app>
 </template>

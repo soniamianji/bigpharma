@@ -2,7 +2,7 @@
   <v-container fluid class="mt-12">
     <!--START of INPUTS -->
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-card max-width="600" class="mx-auto mt-n3 grey lighten-4">
+      <v-card max-width="600" class="mx-auto mt-n12 grey lighten-4">
         <v-menu bottom left>
           <template v-slot:activator="{ on }">
             <v-btn text small v-on="on">

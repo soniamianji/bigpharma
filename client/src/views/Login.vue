@@ -1,10 +1,16 @@
 <template>
   <v-app>
-    <v-content>
-      <v-card width="400" class="mx-auto mt-5">
-        <v-card-title>
-          <h1 class="display-1">Login</h1>
-        </v-card-title>
+    <v-content class="grey darken-3">
+      <v-layout row class="mx-auto">
+        <v-flex xs12>
+          <div class="pa-5">
+            <div class="mx-auto text-center" width="800">
+              <div class="display-1 white--text font-weight-thin">Login</div>
+            </div>
+          </div>
+        </v-flex>
+      </v-layout>
+      <v-card width="400" class="mx-auto mt-0">
         <v-card-text>
           <v-form @submit.prevent="signIn" ref="form" v-model="valid" lazy-validation>
             <v-text-field
@@ -25,17 +31,25 @@
               required
             />
             <p v-if="errors !== ''" class="red--text pl-8">{{errors[0]}}</p>
-            <v-divider class="mx-4" horizontal></v-divider>
-            <v-card-actions>
-              <v-btn type="submit" :disabled="!valid" color="success">Login</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn color="info" @click="goToSignUp" text>Register</v-btn>
-            </v-card-actions>
-          </v-form>
 
-          <v-btn @click="gotoGoogleSignIn" class="red--text mt-4" block>Continue with Google</v-btn>
+            <v-card-actions>
+              <v-btn outlined class="mt-1" type="submit" :disabled="!valid" block>Login</v-btn>
+            </v-card-actions>
+            <v-divider class="mx-4 mt-2" horizontal></v-divider>
+            <v-btn text small @click="gotoGoogleSignIn" color="amber darken-3" class="mt-2" block>
+              <v-icon left>mdi-google</v-icon>Continue with Google
+            </v-btn>
+          </v-form>
         </v-card-text>
       </v-card>
+      <div class="caption text-center mt-3">
+        <v-btn
+          text
+          x-small
+          @click="goToSignUp"
+          class="grey--text text--lighten-2"
+        >No Account? Register here</v-btn>
+      </div>
     </v-content>
   </v-app>
 </template>

@@ -29,7 +29,7 @@
               <v-select disabled :label="obs.effectName" dark></v-select>
             </v-card-text>
           </v-card>
-          <v-card class="d-flex justify-space-between grey darken-1" flat tile dark>
+          <v-card class="d-flex mt-n8 justify-space-between grey darken-1" flat tile dark>
             <v-card-text>
               <v-slider
                 disabled

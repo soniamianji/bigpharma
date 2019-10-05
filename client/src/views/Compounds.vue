@@ -1,15 +1,23 @@
 <template>
   <v-app>
-    <v-layout row class="mx-auto">
+    <v-layout row class="mx-auto mt-n8">
       <v-flex xs12>
         <div class="pa-12">
-          <v-alert class="mx-auto text-center" width="600">
-            <div class="title">Lorem Ipsum</div>
-            <div>Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Duis vel nibh at velit scelerisque suscipit. Praesent blandit laoreet nibh. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Etiam sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante odio sit amet eros.</div>
-          </v-alert>
-          <v-card>
+          <v-layout row class="mx-auto">
+            <v-flex xs12>
+              <div class="pa-12">
+                <div class="mx-auto text-center" width="800">
+                  <div class="headline">Compounds</div>
+                  <div
+                    class="font-weight-light mt-0"
+                  >Below youll find the list of compounds being investigated.</div>
+                </div>
+              </div>
+            </v-flex>
+          </v-layout>
+          <v-card dark>
             <v-card-title>
-              Compounds
+              <div class="subtitle-1 font-weight-medium">Compounds</div>
               <div class="flex-grow-1"></div>
               <v-text-field
                 v-model="search"
@@ -23,7 +31,9 @@
               <template v-slot:body="{ items }">
                 <tbody>
                   <tr v-for="item in items" :key="item.id" @click="selectItem(item)">
-                    <td>{{ item.name }}</td>
+                    <td>
+                      <v-btn small text>{{ item.name }}</v-btn>
+                    </td>
                     <td>{{ item.indication }}</td>
                     <td>{{ item.numberOfParticipants }}</td>
                     <td>{{ item.numberOfObservations }}</td>
@@ -54,7 +64,7 @@ export default {
       search: "",
       headers: [
         {
-          text: "Dessert (100g serving)",
+          text: "Name of compound",
           align: "center",
           sortable: false,
           value: "name"
