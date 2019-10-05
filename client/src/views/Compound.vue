@@ -19,7 +19,6 @@
           <v-flex xs12>
             <div class="pa-12">
               <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
-              <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
               <canvas id="compoundChart"></canvas>
             </div>
           </v-flex>
