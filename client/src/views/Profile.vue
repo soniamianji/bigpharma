@@ -1,9 +1,14 @@
 <template>
   <v-app>
-    <v-card width="600" class="mx-auto mt-5">
-      <v-card-title>
-        <h1 class="display-1">Hello {{account.username}}</h1>
-      </v-card-title>
+    <div class="pa-5 mt-10">
+      <div class="mx-auto text-center" width="800">
+        <div class="display-1 font-weight-thin">
+          Hello
+          <span class="font-weight-medium">{{account.username}}</span>
+        </div>
+      </div>
+    </div>
+    <v-card width="600" class="mx-auto mt-2">
       <v-card-text>
         <v-list shaped>
           <v-subheader>Profile</v-subheader>
@@ -32,8 +37,8 @@
         </v-list>
       </v-card-text>
     </v-card>
-    <DeleteAccount @accountDeleted="accountDeleted"></DeleteAccount>
     <UserSurveys @surveyDeleted="surveysDeleted" :key="componnetKey"></UserSurveys>
+    <DeleteAccount @accountDeleted="accountDeleted"></DeleteAccount>
   </v-app>
 </template>
 

@@ -1,17 +1,36 @@
 <template>
-  <v-card width="600" class="mx-auto mt-5">
-    <v-card-title>
-      <p>You can delete your account by clicking the button below. Note that if you do decide to delete your account all the contributions you had so far would stay permanently with Bigpharma.</p>
-    </v-card-title>
+  <v-card bg-no color="#fafafa" flat width="600" class="mx-auto mt-n4">
     <v-card-text>
-      <v-form ref="form" v-model="valid" @submit.prevent="deleteAccount" :lazy-validation="lazy">
-        <v-checkbox
-          v-model="checkbox"
-          :rules="[v => !!v || 'You must agree to continue!']"
-          label="Do you agree?"
-          required
-        ></v-checkbox>
-        <v-btn :disabled="!valid" color="red" class="mr-4 customTextColor" type="submit">Delete</v-btn>
+      <span
+        class="font-italic font-weight-light"
+      >By choosing to delete your account you are aware of and accept that any and all data pertaining to any survey provided to bigpharma is the property of bigpharma and will not be deleted.</span>
+      <v-form
+        ref="form"
+        v-model="valid"
+        @submit.prevent="deleteAccount"
+        :lazy-validation="lazy"
+        class="mt-2"
+      >
+        <v-row>
+          <v-col cols="12" sm="6" align-right>
+            <v-checkbox
+              v-model="checkbox"
+              :rules="[v => !!v || 'You must agree to continue!']"
+              label="Do you agree?"
+              required
+              class="mt-0"
+            ></v-checkbox>
+          </v-col>
+          <v-col cols="12" sm="6" class="text-right">
+            <v-btn
+              small
+              :disabled="!valid"
+              color="red"
+              class="mr-4 customTextColor"
+              type="submit"
+            >Delete Account</v-btn>
+          </v-col>
+        </v-row>
       </v-form>
     </v-card-text>
   </v-card>
