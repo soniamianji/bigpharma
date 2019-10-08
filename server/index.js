@@ -3,23 +3,23 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const yaml = require("js-yaml");
+const YAML = require("yaml");
+const fs = require("fs");
 
 //middleware
-app.use(bodyParser.json());
-
 //parse the yaml data
-// app.use(YAML.parse());
-app.use(function(req, res, next) {
-  var contype = req.headers["content-type"];
-  if (!contype || contype.indexOf("application/x-yaml") == 0) {
-    //parse it
-  }
-  if (!res.body && req.accepts("application/x-yaml")) {
-    //send the res.body in yaml format
-  }
-  next();
-});
-
+// app.use(function(req, res, next) {
+//   var contype = req.headers["content-type"];
+//   if (!contype || contype.indexOf("application/x-yaml") == 0) {
+//     req.body = YAML.parse(req.body);
+//     console.log(req.body);
+//     // if (req.accepts("application/x-yaml")) {
+//     //   //send the res.body in yaml format
+//     // }
+//   }
+//   next();
+// });
+app.use(bodyParser.json());
 app.use(
   express.urlencoded({
     extended: false

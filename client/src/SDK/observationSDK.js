@@ -54,7 +54,7 @@ module.exports.getObservationsByCompoundId = async function(
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      observations = await response.json();
       break;
 
     case 404:
@@ -201,7 +201,8 @@ module.exports.updateObservationById = async function(
     response = await sendRequest.sendRequest(
       "PUT",
       "/observations/" + id,
-      observation
+      observation,
+      "application/x-yaml"
     );
   } catch (errors) {
     callback(errors);

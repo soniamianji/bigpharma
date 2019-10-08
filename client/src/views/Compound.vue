@@ -20,7 +20,7 @@
             <div class="pa-12">
               <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
               <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
-              <LineChart></LineChart>
+              <LineChart :compoundId="id"></LineChart>
               <canvas id="compoundChart"></canvas>
             </div>
           </v-flex>
@@ -63,11 +63,9 @@ export default {
       const userId = this.account.id;
       const surveyObj = {
         userId: userId,
-        compoundId: this.id,
+        compoundId: Number(this.id),
         createdAt: Date.parse(new Date())
       };
-      console.log(surveyObj.userId);
-      console.log(surveyObj.compoundId);
       surveyClient.createSurvey(surveyObj, (error, id) => {
         if (error.length == 0) {
           const surveyId = id;

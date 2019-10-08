@@ -1,6 +1,5 @@
 const rootPath = "http://localhost:3000";
-
-const yaml = require("js-yaml");
+const YAML = require("yaml");
 
 async function sendRequest(
   method,
@@ -16,7 +15,6 @@ async function sendRequest(
   if (userInfo && userInfo.accessToken !== null) {
     let accessToken = userInfo.accessToken;
     headers.append("Authorization", "Bearer " + accessToken);
-    console.log("giving access");
   }
 
   // Add the body if available.
@@ -37,8 +35,8 @@ async function sendRequest(
         break;
 
       case "application/x-yaml":
-        // bodyToSend = yaml.load(req.body);
-        bodyToSend = yaml.stringify(body);
+        console.log("triggered yaml");
+        bodyToSend = YAML.stringify(body);
 
         break;
 

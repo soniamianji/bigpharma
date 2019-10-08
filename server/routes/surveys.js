@@ -82,11 +82,12 @@ router.post("/", checkAauth, (req, res) => {
 
   const validationErrors = [];
   //check the date
-  if (survey.createdAt < Date.now()) {
+  const nowTime = Date.parse(new Date());
+  if (survey.createdAt < nowTime) {
     validationErrors.push("invalidDate");
   }
   if (0 < validationErrors.length) {
-    response.status(400).json(validationErrors);
+    res.status(400).json(validationErrors);
     return;
   }
   db.createSurvey(survey, function(errors, id) {
