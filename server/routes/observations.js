@@ -14,6 +14,7 @@ router.get("/", checkAauth, (req, res) => {
       if (observations) {
         res.status(200).json(observations);
       } else if (errors.includes("compoundId Not Found")) {
+        res.status(404).end();
       } else {
         res.status(500).end();
       }
@@ -95,6 +96,8 @@ router.post("/", checkAauth, (req, res) => {
 router.put("/:id", checkAauth, function(request, response) {
   const id = request.params.id;
   const updatedObservation = request.body;
+  console.log(updatedObservation);
+
   //Check that the observation contains all expected properties.
   const observationTypes = {
     entryTime: Number,

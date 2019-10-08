@@ -1,5 +1,5 @@
 const rootPath = "http://localhost:3000";
-const yaml = require("js-yaml");
+const YAML = require("yaml");
 
 async function sendRequest(
   method,
@@ -15,7 +15,6 @@ async function sendRequest(
   if (userInfo && userInfo.accessToken !== null) {
     let accessToken = userInfo.accessToken;
     headers.append("Authorization", "Bearer " + accessToken);
-    console.log("giving access");
   }
 
   // Add the body if available.
@@ -36,11 +35,10 @@ async function sendRequest(
         break;
 
       case "application/x-yaml":
-      //stringifythe yaml data
-      //   const data = yaml.safeLoad(
-      //     bodyToSend.readFileSync("/home/ixti/example.yml", "utf8")
-      //   );
-      //   break;
+        console.log("triggered yaml");
+        bodyToSend = YAML.stringify(body);
+
+        break;
 
       default:
         console.log("ERROR, unknown Content-Type to send body with.");

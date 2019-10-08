@@ -14,6 +14,9 @@ const MIN_PASSWORD_LENGTH = 6;
 //this has to be saved as environmental variable
 const secretTokenKey = "a secret phrase";
 
+//salting the password
+const saltRounds = 10;
+
 //User sign up _ creating a new account
 router.post("/", (request, response, next) => {
   const account = request.body;
@@ -48,7 +51,7 @@ router.post("/", (request, response, next) => {
   }
 
   //hash the password
-  bcrypt.hash(request.body.password, 10, (err, hash) => {
+  bcrypt.hash(request.body.password, saltRounds, (err, hash) => {
     if (err) {
       return response.status(500).json({
         error: err

@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const db = require("../DB/repositories/surveyRepo");
 const checkAauth = require("../middleware/check-auth");
+const hasTypes = require("./has-types");
 
 //get surveys by id
 router.get("/:id", checkAauth, (req, res) => {
@@ -67,7 +68,28 @@ router.get("/", checkAauth, (req, res) => {
 //create new Survey
 router.post("/", checkAauth, (req, res) => {
   const survey = req.body;
-  console.log(survey);
+
+  //check types of the body
+  const surveyTypes = {
+    userId: Number,
+    compoundId: Number,
+    createdAt: Number
+  };
+  if (!hasTypes(survey, surveyTypes)) {
+    res.status(422).end();
+    return;
+  }
+
+  const validationErrors = [];
+  //check the date
+  const nowTime = Date.parse(new Date());
+  if (survey.createdAt < nowTime) {
+    validationErrors.push("invalidDate");
+  }
+  if (0 < validationErrors.length) {
+    res.status(400).json(validationErrors);
+    return;
+  }
   db.createSurvey(survey, function(errors, id) {
     if (errors.length == 0) {
       res.setHeader("Location", "/surveys/" + id);
