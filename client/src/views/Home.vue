@@ -1,7 +1,7 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <HeadPic></HeadPic>
+    <HeadPic :isUserSignedIn="isUserSignedIn"></HeadPic>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
       <div class="customNegMarg">
@@ -50,6 +50,7 @@ import HeadPic from "../components/HeadPic";
 
 export default {
   components: { HeadPic },
+  props: ["isUserSignedIn"],
   data() {
     return {
       allAccounts: [],

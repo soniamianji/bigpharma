@@ -25,18 +25,15 @@ exports.getObservationsBySurveyId = function(surveyId, callback) {
 		SELECT * FROM observations WHERE surveyId=? ORDER BY id
 	`;
   const values = [surveyId];
-  console.log(surveyId);
   db.all(query, values, function(error, observations) {
     if (error) {
       //check foreignkey violation
       if (true) {
-        console.log(error);
         callback(["compoundId Not Found"]);
       } else {
         callback(["databaseError"]);
       }
     } else {
-      console.log(observations);
       callback([], observations);
     }
   });
@@ -100,7 +97,7 @@ exports.createObservation = function(observation, callback) {
       if (true) {
         callback(["account, user , survey or effect NotFound"]);
       }
-      console.log(error);
+
       callback(["databaseError"]);
     } else {
       callback([], this.lastID);
@@ -129,7 +126,6 @@ exports.editObservationById = function(id, updatedobservation, callback) {
 
   db.run(query, values, function(error) {
     if (error) {
-      console.log(error);
       callback(["databaseError"]);
     } else {
       const observationExisted = this.changes == 1;
@@ -147,7 +143,6 @@ exports.getObservationById = function(id, callback) {
 
   db.get(query, values, function(error, observation) {
     if (error) {
-      console.log(error);
       callback(["databaseError"]);
     } else {
       callback([], observation);
@@ -164,7 +159,6 @@ exports.deleteObservationById = function(id, callback) {
 
   db.run(query, values, function(error) {
     if (error) {
-      console.log(error);
       callback(["databaseError"]);
     } else {
       const observationExisted = this.changes == 1;

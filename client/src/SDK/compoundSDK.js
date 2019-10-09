@@ -1,4 +1,5 @@
 const sendRequest = require("./sendRequest");
+const YAML = require("yaml");
 
 //get all compounds
 module.exports.getAllCompounds = async function(callback) {
@@ -16,7 +17,8 @@ module.exports.getAllCompounds = async function(callback) {
 
   switch (response.status) {
     case 200:
-      compounds = await response.json();
+      let yamlCompounds = await response.text();
+      compounds = YAML.parse(yamlCompounds);
       break;
 
     case 500:
@@ -46,7 +48,9 @@ module.exports.getCompoundById = async function(id, callback) {
 
   switch (response.status) {
     case 200:
-      compound = await response.json();
+      let yamlCompound = await response.text();
+      compound = YAML.parse(yamlCompound);
+
       break;
 
     case 404:

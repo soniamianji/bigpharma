@@ -34,15 +34,18 @@ router.post("/", (request, response, next) => {
 
   // Validate the account.
   const validationErrors = [];
-
-  if (account.username.length < USERNAME_MIN_LENGTH) {
-    validationErrors.push("usernameTooShort");
+  if (account.email == "") {
+    validationErrors.push("Please Enter your email Address.");
+  } else if (account.username == "") {
+    validationErrors.push("Please Enter your username.");
+  } else if (account.username.length < USERNAME_MIN_LENGTH) {
+    validationErrors.push("Username is too short.");
   } else if (USERNAME_MAX_LENGTH < account.username.length) {
-    validationErrors.push("usernameTooLong");
+    validationErrors.push("Username is too long.");
   }
 
   if (account.password.length < MIN_PASSWORD_LENGTH) {
-    validationErrors.push("passwordTooShort");
+    validationErrors.push("Please enter password with at least 6 characters.");
   }
 
   if (0 < validationErrors.length) {
@@ -75,9 +78,9 @@ router.post("/", (request, response, next) => {
 });
 
 //login to the account
-router.post("/login-session", (req, res) => {
+router.post("/login-session", (req, res, next) => {
   const grantInfo = req.body;
-
+  console.log(req.body);
   // Check that grantInfo contains all expected properties.
   const grantInfoTypes = {
     email: String,
@@ -116,11 +119,18 @@ router.post("/login-session", (req, res) => {
             },
             secretTokenKey
           );
-          res.status(200).json({
+          const resObject = {
             message: "Auth Success.",
             id_token: id_token,
             access_token: access_token
-          });
+          };
+          res.body = resObject;
+          next();
+          // res.status(200).json({
+          //   message: "Auth Success.",
+          //   id_token: id_token,
+          //   access_token: access_token
+          // });
         } else {
           res.status(401).json({ error: "invalid_grant" });
         }
@@ -132,11 +142,13 @@ router.post("/login-session", (req, res) => {
 });
 
 //get all the accounts
-router.get("/", checkAauth, function(request, response) {
+router.get("/", checkAauth, function(request, response, next) {
   db.getAllAccounts(function(errors, accounts) {
     if (errors.length == 0) {
       accounts.forEach(account => delete account.password);
-      response.status(200).json(accounts);
+      response.body = accounts;
+      next();
+      // response.status(200).json(accounts);
     } else {
       response.status(500).end();
     }
@@ -144,11 +156,13 @@ router.get("/", checkAauth, function(request, response) {
 });
 
 //get account by id
-router.get("/:id", checkAauth, (req, res) => {
+router.get("/:id", checkAauth, (req, res, next) => {
   const accountId = req.params.id;
-  db.getAccountById(accountId, function(errors, accountId) {
+  db.getAccountById(accountId, function(errors, account) {
     if (errors.length == 0) {
-      res.status(200).json(accountId);
+      res.body = account;
+      next();
+      // res.status(200).json(account);
     } else if (errors.includes("databaseError")) {
     } else {
       res.status(500).end();
@@ -183,11 +197,7 @@ router.put("/:id", checkAauth, (req, res) => {
 
   db.updateAccountById(id, username, function(errors, didExist) {
     if (errors.length == 0) {
-      if (didExist) {
-        res.status(204).end();
-      } else {
-        res.status(404).end();
-      }
+      res.status(204).end();
     } else {
       res.status(500).end();
     }

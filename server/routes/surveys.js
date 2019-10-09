@@ -5,11 +5,13 @@ const checkAauth = require("../middleware/check-auth");
 const hasTypes = require("./has-types");
 
 //get surveys by id
-router.get("/:id", checkAauth, (req, res) => {
+router.get("/:id", checkAauth, (req, res, next) => {
   const surveyId = req.params.id;
   db.getSurveyById(surveyId, function(errors, survey) {
     if (errors.length == 0) {
-      res.status(200).json(survey);
+      res.body = survey;
+      next();
+      // res.status(200).json(survey);
     } else if (errors.includes("databaseError")) {
     } else {
       res.status(500).end();
@@ -18,12 +20,14 @@ router.get("/:id", checkAauth, (req, res) => {
 });
 
 //get surveys by userid
-router.get("/", checkAauth, (req, res) => {
+router.get("/", checkAauth, (req, res, next) => {
   if (req.query.userId) {
     const userId = req.query.userId;
     db.getSurveyByUserId(userId, function(errors, surveys) {
       if (errors.length == 0) {
-        res.status(200).json(surveys);
+        res.body = surveys;
+        next();
+        // res.status(200).json(surveys);
       } else if (errors.includes("userNotFound")) {
         res.status(404).end();
       } else {
@@ -36,7 +40,9 @@ router.get("/", checkAauth, (req, res) => {
     const compoundId = req.query.compoundId;
     db.getSurveyByCompoundId(compoundId, function(errors, survey) {
       if (errors.length == 0) {
-        res.status(200).json(survey);
+        res.body = survey;
+        next();
+        // res.status(200).json(survey);
       } else if (errors.includes("compoundNotFound")) {
       } else {
         res.status(500).end();
@@ -57,7 +63,9 @@ router.get("/", checkAauth, (req, res) => {
     //get all surveys
     db.getAllSurveys(function(errors, surveys) {
       if (errors.length == 0) {
-        res.status(200).json(surveys);
+        res.body = surveys;
+        next();
+        // res.status(200).json(surveys);
       } else {
         res.status(500).end();
       }

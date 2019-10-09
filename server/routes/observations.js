@@ -7,12 +7,14 @@ const checkAauth = require("../middleware/check-auth");
 //validate timestamps and check inputs not empty before populating the database
 
 //get obs
-router.get("/", checkAauth, (req, res) => {
+router.get("/", checkAauth, (req, res, next) => {
   if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
     db.getObservationsByCompoundId(compoundId, function(errors, observations) {
       if (observations) {
-        res.status(200).json(observations);
+        res.body = observations;
+        next();
+        // res.status(200).json(observations);
       } else if (errors.includes("compoundId Not Found")) {
         res.status(404).end();
       } else {
@@ -29,7 +31,9 @@ router.get("/", checkAauth, (req, res) => {
       observations
     ) {
       if (errors.length == 0) {
-        res.status(200).json(observations);
+        res.body = observations;
+        next();
+        // res.status(200).json(observations);
       } else if (errors.includes("compoundId or userId Not Found")) {
         response.status(400).json(errors);
       } else {
@@ -38,9 +42,11 @@ router.get("/", checkAauth, (req, res) => {
     });
   } else if (req.query.surveyId) {
     const surveyId = req.query.surveyId;
-    db.getObservationsBySurveyId(surveyId, function(errors, survey) {
+    db.getObservationsBySurveyId(surveyId, function(errors, observations) {
       if (errors.length == 0) {
-        res.status(200).json(survey);
+        res.body = observations;
+        next();
+        // res.status(200).json(survey);
       } else if (errors.includes("databaseError")) {
       } else {
         res.status(500).end();
@@ -67,18 +73,7 @@ router.post("/", checkAauth, (req, res) => {
     res.status(422).end();
     return;
   }
-  if (
-    observation.surveyId == "" ||
-    observation.compoundId == "" ||
-    observation.userId == "" ||
-    observation.entryTime == "" ||
-    observation.effectId == "" ||
-    observation.effectName == "" ||
-    observation.effectIntensity == ""
-  ) {
-    res.status(422).end();
-    return;
-  }
+
   //create the observation.
   db.createObservation(observation, function(errors, id) {
     if (errors.length == 0) {
@@ -93,31 +88,23 @@ router.post("/", checkAauth, (req, res) => {
 });
 
 //To update an observation based on observationId
-router.put("/:id", checkAauth, function(request, response) {
-  const id = request.params.id;
-  const updatedObservation = request.body;
-  console.log(updatedObservation);
+router.put("/:id", checkAauth, function(req, res) {
+  const id = req.params.id;
+  console.log(req.body);
+  const updatedObservation = req.body;
 
+  console.log("number 2");
   //Check that the observation contains all expected properties.
   const observationTypes = {
     entryTime: Number,
-    effectId: Number,
     effectName: String,
+    effectId: Number,
     effectIntensity: Number
   };
 
   if (!hasTypes(updatedObservation, observationTypes)) {
-    response.status(422).end();
-    return;
-  }
-
-  if (
-    updatedObservation.entryTime == "" ||
-    updatedObservation.effectId == "" ||
-    updatedObservation.effectName == "" ||
-    updatedObservation.effectIntensity == ""
-  ) {
-    response.status(422).end();
+    console.log("issues with type");
+    res.status(422).end();
     return;
   }
 
@@ -126,28 +113,29 @@ router.put("/:id", checkAauth, function(request, response) {
       // Try to update the observation.
       db.editObservationById(id, updatedObservation, function(errors) {
         if (errors.length == 0) {
-          response.status(204).json({ updatedObservation });
+          res.status(204).json({ updatedObservation });
         } else {
-          response.status(500).end();
+          res.status(500).end();
         }
       });
     } else if (!oldObservation) {
-      response.status(404).end();
+      res.status(404).end();
       return;
     } else {
-      response.status(500).end();
+      res.status(500).end();
     }
   });
 });
 
 //get observation by id
-router.get("/:id", checkAauth, (req, res) => {
+router.get("/:id", checkAauth, (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
   db.getObservationById(id, (err, observation) => {
     if (err.length == 0) {
       if (observation) {
-        res.status(200).json(observation);
+        // res.status(200).send(observation);
+        res.body = observation;
+        next();
       } else {
         res.status(404).end();
       }

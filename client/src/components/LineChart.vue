@@ -36,8 +36,8 @@ export default {
       (err, observations) => {
         if (err.length == 0) {
           this.observations = observations;
-          // var returnedValues = 
-          chartFunction.chartFunction(observations);
+          // var returnedValues =
+          // chartFunction.chartFunction(observations);
           // console.log(returnedValues);
           // returnedValues[0] = this.data.labels;
           // returnedValues[1] = this.data.datasets;

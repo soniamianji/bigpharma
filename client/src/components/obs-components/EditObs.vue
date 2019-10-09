@@ -46,10 +46,12 @@
     </v-card>
 
     <!--END OF INPUTS -->
-    <v-card max-width="300" class="mx-auto mt-5 mb-10">
-      <v-btn width="100%" @click="cancelObs">Cancel</v-btn>
-      <v-btn width="100%" @click="updateObs" text>Update Observation</v-btn>
+
+    <v-card max-width="600" class="mx-auto mt-5 mb-10">
+      <v-btn @click="updateObs">Update Observation</v-btn>
+      <v-btn @click="cancelObs">Cancel</v-btn>
     </v-card>
+
     <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
   </v-container>
 </template>

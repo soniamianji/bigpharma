@@ -5,7 +5,7 @@ async function sendRequest(
   method,
   uri,
   body = null,
-  contentType = "application/json"
+  contentType = "application/x-yaml"
 ) {
   let bodyToSend = "";
   const headers = new Headers();
@@ -24,6 +24,7 @@ async function sendRequest(
     switch (contentType) {
       case "application/json":
         bodyToSend = JSON.stringify(body);
+        headers.append("Accept", "application/json");
         break;
 
       case "application/x-www-form-urlencoded":
@@ -32,11 +33,14 @@ async function sendRequest(
           data.append(key, body[key]);
         }
         bodyToSend = data.toString();
+        headers.append("Accept", "application/json");
+
         break;
 
       case "application/x-yaml":
         console.log("triggered yaml");
         bodyToSend = YAML.stringify(body);
+        headers.append("Accept", "application/x-yaml");
 
         break;
 

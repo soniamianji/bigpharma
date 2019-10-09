@@ -1,5 +1,5 @@
 const sendRequest = require("./sendRequest");
-
+const YAML = require("yaml");
 //get all effects
 
 module.exports.getAllEffects = async function(callback) {
@@ -17,7 +17,8 @@ module.exports.getAllEffects = async function(callback) {
 
   switch (response.status) {
     case 200:
-      effects = await response.json();
+      let yamlEffects = await response.text();
+      effects = YAML.parse(yamlEffects);
       break;
 
     case 500:

@@ -141,7 +141,6 @@ module.exports.logIn = async function(email, password, callback) {
   switch (response.status) {
     case 200:
       body = await response.json();
-
       account.accessToken = body.access_token;
       const payload = jwtDecode(body.id_token);
       account.id = payload.id;

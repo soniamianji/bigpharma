@@ -1,5 +1,5 @@
 const sendRequest = require("./sendRequest");
-
+const YAML = require("yaml");
 //get all surveys
 module.exports.getAllSurveys = async function(callback) {
   let response;
@@ -16,7 +16,9 @@ module.exports.getAllSurveys = async function(callback) {
 
   switch (response.status) {
     case 200:
-      surveys = await response.json();
+      let yamlSurveys = await response.text();
+      surveys = YAML.parse(yamlSurveys);
+
       break;
 
     case 500:
@@ -45,7 +47,8 @@ module.exports.getSurveyById = async function(id, callback) {
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      let yamlSurvey = await response.text();
+      survey = YAML.parse(yamlSurvey);
       break;
 
     case 404:
@@ -81,7 +84,8 @@ module.exports.getSurveyByUserId = async function(userId, callback) {
 
   switch (response.status) {
     case 200:
-      surveys = await response.json();
+      let yamlSurveys = await response.text();
+      surveys = YAML.parse(yamlSurveys);
       break;
 
     case 404:
@@ -121,7 +125,8 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      let yamlSurvey = await response.text();
+      survey = YAML.parse(yamlSurvey);
       break;
 
     case 404:
@@ -161,7 +166,8 @@ module.exports.getSurveyByStatus = async function(status, callback) {
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      let yamlSurvey = await response.text();
+      survey = YAML.parse(yamlSurvey);
       break;
 
     case 404:

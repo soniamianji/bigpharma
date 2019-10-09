@@ -37,9 +37,9 @@
               :rules="[v => !!v || 'Password is required']"
               required
             />
-            <p class="red--text pl-8">{{errors[0]}}</p>
+            <p class="red--text pl-8" v-if="valid == false">{{errors[0]}}</p>
             <v-card-actions>
-              <v-btn outlined type="submit" class="mt-n2" block>Register</v-btn>
+              <v-btn outlined type="submit" :disabled="!valid" class="mt-n2" block>Register</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-form>
@@ -62,7 +62,7 @@ const client = require("../SDK/accountsSDK");
 export default {
   data() {
     return {
-      valid: true,
+      valid: false,
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -97,6 +97,7 @@ export default {
         } else {
           console.log(errors);
           this.errors = errors;
+          this.valid = false;
         }
       });
     },

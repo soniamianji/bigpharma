@@ -30,7 +30,7 @@
               :rules="[v => !!v || 'Password is required']"
               required
             />
-            <p v-if="errors !== ''" class="red--text pl-8">{{errors[0]}}</p>
+            <p v-if="errors !== '' && valid == false" class="red--text pl-8">{{errors[0]}}</p>
 
             <v-card-actions>
               <v-btn outlined class="mt-1" type="submit" :disabled="!valid" block>Login</v-btn>
@@ -52,7 +52,7 @@
       </div>
     </v-content>
   </v-app>
-</template>
+</template> 
 
 <script>
 const client = require("../SDK/accountsSDK");
@@ -73,6 +73,7 @@ export default {
   },
   methods: {
     signIn() {
+      this.errors = "";
       client.logIn(this.email, this.password, (err, account) => {
         if (err.length == 0) {
           console.log(account);
@@ -80,6 +81,7 @@ export default {
           this.$router.push({ path: "/" });
         } else {
           this.errors = err;
+          this.valid = false;
           console.log(err);
         }
       });

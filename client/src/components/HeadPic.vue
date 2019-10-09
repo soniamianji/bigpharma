@@ -11,14 +11,30 @@
             <span class="font-weight-bold">curate</span> &
             <span class="font-weight-bold">analyze</span> the results of your trial data.
           </div>
-          <div class="mt-10">
-            <v-btn outlined width color="grey lighten-1">Signup</v-btn>
+          <div class="mt-10" v-if="isUserSignedIn == false">
+            <v-btn outlined width color="grey lighten-1" @click="signup">Signup</v-btn>
           </div>
         </v-flex>
       </v-layout>
     </v-container>
   </v-parallax>
   <!-- Provides the application the proper gutter -->
-</template>
+</template> 
 
 
+<script>
+export default {
+  props: ["isUserSignedIn"],
+  data() {
+    return {
+      allAccounts: [],
+      errors: ""
+    };
+  },
+  methods: {
+    signup() {
+      this.$router.push({ path: "/signup" });
+    }
+  }
+};
+</script>

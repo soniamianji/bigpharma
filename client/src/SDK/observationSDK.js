@@ -1,4 +1,5 @@
 const sendRequest = require("./sendRequest");
+const YAML = require("yaml");
 
 module.exports.getObservationsById = async function(id, callback) {
   let response;
@@ -15,7 +16,8 @@ module.exports.getObservationsById = async function(id, callback) {
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      let yamlObservations = await response.text();
+      observations = YAML.parse(yamlObservations);
       break;
 
     case 404:
@@ -54,7 +56,8 @@ module.exports.getObservationsByCompoundId = async function(
 
   switch (response.status) {
     case 200:
-      observations = await response.json();
+      let yamlObservations = await response.text();
+      observations = YAML.parse(yamlObservations);
       break;
 
     case 404:
@@ -90,7 +93,8 @@ module.exports.getObservationsBySurveyId = async function(surveyId, callback) {
 
   switch (response.status) {
     case 200:
-      observations = await response.json();
+      let yamlObservations = await response.text();
+      observations = YAML.parse(yamlObservations);
       break;
 
     case 404:
@@ -130,7 +134,9 @@ module.exports.getObservationsByUserIdAndCompoundId = async function(
 
   switch (response.status) {
     case 200:
-      observations = await response.json();
+      let yamlObservations = await response.text();
+      observations = YAML.parse(yamlObservations);
+      // observations = await response.json();
       break;
 
     case 404:
