@@ -216,6 +216,10 @@ module.exports.createSurvey = async function(survey, callback) {
       errors = ["You are not authorised."];
       break;
 
+    case 422:
+      errors = ["Issues with type of data."];
+      break;
+
     case 500:
       errors = ["backendError"];
       break;

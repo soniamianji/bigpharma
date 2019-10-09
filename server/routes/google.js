@@ -25,14 +25,16 @@ router.post("/", (req, res, next) => {
     })
     .then(userData => {
       console.log(userData.data);
-      db.getAccountByGoogleId(userData.data.id, (err, id) => {
-        if (!id) {
+      //check if user has already logged in with their googleAccount
+      db.getAccountByGoogleId(userData.data.id, (err, account) => {
+        if (!account) {
           const account = {
             username: null,
             email: null,
             password: null,
             googleId: userData.data.id
           };
+          //if no account found then create a new account
           db.createAccount(account, (err, id) => {
             if (err.length == 0) {
               console.log(id);
@@ -55,14 +57,14 @@ router.post("/", (req, res, next) => {
               res.status(400).end();
             }
           });
-        } else {
-          console.log(id);
-          const access_token = jwt.sign({ id: id }, secretTokenKey);
+        } else if (account) {
+          console.log(account);
+          const access_token = jwt.sign({ id: account.id }, secretTokenKey);
           const id_token = jwt.sign(
             {
               email: userData.data.email,
               username: userData.data.name,
-              id: userData.data.id
+              id: account.id
             },
             secretTokenKey
           );
@@ -71,6 +73,8 @@ router.post("/", (req, res, next) => {
             id_token: id_token,
             access_token: access_token
           });
+        } else {
+          res.status(500).end();
         }
       });
       //save google id in db

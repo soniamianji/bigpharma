@@ -79,7 +79,6 @@ export default {
   created() {
     compound.getAllCompounds((errors, compounds) => {
       if (errors.length == 0) {
-        console.log(compounds);
         for (var i = 0; i < compounds.length; i++) {
           const compoundObj = {
             name: compounds[i].compoundName,
@@ -88,23 +87,32 @@ export default {
             numberOfObservations: "",
             id: compounds[i].id
           };
+
+          //get obs by compound id to figure out the number of obs for each compound
           obsClient.getObservationsByCompoundId(compoundObj.id, (err, obs) => {
             if (err.length == 0) {
               if (obs !== null) {
+                compoundObj.numberOfObservations = obs.length;
+
+                //to find the number of participants on each compound
+                let userIdsfromobs = [];
+                for (var i = 0; i < obs.length; i++) {
+                  userIdsfromobs.push(obs[i].userId);
+                }
+                let participantArray = [...new Set(userIdsfromobs)];
+                compoundObj.numberOfParticipants = participantArray.length;
               } else {
                 compoundObj.numberOfObservations = 0;
               }
             } else {
-              console.log(err);
+              this.errors = err;
             }
           });
 
           this.items.push(compoundObj);
         }
-        console.log(this.items);
       } else {
         this.errors = errors;
-        console.log(errors);
       }
     });
   },
