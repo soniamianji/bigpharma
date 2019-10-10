@@ -7,14 +7,13 @@ const checkAauth = require("../middleware/check-auth");
 //validate timestamps and check inputs not empty before populating the database
 
 //get obs
-router.get("/", checkAauth, (req, res, next) => {
+router.get("/", (req, res, next) => {
   if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
 
     db.getObservationsByCompoundId(compoundId, function(errors, observations) {
       if (observations) {
         res.body = observations;
-
         next();
         // res.status(200).json(observations);
       } else if (errors.includes("compoundId Not Found")) {

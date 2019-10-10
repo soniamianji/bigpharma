@@ -1,17 +1,29 @@
 module.exports.chartFunction = function chartFunction(observations) {
-  const effectsFromObs = [];
-
-  //find the duplications and create new array with the uniqe items
+  const testData = [];
   for (var i = 0; i < observations.length; i++) {
-    effectsFromObs.push(observations[i].effectName);
+    const obsObj = {
+      id: observations[i].id,
+      surveyId: observations[i].surveyId,
+      userId: observations[i].userId,
+      compoundId: observations[i].compoundId,
+      effectId: observations[i].effectId,
+      effectName: observations[i].effectName,
+      entryTime: observations[i].entryTime,
+      effectIntensity: observations[i].effectIntensity
+    };
+    console.log(obsObj);
+    testData.push(obsObj);
   }
-  const effectNamesWithNoDups = [...new Set(effectsFromObs)];
 
+  console.log(testData);
+  ////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
+  // START of HELPER FUNCTIONS
   //// Search an object ie: getObjects(observations, 'effect_name', 'headache');
   /*
-    * @param (obj{}, "val", "val")
-    /* returns obj{}
-    */
+  * @param (obj{}, "val", "val")
+  /* returns obj{}
+  */
   function getObjects(obj, key, val) {
     var objects = [];
     for (var i in obj) {
@@ -24,18 +36,16 @@ module.exports.chartFunction = function chartFunction(observations) {
     }
     return objects;
   }
-
   //// Removes dublicate intigers from array
   /*
-        * @param (array[])
-        /* returns array[]
-        */
+* @param (array[])
+/* returns array[]
+*/
   function removeDuplicates(num) {
     var x,
       len = num.length,
       out = [],
       obj = {};
-
     for (x = 0; x < len; x++) {
       obj[num[x]] = 0;
     }
@@ -44,22 +54,20 @@ module.exports.chartFunction = function chartFunction(observations) {
     }
     return out;
   }
-
   //// Function to test if a value t is within range x1 and x2.
   /*
-        /* @param (int, int, int)
-        /* returns TRUE / FALSE
-        */
+/* @param (int, int, int)
+/* returns TRUE / FALSE
+*/
   function isBetween(timestamp, x1, x2) {
     return timestamp >= x1 && timestamp <= x2;
   }
   console.log("That 4 belongs to [1,3] is", isBetween(4, 1, 3));
-
   //// Funtion that calculate the average of an array if intergers
   /*
-        /* @param ([int,int])
-        /* returns int
-        */
+/* @param ([int,int])
+/* returns int
+*/
   function average(array) {
     // Removes NaN
     var filteredArray = array.filter(function(el) {
@@ -70,17 +78,15 @@ module.exports.chartFunction = function chartFunction(observations) {
   }
   var nums = [1, 2, 3];
   console.log("Averages [1, 2, 3]", average(nums));
-
   //// Funtion that translates UNIX timestamps to HH:MM:SS
   /* @param unixtimestamp
-        /* returns var
-        */
+/* returns var
+*/
   function hhmmss(unixtimestamp) {
     var time = new Date(unixtimestamp * 1000);
     var hours = time.getHours() - 1; /// NOTE (-1) bug fix
     var minutes = "0" + time.getMinutes();
     var seconds = "0" + time.getSeconds();
-
     // Will display time in 10:30:23 format
     var hhmmss = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
     return hhmmss;
@@ -89,54 +95,49 @@ module.exports.chartFunction = function chartFunction(observations) {
   // END of HELPER FUNCTIONS
   ////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////
-
   //// Takes an effectname, compiles and averages the set from it into an array
   /*
-          /* @param series("string",object{})
-          /* returns array[]
-          */
-  function effect(effectName, observations) {
+  /* @param series("string",object{})
+  /* returns array[]
+  */
+  function effect(effectName, obsObject) {
     // DETERMINE NUMBER OF OBSERVATIONSETS GIVEN EFFECT
-    var theseEffects = getObjects(observations, "effectName", effectName);
-
+    var theseEffects = getObjects(obsObject, "effectName", effectName);
+    console.log("theseEffects:", theseEffects);
     var sets = [];
     theseEffects.forEach(element => {
       sets.push(element.surveyId);
     });
-    var reducedSets = removeDuplicates(sets);
 
+    var reducedSets = removeDuplicates(sets);
+    console.log(reducedSets);
     var sets = [];
     reducedSets.forEach(function(element) {
       var set = [];
-      var subset = getObjects(observations, "surveyId", element);
+      var subset = getObjects(obsObject, "surveyId", element);
       subset.forEach(elemental => {
         set.push(elemental.effectIntensity);
       });
       sets.push(set);
     });
-
     console.log("sets", sets);
-
     function remap(data) {
       return _.map(_.unzip(data)); // maps the array on the y axis using: https://lodash.com/docs/4.17.15#map
     }
     var reMappedSets = remap(sets);
-
     var series = [];
     reMappedSets.forEach(function(element) {
       series.push(average(element));
     });
-
+    console.log(series);
     return series;
   }
-
   /////////////////////////////////////////////////////////////////////////////////////////////////
-
   //// Creates labels for chart
   /*
-          /* @param object{}
-          /* returns array[]
-          */
+  /* @param object{}
+  /* returns array[]
+  */
   function timestamps(object, timeLineDivisor) {
     var timestamps = object.map(element => element.entryTime);
     var tMin = Math.min.apply(null, timestamps);
@@ -152,9 +153,13 @@ module.exports.chartFunction = function chartFunction(observations) {
     // Creates an array of the observation lenght
     // Note: "timeframe + 1" to compensate for origo of index 0
     var timeframeArray = Array.from(Array(timeframe + 1).keys());
+    // var timeframeArray = new Array(timeframe);
+    // for (var i = 0; i < timeframeArray.length; i++) {
+    //   timeframeArray.fill(timeframeArray[i], 0, timeframeArray.length);
+    // }
+    // console.log(timeframeArray);
 
-    console.log("timeframeArray", timeframeArray);
-
+    //console.log("timeframeArray", timeframeArray);
     // Splits the timeframeArray into an array of complete intervals
     Object.defineProperty(Array.prototype, "chunk", {
       value: function(chunkSize) {
@@ -166,11 +171,9 @@ module.exports.chartFunction = function chartFunction(observations) {
           });
       }
     });
-
     // Splits timeframeArray into filled intervals ie [1,2,3],[4,5,6]
     var intervals = timeframeArray.chunk(timeFraction);
     console.log("Intervals", intervals);
-
     // Splice intervals to contain only start and end points ie [1,2,3] => [1,3]
     var discreteIntervals = [];
     for (var key in intervals) {
@@ -191,9 +194,8 @@ module.exports.chartFunction = function chartFunction(observations) {
       }
     }
     console.log("discreteIntervals", discreteIntervals);
-
     // Nested loop to evaluate and pair timestamps to discreteIntervals
-    observations.forEach(element => {
+    testData.forEach(element => {
       var thisTimestamp = element.entryTime;
       discreteIntervals.forEach(element => {
         if (isBetween(thisTimestamp, element.x1, element.x2)) {
@@ -201,7 +203,6 @@ module.exports.chartFunction = function chartFunction(observations) {
         }
       });
     });
-
     // Looping through discreteIntervals{} to average timestamp[] and collect as labels[]
     var averagedTimestamps = [];
     discreteIntervals.forEach(element => {
@@ -216,31 +217,32 @@ module.exports.chartFunction = function chartFunction(observations) {
       }
     });
     console.log("avgtimestamps", averagedTimestamps);
-
     //// Set timestamps to X seconds after origo where origo is the first timestamp
     var origo = averagedTimestamps[0];
+    console.log("origo:", origo);
     var fromOrigo = [];
     averagedTimestamps.forEach(element => {
       var next = element - origo;
-      fromOrigo.push(hhmmss(next));
+      console.log(next);
+      fromOrigo.push(new Date(next).toLocaleTimeString());
     });
     // SETS first time entry to 00:00:00
-    fromOrigo.shift();
+    //  fromOrigo.shift();
     fromOrigo.unshift("00:00:00");
-
     var labels = fromOrigo;
     return labels;
   }
-
   ///////////////////////////////////////////////////
-
+  // get an array of effects from the observations.
+  var effects = ["pain", "dixiu"];
+  console.log("testData:", testData);
   //// GRAPH OBJECT
   const datasets = [];
   ////// START OF EFFECTS-COMPILER //////////////////
   var _series = [];
-  effectNamesWithNoDups.forEach(function(element) {
+  effects.forEach(function(element) {
     console.log("effectName:", element);
-    var fx = effect(element, observations);
+    var fx = effect(element, testData);
     console.log("fx", fx);
     _series.push(fx);
     var eachObj = {
@@ -250,12 +252,9 @@ module.exports.chartFunction = function chartFunction(observations) {
     datasets.push(eachObj);
   });
   console.log("datasets", datasets);
-
   /// RESULTS //////////////////////////////////
   var series = _series; // Used by Timeline-Compiler to Fetch labels on (x-axis).
-
   /// END OF EFFECTS-COMPILER //////////////////
-
   ///// START OF TIMELINE-COMPILER /////////////////////
   // Finds the longest array from a set and returns the length of that array - 1.
   // This is used to divide the timeframe over which the effects are plotted.
@@ -275,16 +274,10 @@ module.exports.chartFunction = function chartFunction(observations) {
     return someSeries[indexOfLongestArray].length - 1;
   }
   var timeLineDivisor = timeLineDivisor(_series);
-
   /// RESULTS //////////////////////////////////
-  let thoselabels = timestamps(observations, timeLineDivisor);
+  let thoselabels = timestamps(testData, timeLineDivisor);
   /// END OF EFFECTS-COMPILER //////////////////
-
   console.log("thoselabels", thoselabels);
-
-  ///////////////////////////////////////////////////////
-
   const values = [thoselabels, datasets];
-
   return values;
 };

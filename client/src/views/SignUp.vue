@@ -37,7 +37,7 @@
               :rules="[v => !!v || 'Password is required']"
               required
             />
-            <p class="red--text pl-8" v-if="valid == false">{{errors[0]}}</p>
+            <p class="red--text pl-8" v-if="errors == '' || valid == false">{{errors[0]}}</p>
             <v-card-actions>
               <v-btn outlined type="submit" :disabled="!valid" class="mt-n2" block>Register</v-btn>
               <v-spacer></v-spacer>
@@ -88,7 +88,6 @@ export default {
       };
       client.createAccount(account, (errors, id) => {
         if (errors.length == 0) {
-          console.log("clcik");
           this.id = id;
           console.log(id);
           if (id) {

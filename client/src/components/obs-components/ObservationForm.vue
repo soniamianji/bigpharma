@@ -83,9 +83,11 @@ export default {
       }
     });
     this.showTime();
+    // setInterval(() => this.this.showTime(), 1 * 1000);
   },
   methods: {
     showTime() {
+      // var startTime = "00:00:01";
       const now = new Date();
       this.time = now.toLocaleTimeString();
       // now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();

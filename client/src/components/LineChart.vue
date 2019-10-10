@@ -24,9 +24,7 @@ export default {
       effectNamesWithNoDups: ""
     };
   },
-  mounted() {
-    this.createChart("lineChart");
-  },
+
   created() {
     const compoundid = this.compoundId;
 
@@ -36,11 +34,11 @@ export default {
       (err, observations) => {
         if (err.length == 0) {
           this.observations = observations;
-          // var returnedValues =
-          // chartFunction.chartFunction(observations);
-          // console.log(returnedValues);
-          // returnedValues[0] = this.data.labels;
-          // returnedValues[1] = this.data.datasets;
+          var returnedValues = chartFunction.chartFunction(observations);
+          this.data.labels = returnedValues[0];
+          this.data.datasets = returnedValues[1];
+          console.log(this.data.labels);
+          this.createChart("lineChart");
         } else {
           this.errors = err;
         }

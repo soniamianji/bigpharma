@@ -65,7 +65,8 @@ router.post("/", (request, response, next) => {
       db.createAccount(account, function(errors, id) {
         if (errors.length == 0) {
           response.setHeader("Location", "/accounts/" + id);
-          response.status(201).json({ account });
+          response.status(201).json({ id });
+
           console.log(account);
         } else if (errors.includes("emial is taken.")) {
           response.status(400).json(errors);
@@ -119,18 +120,13 @@ router.post("/login-session", (req, res, next) => {
             },
             secretTokenKey
           );
-          const resObject = {
+          const body = {
             message: "Auth Success.",
             id_token: id_token,
             access_token: access_token
           };
-          res.body = resObject;
+          res.body = body;
           next();
-          // res.status(200).json({
-          //   message: "Auth Success.",
-          //   id_token: id_token,
-          //   access_token: access_token
-          // });
         } else {
           res.status(401).json({ error: "invalid_grant" });
         }
