@@ -11,7 +11,6 @@ db.run(`
         userId INTEGER ,
         entryTime INTEGER,
         effectId INTEGER,
-        effectName TEXT,
         effectIntensity INTEGER,
         FOREIGN KEY(surveyId) REFERENCES surveys(id) ON DELETE CASCADE
         FOREIGN KEY(compoundId) REFERENCES compounds(id)
@@ -77,9 +76,9 @@ exports.getObsByCompoundAndUserId = function(compoundId, userId, callback) {
 //create obs
 exports.createObservation = function(observation, callback) {
   const query = `INSERT INTO observations
-			(surveyId, compoundId, userId, entryTime, effectId, effectName, effectIntensity)
+			(surveyId, compoundId, userId, entryTime, effectId, effectIntensity)
 		VALUES
-      (?, ?, ?, ?, ?, ?, ?)
+      (?, ?, ?, ?, ?, ?)
       `;
   const values = [
     observation.surveyId,
@@ -87,7 +86,6 @@ exports.createObservation = function(observation, callback) {
     observation.userId,
     observation.entryTime,
     observation.effectId,
-    observation.effectName,
     observation.effectIntensity
   ];
 
@@ -111,7 +109,6 @@ exports.editObservationById = function(id, updatedobservation, callback) {
     UPDATE observations SET
     entryTime = ?,
     effectId = ?,
-    effectName = ?,
 		effectIntensity = ?
 		WHERE
 			id = ?
@@ -119,7 +116,6 @@ exports.editObservationById = function(id, updatedobservation, callback) {
   const values = [
     updatedobservation.entryTime,
     updatedobservation.effectId,
-    updatedobservation.effectName,
     updatedobservation.effectIntensity,
     id
   ];

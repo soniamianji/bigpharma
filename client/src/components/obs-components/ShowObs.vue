@@ -66,7 +66,9 @@
 <script>
 import DeleteObs from "./DeleteObs";
 import EditObs from "./EditObs";
+import { getEffectById } from "../../SDK/effectsSDK";
 const observationClient = require("../../SDK/observationSDK");
+const effectClient = require("../../SDK/effectsSDK");
 
 export default {
   props: ["account", "obsCreated"],
@@ -107,10 +109,19 @@ export default {
             observation.userId = observations[i].userId;
             observation.compoundId = observations[i].compoundId;
             observation.effectId = observations[i].effectId;
-            observation.effectName = observations[i].effectName;
             observation.entryTime = observations[i].entryTime;
             observation.effectIntensity = observations[i].effectIntensity;
             this.observationsArr.push(observation);
+
+            //get effect by id
+            effectClient.getEffectById(observation.effectId, (err, effect) => {
+              if (err.length == 0) {
+                observation.effectName = effect[0].effectName;
+                console.log(effect);
+              } else {
+                console.log(err);
+              }
+            });
           }
           console.log(this.observationsArr);
 

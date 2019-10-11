@@ -101,17 +101,16 @@ export default {
       //object to be appended to request
       const updatedObs = {
         entryTime: Date.parse(timeToBeConverted),
-        effectName: "",
         effectId: this.selectedEffect,
         effectIntensity: this.intensity
       };
 
-      //fetching the effectName according the id
-      for (var i = 0; i < this.effects.length; i++) {
-        if (this.selectedEffect === this.effects[i].id) {
-          updatedObs.effectName = this.effects[i].effectName;
-        }
-      }
+      // //fetching the effectName according the id
+      // for (var i = 0; i < this.effects.length; i++) {
+      //   if (this.selectedEffect === this.effects[i].id) {
+      //     updatedObs.effectName = this.effects[i].effectName;
+      //   }
+      // }
 
       //finally updating the obs
       this.errors = "";
