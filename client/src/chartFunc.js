@@ -1,3 +1,5 @@
+const effectClient = require("./SDK/effectsSDK");
+
 module.exports.chartFunction = function chartFunction(observations) {
   const rawData = [];
   for (var i = 0; i < observations.length; i++) {
@@ -103,11 +105,78 @@ module.exports.chartFunction = function chartFunction(observations) {
 
     var fxObj = {
       effectId: effectids,
-      setOfSurveys: setOfIntensities
+      effectName: "",
+      setOfSurveys: setOfIntensities,
+      avgIntensity: ""
     };
 
     fx.push(fxObj);
   });
 
+  //averaging the intensities
+  fx.forEach(element => {
+    const result = element.setOfSurveys
+      .reduce((r, a) => {
+        a.forEach((n, i) => {
+          const { sum = 0, count = 0 } = r[i] || {};
+
+          r[i] = { sum: sum + n, count: count + 1 };
+        });
+
+        return r;
+      }, [])
+      .map(({ sum, count }) => sum / count);
+
+    element.avgIntensity = result;
+  });
+
+  var avgIntensity = [];
+  fx.forEach(element => {
+    avgIntensity.push(element.avgIntensity);
+  });
+
+  //find the devisor
+  function timeLineDivisor(someSeries) {
+    var indexOfLongestArray = someSeries
+      .map(function(a) {
+        return a.length;
+      })
+      .indexOf(
+        Math.max.apply(
+          Math,
+          avgIntensity.map(function(a) {
+            return a.length;
+          })
+        )
+      );
+    return someSeries[indexOfLongestArray].length;
+  }
+  var timeLineDivisor = timeLineDivisor(avgIntensity);
+  console.log(timeLineDivisor);
+
+  //get the effectName by effectId
+  fx.forEach(element => {
+    effectClient.getEffectById(element.effectId, (err, effect) => {
+      if (err.length == 0) {
+        element.effectName = effect[0].effectName;
+      } else {
+        console.log(err);
+      }
+    });
+  });
+
   console.log("fx:", fx);
+  var labels = [1, 2, 3, 4];
+  var datasets = [];
+  fx.forEach(element => {
+    var obj = {
+      label: element.effectName,
+      data: element.avgIntensity
+    };
+    console.log(element);
+    datasets.push(obj);
+  });
+  var values = [labels, datasets];
+  console.log(datasets);
+  return values;
 };

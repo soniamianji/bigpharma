@@ -25,19 +25,6 @@ export default {
       returnedValues: ""
     };
   },
-  mounted() {
-    console.log("mounted");
-    // console.log(this.observations);
-    // if (this.observations.length > 0) {
-    //   var observations = this.observations;
-    //   var returnedValues = chartFunction.chartFunction(observations);
-    //   this.data.labels = returnedValues[0];
-    //   this.data.datasets = returnedValues[1];
-    //   console.log(this.data.labels);
-    //   this.createChart("lineChart");
-    //   console.log("its not");
-    // }
-  },
   created() {
     console.log("created");
     const compoundid = this.compoundId;
@@ -49,8 +36,10 @@ export default {
         if (err.length == 0) {
           this.observations = observations;
           this.returnedValues = chartFunction.chartFunction(observations);
-          // this.data.labels = returnedValues[0];
-          // this.data.datasets = returnedValues[1];
+          console.log(this.returnedValues);
+          this.data.labels = this.returnedValues[0];
+          this.data.datasets = this.returnedValues[1];
+          console.log(this.data.datasets);
           this.createChart("lineChart");
         } else {
           this.errors = err;
