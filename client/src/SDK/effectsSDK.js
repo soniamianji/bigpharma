@@ -31,3 +31,33 @@ module.exports.getAllEffects = async function(callback) {
 
   callback(errors, effects);
 };
+
+module.exports.getEffectById = async function(id, callback) {
+  let response;
+
+  try {
+    response = await sendRequest.sendRequest("GET", "/effects/" + id);
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+  let effect = [];
+
+  switch (response.status) {
+    case 200:
+      let yamlEffect = await response.text();
+      effect = YAML.parse(yamlEffect);
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = ["unknown status code"];
+  }
+
+  callback(errors, effect);
+};

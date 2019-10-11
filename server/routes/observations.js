@@ -102,7 +102,6 @@ router.put("/:id", checkAauth, function(req, res) {
   //Check that the observation contains all expected properties.
   const observationTypes = {
     entryTime: Number,
-    effectName: String,
     effectId: Number,
     effectIntensity: Number
   };

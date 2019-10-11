@@ -26,3 +26,19 @@ exports.getAlleffects = function(callback) {
     }
   });
 };
+
+exports.getEffectById = function(id, callback) {
+  const query = `
+          SELECT * FROM effects WHERE id = ? ORDER BY id
+      `;
+  const values = [id];
+
+  db.all(query, values, function(error, effects) {
+    if (error) {
+      console.log(error);
+      callback(["databaseError"]);
+    } else {
+      callback([], effects);
+    }
+  });
+};

@@ -14,4 +14,17 @@ router.get("/", (req, res, next) => {
   });
 });
 
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
+  db.getEffectById(id, function(errors, effect) {
+    if (errors.length == 0) {
+      res.body = effect;
+      next();
+      // res.status(200).json(effects);
+    } else {
+      res.status(500).end();
+    }
+  });
+});
+
 module.exports = router;
