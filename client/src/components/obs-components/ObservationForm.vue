@@ -90,7 +90,7 @@ export default {
   },
 
   destroyed() {
-    clearInterval(updateTime);
+    clearInterval(this.updateTime);
   },
   methods: {
     showTime() {

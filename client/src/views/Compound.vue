@@ -1,33 +1,28 @@
 <template>
   <!-- App.vue -->
-  <v-app>
-    <!-- Provides the application the proper gutter -->
-    <v-container fluid dark class="grey darken-3">
-      <v-sheet flat class="customNegMarg mt-12 grey darken-3">
-        <v-layout row class="mx-auto">
-          <v-banner class="headline font-weight-light" dark single-line width="100%">
-            {{compound.compoundName}}
-            <span class="font-weight-thin">for</span>
-            {{compound.indicationName}}
-            <template v-slot:actions>
-              <div v-if="isUserSignedIn === true">
-                <v-btn text outlined @click="contribute()">Participate</v-btn>
-              </div>
-              <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
-            </template>
-          </v-banner>
-          <v-flex xs12>
-            <div class="pa-12">
-              <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
-              <!-- WRITE YOUR CODE FOR SHOWING THE GRAPH HERE -->
-              <LineChart :compoundId="id"></LineChart>
-              <canvas id="compoundChart"></canvas>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-sheet>
-    </v-container>
-  </v-app>
+
+  <!-- Provides the application the proper gutter -->
+  <v-container fluid dark class="grey darken-3 fill-height">
+    <v-layout row class="mx-auto">
+      <v-banner class="headline font-weight-light mx-auto mt-3 mb-2" dark single-line width="50%">
+        {{compound.compoundName}}
+        <span class="font-weight-thin">for</span>
+        {{compound.indicationName}}
+        <template v-slot:actions>
+          <div v-if="isUserSignedIn === true">
+            <v-btn text outlined @click="contribute()">Participate</v-btn>
+          </div>
+          <h6 v-if="errors !== '' " class="red--text pl-5">{{errors[0]}}</h6>
+        </template>
+      </v-banner>
+      <v-flex xs12>
+        <div class="pa-12">
+          <LineChart :compoundId="id"></LineChart>
+          <canvas id="compoundChart"></canvas>
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 
