@@ -182,7 +182,7 @@ module.exports.createObservation = async function(observation, callback) {
       break;
 
     case 422:
-      errors = ["invalidObservation"];
+      errors = ["You must select an effect to continue."];
       break;
 
     case 500:

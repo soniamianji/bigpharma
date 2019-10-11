@@ -11,11 +11,10 @@ module.exports.chartFunction = function chartFunction(observations) {
       entryTime: observations[i].entryTime,
       effectIntensity: observations[i].effectIntensity
     };
-    console.log(obsObj);
+
     testData.push(obsObj);
   }
 
-  console.log(testData);
   ////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////
   // START of HELPER FUNCTIONS
