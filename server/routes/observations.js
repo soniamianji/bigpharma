@@ -70,6 +70,10 @@ router.post("/", checkAauth, (req, res) => {
     effectName: String,
     effectIntensity: Number
   };
+  if (observation.effectId == null) {
+    res.status(422).end();
+    return;
+  }
   if (!hasTypes(observation, observationTypes)) {
     res.status(422).end();
     return;

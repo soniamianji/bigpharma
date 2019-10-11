@@ -22,7 +22,7 @@
               item-value="id"
               v-model="selectedEffect"
               label="Effect"
-              :rules="[v => !!v || 'effect is required']"
+              :rules="effectRules"
               required
             ></v-select>
           </v-card-text>
@@ -42,13 +42,16 @@
           </v-card-text>
         </v-card>
       </v-card>
+      <h6
+        v-if="errors !== '' && this.valid == false "
+        class="red--text text-center mt-3"
+      >{{errors[0]}}</h6>
 
       <!--END OF INPUTS -->
-      <v-card max-width="300" class="mx-auto mt-5 mb-10">
+      <v-card max-width="300" class="mx-auto mt-3 mb-10">
         <v-btn width="100%" @click="createObservation" text :disabled="!valid">Add Observation</v-btn>
       </v-card>
     </v-form>
-    <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
   </v-container>
 </template>
 
@@ -66,6 +69,7 @@ export default {
       time: "",
       effects: [],
       selectedEffect: "",
+      effectRules: [v => !!v || "effect is required"],
       surveyId: this.$route.query.surveyId,
       compoundId: this.$route.query.compoundId,
       newObsCreated: false,
@@ -82,15 +86,25 @@ export default {
         this.errors = err;
       }
     });
-    this.showTime();
-    // setInterval(() => this.this.showTime(), 1 * 1000);
+    let updateTime = setInterval(this.showTime, 1000);
+  },
+
+  destroyed() {
+    clearInterval(updateTime);
   },
   methods: {
     showTime() {
-      // var startTime = "00:00:01";
+      // var d = new Date();
+      // d.setHours(0, 0, 0, 0);
+      // this.time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+      // console.log(this.time);
+
       const now = new Date();
-      this.time = now.toLocaleTimeString();
-      // now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+      // this.time = now.toLocaleTimeString();
+      this.time =
+        now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
       return this.time;
     },
     createObservation() {
@@ -124,8 +138,11 @@ export default {
         if (err.length == 0) {
           this.newObsCreated = true;
           this.$refs.form.reset();
+
           this.$emit("obsCretaed", this.newObsCreated);
         } else {
+          this.errors = err;
+          this.valid = false;
           console.log(err);
         }
       });

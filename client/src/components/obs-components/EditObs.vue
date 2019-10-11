@@ -47,9 +47,11 @@
 
     <!--END OF INPUTS -->
 
-    <v-card max-width="600" class="mx-auto mt-5 mb-10">
-      <v-btn @click="updateObs">Update Observation</v-btn>
-      <v-btn @click="cancelObs">Cancel</v-btn>
+    <v-card max-width="300" class="mx-auto mt-5">
+      <v-btn width="100%" @click="updateObs">Update Observation</v-btn>
+    </v-card>
+    <v-card max-width="300" class="mx-auto mt-2 mb-10" color="gray">
+      <v-btn width="100%" @click="cancelObs">Cancel</v-btn>
     </v-card>
 
     <h6 v-if="errors !== '' " class="red--text text-center">{{errors[0]}}</h6>
@@ -131,41 +133,4 @@ export default {
 
 
   
-  
-//     createObservation() {
-//       //replace now time with the time user entered
-//       const mixdate = new Date();
-//       var toStr = mixdate.toString();
-//       const timeToBeConverted = toStr.replace(
-//         mixdate.toLocaleTimeString(),
-//         this.time
-//       );
-//       const formData = {
-//         surveyId: Number(this.surveyId),
-//         compoundId: Number(this.compoundId),
-//         userId: Number(this.account.id),
-//         entryTime: Date.parse(timeToBeConverted),
-//         effectId: this.selectedEffect,
-//         effectName: "",
-//         effectIntensity: this.intensity
-//       };
-//       console.log(formData);
-//       for (var i = 0; i < this.effects.length; i++) {
-//         if (this.selectedEffect === this.effects[i].id) {
-//           formData.effectName = this.effects[i].effectName;
-//         }
-//       }
 
-//       // once we have all these data we can create it
-//       ObservationClient.createObservation(formData, (err, id) => {
-//         if (err.length == 0) {
-//           console.log("success");
-//           this.newObsCreated = true;
-//           this.$emit("obsCretaed", this.newObsCreated);
-//         } else {
-//           console.log(err);
-//         }
-//       });
-//     }
-//   }
-// };

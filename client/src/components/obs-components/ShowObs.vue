@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-text-field v-if="isLoading" color="success" loading disabled></v-text-field>
+    <v-text-field v-if="isLoading " color="success" loading disabled></v-text-field>
+
     <div v-else-if="noObservationsEntered == false" class="grey darken-3 pt-5">
       <div v-for="(obs) in observationsArr" :key="obs.id">
         <EditObs
@@ -61,10 +62,12 @@
   </div>
 </template>
 
+
 <script>
 import DeleteObs from "./DeleteObs";
 import EditObs from "./EditObs";
 const observationClient = require("../../SDK/observationSDK");
+
 export default {
   props: ["account", "obsCreated"],
   components: { DeleteObs, EditObs },
@@ -110,10 +113,11 @@ export default {
             this.observationsArr.push(observation);
           }
           console.log(this.observationsArr);
-          this.isLoading = false;
+
           if (this.observationsArr.length === 0) {
             this.noObservationsEntered = true;
           }
+          this.isLoading = false;
         } else {
           this.errors = err;
         }
