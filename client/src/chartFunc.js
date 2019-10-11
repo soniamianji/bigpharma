@@ -7,7 +7,6 @@ module.exports.chartFunction = function chartFunction(observations) {
 			userId: observations[i].userId,
 			compoundId: observations[i].compoundId,
 			effectId: observations[i].effectId,
-			effectName: observations[i].effectName,
 			entryTime: observations[i].entryTime,
 			effectIntensity: observations[i].effectIntensity
 		};
