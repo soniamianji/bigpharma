@@ -42,17 +42,17 @@ module.exports.chartFunction = function chartFunction(observations) {
     * @param (obj{}, "val", "val")
     /* returns obj[]
     */
-	function getObjects(obj, key, val) {
-		var objects = [];
+	function search(obj, key, val) {
+		var array = [];
 		for (var i in obj) {
 			if (!obj.hasOwnProperty(i)) continue;
 			if (typeof obj[i] == 'object') {
-				objects = objects.concat(getObjects(obj[i], key, val));
+				array = array.concat(search(obj[i], key, val));
 			} else if (i == key && obj[key] == val) {
-				objects.push(obj);
+				array.push(obj);
 			}
 		}
-		return objects;
+		return array;
 	}
 
 	// Get an array of effectIDs
@@ -65,5 +65,32 @@ module.exports.chartFunction = function chartFunction(observations) {
 	effectIDs = removeDuplicates(fxIDs);
 	console.log('effectIDs', effectIDs);
 
-	effectIDs.forEach((element) => {});
+	//unique syrveyiDS
+	var surveys = [];
+	for (var i = 0; i < observations.length; i++) {
+		surveys.push(observations[i].surveyId);
+	}
+	var uniuqeSurveys = [ ...new Set(surveys) ];
+
+	//For each effect id compile an object with effectID as property and the resulting
+	var fx = [];
+	effectIDs.forEach((effectids) => {
+		var setOfSurveys = [];
+
+		var res = search(rawData, 'effectId', effectids);
+
+		uniuqeSurveys.forEach((survey) => {
+			var setsOfIntensities = [];
+			setOfSurveys.push(setsOfIntensities);
+			res.forEach((element) => {
+				setsOfIntensities.push(element.effectIntensity);
+			});
+		});
+		var fxObj = {
+			effectId: effectids,
+			setOfSurveys: setOfSurveys
+		};
+		fx.push(fxObj);
+	});
+	console.log('fx:', fx);
 };
