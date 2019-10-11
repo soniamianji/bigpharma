@@ -48,11 +48,9 @@ export default {
       (err, observations) => {
         if (err.length == 0) {
           this.observations = observations;
-          console.log(this.observations);
           this.returnedValues = chartFunction.chartFunction(observations);
-          this.data.labels = returnedValues[0];
-          this.data.datasets = returnedValues[1];
-          console.log(this.data.labels);
+          // this.data.labels = returnedValues[0];
+          // this.data.datasets = returnedValues[1];
           this.createChart("lineChart");
         } else {
           this.errors = err;
