@@ -5,7 +5,7 @@ const checkAauth = require("../middleware/check-auth");
 const hasTypes = require("./has-types");
 
 //get surveys by id
-router.get("/:id", checkAauth, (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const surveyId = req.params.id;
   db.getSurveyById(surveyId, function(errors, survey) {
     if (errors.length == 0) {
@@ -20,7 +20,7 @@ router.get("/:id", checkAauth, (req, res, next) => {
 });
 
 //get surveys by userid
-router.get("/", checkAauth, (req, res, next) => {
+router.get("/", (req, res, next) => {
   if (req.query.userId) {
     const userId = req.query.userId;
     db.getSurveyByUserId(userId, function(errors, surveys) {
