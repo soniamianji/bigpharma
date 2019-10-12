@@ -1,5 +1,12 @@
 <template>
-  <canvas id="lineChart"></canvas>
+  <div>
+    <div v-if="msg == ''">
+      <canvas id="lineChart"></canvas>
+    </div>
+    <div v-else>
+      <p class="white--text text-center">{{msg}}</p>
+    </div>
+  </div>
 </template>
 
 
@@ -15,6 +22,7 @@ export default {
   data() {
     return {
       errors: "",
+      msg: "",
       type: "line", // the type of chart
       data: {
         labels: [],
@@ -36,24 +44,29 @@ export default {
       (err, observations) => {
         if (err.length == 0) {
           this.observations = observations;
-          this.returnedValues = chartFunction.chartFunction(observations);
-          console.log(this.returnedValues);
+          if (observations.length == 0) {
+            this.msg =
+              "There are no data available for the graph to be created. Would you like to participate? ";
+          } else {
+            this.returnedValues = chartFunction.chartFunction(observations);
+            console.log(this.returnedValues);
 
-          console.log(this.returnedValues[1][0]);
-          //loop through the returned datasets
-          this.returnedValues[1].forEach(element => {
-            //get the effectName by effectId
-            effectClient.getEffectById(element.effectId, (err, effect) => {
-              if (err.length == 0) {
-                element.label = effect[0].effectName;
-                this.data.labels = this.returnedValues[0];
-                this.data.datasets = this.returnedValues[1];
-                this.createChart("lineChart");
-              } else {
-                console.log(err);
-              }
+            console.log(this.returnedValues[1][0]);
+            //loop through the returned datasets
+            this.returnedValues[1].forEach(element => {
+              //get the effectName by effectId
+              effectClient.getEffectById(element.effectId, (err, effect) => {
+                if (err.length == 0) {
+                  element.label = effect[0].effectName;
+                  this.data.labels = this.returnedValues[0];
+                  this.data.datasets = this.returnedValues[1];
+                  this.createChart("lineChart");
+                } else {
+                  console.log(err);
+                }
+              });
             });
-          });
+          }
         } else {
           this.errors = err;
         }

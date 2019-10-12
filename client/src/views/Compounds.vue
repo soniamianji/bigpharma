@@ -14,7 +14,7 @@
             </div>
           </v-flex>
         </v-layout>
-        <v-card dark width="50%" class="mx-auto">
+        <v-card dark width="70%" class="mx-auto">
           <v-card-title>
             <div class="subtitle-1 font-weight-medium">Compounds</div>
             <div class="flex-grow-1"></div>
