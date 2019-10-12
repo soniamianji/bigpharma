@@ -112,6 +112,47 @@ module.exports.getObservationsBySurveyId = async function(surveyId, callback) {
   callback(errors, observations);
 };
 
+module.exports.getObservationsBySurveyIdAndCompoundId = async function(
+  surveyId,
+  compoundId,
+  callback
+) {
+  let response;
+
+  try {
+    response = await sendRequest.sendRequest(
+      "GET",
+      "/observations?surveyId=" + surveyId + "&compoundId=" + compoundId
+    );
+  } catch (errors) {
+    callback(errors);
+    return;
+  }
+
+  let errors = [];
+  let observations = null;
+
+  switch (response.status) {
+    case 200:
+      let yamlObservations = await response.text();
+      observations = YAML.parse(yamlObservations);
+      break;
+
+    case 404:
+      errors = ["notFound"];
+      break;
+
+    case 500:
+      errors = ["backendError"];
+      break;
+
+    default:
+      errors = ["unknown response code"];
+  }
+
+  callback(errors, observations);
+};
+
 module.exports.getObservationsByUserIdAndCompoundId = async function(
   userId,
   compoundId,

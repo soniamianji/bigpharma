@@ -39,10 +39,9 @@
 <script>
 const client = require("../../SDK/accountsSDK");
 export default {
-  props: ["isUserSignedIn"],
+  props: ["isUserSignedIn", "accountId"],
   data() {
     return {
-      accountId: this.$route.params.id,
       valid: true,
       checkbox: false,
       lazy: false

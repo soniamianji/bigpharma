@@ -50,9 +50,13 @@ router.get("/", checkAauth, (req, res, next) => {
     });
   }
   //get surveys by status
-  else if (req.query.status) {
+  else if (req.query.status && req.query.compoundId) {
     const status = req.query.status;
-    db.getSurveyByStatus(status, function(errors, survey) {
+    const compoundId = req.query.compoundId;
+    db.getSurveyByCompoundIdAndStatus(compoundId, status, function(
+      errors,
+      survey
+    ) {
       if (errors.length == 0) {
         res.status(200).json(survey);
       } else {

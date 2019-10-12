@@ -13,6 +13,7 @@
 <script>
 const observationsClient = require("../SDK/observationSDK");
 const effectClient = require("../SDK/effectsSDK");
+const surveyClient = require("../SDK/surveySDK");
 const chartFunction = require("../chartFunc");
 import Chart from "chart.js";
 import * as ss from "simple-statistics";
@@ -34,43 +35,62 @@ export default {
     };
   },
   created() {
-    console.log("created");
     const compoundid = this.compoundId;
-
-    //get observations by compoundId
-    observationsClient.getObservationsByCompoundId(
+    //1 represnts true and 0 represents false in db
+    const status = 1;
+    //getting the surveys by compoundId and status of completion so we can only use the observations that are completed
+    surveyClient.getSurveysByCompoundIdAndStatus(
       compoundid,
-      (err, observations) => {
+      status,
+      (err, survey) => {
         if (err.length == 0) {
-          this.observations = observations;
-          if (observations.length == 0) {
-            this.msg =
-              "There are no data available for the graph to be created. Would you like to participate? ";
-          } else {
-            this.returnedValues = chartFunction.chartFunction(observations);
-            console.log(this.returnedValues);
-
-            console.log(this.returnedValues[1][0]);
-            //loop through the returned datasets
-            this.returnedValues[1].forEach(element => {
-              //get the effectName by effectId
-              effectClient.getEffectById(element.effectId, (err, effect) => {
+          console.log(survey);
+          survey.forEach(element => {
+            observationsClient.getObservationsBySurveyIdAndCompoundId(
+              element.surveyId,
+              element.compoundId,
+              (err, observations) => {
                 if (err.length == 0) {
-                  element.label = effect[0].effectName;
-                  this.data.labels = this.returnedValues[0];
-                  this.data.datasets = this.returnedValues[1];
-                  this.createChart("lineChart");
+                  this.observations = observations;
+                  if (observations.length == 0) {
+                    this.msg =
+                      "There are no data available for the graph to be created. Would you like to participate? ";
+                  } else {
+                    this.returnedValues = chartFunction.chartFunction(
+                      observations
+                    );
+
+                    console.log(this.returnedValues[1][0]);
+                    //loop through the returned datasets
+                    this.returnedValues[1].forEach(element => {
+                      //get the effectName by effectId
+                      effectClient.getEffectById(
+                        element.effectId,
+                        (err, effect) => {
+                          if (err.length == 0) {
+                            element.label = effect[0].effectName;
+                            this.data.labels = this.returnedValues[0];
+                            this.data.datasets = this.returnedValues[1];
+                            this.createChart("lineChart");
+                          } else {
+                            console.log(err);
+                          }
+                        }
+                      );
+                    });
+                  }
                 } else {
-                  console.log(err);
+                  this.errors = err;
                 }
-              });
-            });
-          }
+              }
+            );
+          });
         } else {
-          this.errors = err;
+          console.log(err);
         }
       }
     );
+    //get observations by compoundId
   },
   methods: {
     createChart() {

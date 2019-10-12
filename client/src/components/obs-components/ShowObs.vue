@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-text-field v-if="isLoading " color="success" loading disabled></v-text-field>
+    <v-overlay v-if="isLoading ">
+      <v-text-field color="success" loading disabled></v-text-field>
+    </v-overlay>
 
     <div v-else-if="noObservationsEntered == false" class="grey darken-3 pt-5">
       <div v-for="(obs) in observationsArr" :key="obs.id">

@@ -148,13 +148,17 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
   callback(errors, survey);
 };
 
-module.exports.getSurveyByStatus = async function(status, callback) {
+module.exports.getSurveysByCompoundIdAndStatus = async function(
+  compoundId,
+  status,
+  callback
+) {
   let response;
 
   try {
     response = await sendRequest.sendRequest(
       "GET",
-      "/surveys?status=" + status
+      "/surveys?compoundId=" + compoundId + "&status=" + status
     );
   } catch (errors) {
     callback(errors);
@@ -162,12 +166,12 @@ module.exports.getSurveyByStatus = async function(status, callback) {
   }
 
   let errors = [];
-  let survey = null;
+  let surveys = null;
 
   switch (response.status) {
     case 200:
       let yamlSurvey = await response.text();
-      survey = YAML.parse(yamlSurvey);
+      surveys = YAML.parse(yamlSurvey);
       break;
 
     case 404:
@@ -186,7 +190,7 @@ module.exports.getSurveyByStatus = async function(status, callback) {
       errors = ["unknown response code"];
   }
 
-  callback(errors, survey);
+  callback(errors, surveys);
 };
 
 module.exports.createSurvey = async function(survey, callback) {

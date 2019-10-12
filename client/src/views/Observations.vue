@@ -18,7 +18,11 @@
       </v-flex>
     </v-layout>
     <h6 v-if="errors !== '' " class="red--text pa-5 text-center">{{errors[0]}}</h6>
-    <ObservationForm :account="account" @obsCretaed="newObscreated"></ObservationForm>
+    <ObservationForm
+      :account="account"
+      @obsCretaed="newObscreated"
+      :compoundIndiciation="indication"
+    ></ObservationForm>
     <ShowObs
       class="customHeight"
       :account="account"
