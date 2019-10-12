@@ -2,16 +2,13 @@
   <v-card max-width="344" class="mx-auto" dark flat outlined>
     <v-list-item>
       <v-list-item-avatar color="grey" width="65" height="65" class="mt-3">
-        <v-img
-          class="elevation-1"
-          src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/dihydrohydroxycodeinone/PNG"
-        ></v-img>
+        <v-img class="elevation-1" :src="urlImg"></v-img>
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="headline">Compound Name</v-list-item-title>
+        <v-list-item-title class="headline">{{compound.compoundName}}</v-list-item-title>
         <v-list-item-subtitle>
           <span class="font-weight-thin">for</span>
-          Indication
+          {{compound.indicationName}}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -32,12 +29,66 @@
     </v-simple-table>
     <v-divider></v-divider>
     <v-card-text>
-      <p>Dataset is based on X surveys from Y subjects with a total of X datapoints.</p>
-      <p>1 side effect(s) reported.</p>
+      <p>Dataset is based on {{numberOfSurvyes}} surveys from {{numberOfParticipants}} subjects with a total of {{numberOfObservations}} datapoints.</p>
     </v-card-text>
 
     <v-card-actions>
-      <v-btn text color block outlined class="grey darken-2">Participate</v-btn>
+      <v-btn text color block outlined class="grey darken-2" @click="contribute">Participate</v-btn>
     </v-card-actions>
   </v-card>
 </template>
+
+<script>
+const surveyClient = require("../SDK/surveySDK");
+export default {
+  props: [
+    "numberOfSurvyes",
+    "numberOfParticipants",
+    "numberOfObservations",
+    "compound",
+    "account",
+    "isUserSignedIn"
+  ],
+  data() {
+    return {
+      urlImg: ""
+    };
+  },
+  created() {
+    console.log(this.compound.compoundName);
+    this.urlImg =
+      "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/" +
+      this.compound.compoundName +
+      "/PNG";
+  },
+  methods: {
+    contribute: function() {
+      if (this.isUserSignedIn == true) {
+        const userId = this.account.id;
+        const surveyObj = {
+          userId: userId,
+          compoundId: this.compound.id,
+          createdAt: Date.parse(new Date())
+        };
+        surveyClient.createSurvey(surveyObj, (error, id) => {
+          if (error.length == 0) {
+            const surveyId = id;
+            const compoundId = surveyObj.compoundId;
+            this.$router.push({
+              path:
+                "/observations?surveyId=" +
+                surveyId +
+                "&compoundId=" +
+                compoundId
+            });
+          } else {
+            this.errors = error;
+          }
+        });
+      } else {
+        this.$router.push({ path: "/login" });
+      }
+    }
+  }
+};
+</script>

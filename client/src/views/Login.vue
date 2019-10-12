@@ -5,7 +5,7 @@
         <v-flex xs12>
           <div class="pa-5">
             <div class="mx-auto text-center" width="800">
-              <div class="display-1 white--text font-weight-thin">Login</div>
+              <div class="display-1 white--text font-weight-thin">Login to Continue</div>
             </div>
           </div>
         </v-flex>
