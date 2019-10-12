@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in compoundArr" :key="item.compound_id  ">
+            <tr v-for="item in compoundArr" :key="item.index  ">
               <td>{{ item.surveyId }}</td>
 
               <td>{{ item.name }}</td>
@@ -46,18 +46,18 @@ const client = require("../../SDK/surveySDK");
 const clientCompound = require("../../SDK/compoundSDK");
 export default {
   components: { DeleteSurvey },
+  props: ["accountId"],
   data() {
     return {
       surveys: "",
       compoundArr: [],
-      userId: this.$route.params.id,
       msg: "",
       errors: ""
     };
   },
   created() {
     //get surveys by user id
-    client.getSurveyByUserId(this.userId, (err, surveys) => {
+    client.getSurveyByUserId(this.accountId, (err, surveys) => {
       if (err.length == 0) {
         if (surveys.length == 0) {
           //display the msgs if no surveys found

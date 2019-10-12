@@ -85,10 +85,14 @@ exports.getSurveyByCompoundId = function(compoundId, callback) {
 };
 
 //get surveys by completion status
-exports.getSurveyByStatus = function(status, callback) {
+exports.getSurveyByCompoundIdAndStatus = function(
+  compoundId,
+  status,
+  callback
+) {
   const query = `
-    SELECT * FROM surveys WHERE complete=? ORDER BY id`;
-  const values = [status];
+    SELECT * FROM surveys WHERE comoundId=? AND complete=? ORDER BY id`;
+  const values = [compoundId, status];
 
   db.all(query, values, (err, surveys) => {
     if (err) {

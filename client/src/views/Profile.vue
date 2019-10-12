@@ -30,15 +30,15 @@
                 <v-list-item-title>Username</v-list-item-title>
                 <v-list-item-subtitle>{{account.username}}</v-list-item-subtitle>
 
-                <UpdateUsername @usernameUpdated="newUsername"></UpdateUsername>
+                <UpdateUsername @usernameUpdated="newUsername" :accountId="id"></UpdateUsername>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
       </v-card-text>
     </v-card>
-    <UserSurveys @surveyDeleted="surveysDeleted" :key="componnetKey"></UserSurveys>
-    <DeleteAccount @accountDeleted="accountDeleted"></DeleteAccount>
+    <UserSurveys :accountId="id" @surveyDeleted="surveysDeleted" :key="componnetKey"></UserSurveys>
+    <DeleteAccount :accountId="id" @accountDeleted="accountDeleted"></DeleteAccount>
   </v-app>
 </template>
 

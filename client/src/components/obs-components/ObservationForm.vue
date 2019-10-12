@@ -58,8 +58,9 @@
 <script>
 const EffectClient = require("../../SDK/effectsSDK");
 const ObservationClient = require("../../SDK/observationSDK");
+
 export default {
-  props: ["account"],
+  props: ["account", "compoundIndiciation"],
   data() {
     return {
       valid: true,
@@ -72,6 +73,7 @@ export default {
       effectRules: [v => !!v || "effect is required"],
       surveyId: this.$route.query.surveyId,
       compoundId: this.$route.query.compoundId,
+      indication: "",
       newObsCreated: false,
       errors: ""
     };
@@ -82,10 +84,17 @@ export default {
       if (err.length == 0) {
         this.effects = effects;
         console.log(this.effects);
+        for (var i = 0; i < effects.length; i++) {
+          if (this.compoundIndiciation == effects[i].effectName) {
+            this.selectedEffect = effects[i].id;
+            this.indication = effects[i].id;
+          }
+        }
       } else {
         this.errors = err;
       }
     });
+
     let updateTime = setInterval(this.showTime, 1000);
   },
 
@@ -137,8 +146,8 @@ export default {
       ObservationClient.createObservation(formData, (err, id) => {
         if (err.length == 0) {
           this.newObsCreated = true;
-          this.$refs.form.reset();
-
+          this.intensity = 0;
+          this.selectedEffect = this.indication;
           this.$emit("obsCretaed", this.newObsCreated);
         } else {
           this.errors = err;

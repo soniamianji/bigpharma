@@ -53,6 +53,22 @@ router.get("/", (req, res, next) => {
         res.status(500).end();
       }
     });
+  } else if (req.query.surveyId && req.query.compoundId) {
+    const surveyId = req.query.surveyId;
+    const compoundId = req.query.compoundId;
+    db.getObservationsBySurveyIdAndCompoundId(surveyId, compoundId, function(
+      errors,
+      observations
+    ) {
+      if (errors.length == 0) {
+        res.body = observations;
+        next();
+        // res.status(200).json(survey);
+      } else if (errors.includes("databaseError")) {
+      } else {
+        res.status(500).end();
+      }
+    });
   }
 });
 

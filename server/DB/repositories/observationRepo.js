@@ -38,6 +38,29 @@ exports.getObservationsBySurveyId = function(surveyId, callback) {
   });
 };
 
+exports.getObservationsBySurveyIdAndCompoundId = function(
+  surveyId,
+  compoundId,
+  callback
+) {
+  const query = `
+		SELECT * FROM observations WHERE surveyId=? AND compoundId = ? ORDER BY id
+	`;
+  const values = [surveyId, compoundId];
+  db.all(query, values, function(error, observations) {
+    if (error) {
+      //check foreignkey violation
+      if (true) {
+        callback(["compoundId Not Found"]);
+      } else {
+        callback(["databaseError"]);
+      }
+    } else {
+      callback([], observations);
+    }
+  });
+};
+
 exports.getObservationsByCompoundId = function(compoundId, callback) {
   const query = `
 		SELECT * FROM observations WHERE compoundId=? ORDER BY id

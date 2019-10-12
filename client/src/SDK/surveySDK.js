@@ -148,13 +148,17 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
   callback(errors, survey);
 };
 
-module.exports.getSurveyByStatus = async function(status, callback) {
+module.exports.getSurveyByCompoundIdAndStatus = async function(
+  compoundId,
+  status,
+  callback
+) {
   let response;
 
   try {
     response = await sendRequest.sendRequest(
       "GET",
-      "/surveys?status=" + status
+      "/surveys?compoundId=" + compoundId + "&status=" + status
     );
   } catch (errors) {
     callback(errors);

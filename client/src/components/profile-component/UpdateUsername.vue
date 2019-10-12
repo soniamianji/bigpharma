@@ -16,10 +16,6 @@
       ></v-text-field>
 
       <v-btn type="submit" color="warning" class="text--white" small>update</v-btn>
-
-      <v-btn class="mx-2" fab dark x-small color="red" @click="cancelUpdate()">
-        <v-icon dark>mdi-minus</v-icon>
-      </v-btn>
     </v-form>
   </div>
 </template>
@@ -27,10 +23,10 @@
 <script>
 const client = require("../../SDK/accountsSDK");
 export default {
+  props: ["accountId"],
   data() {
     return {
       valid: true,
-      accountId: this.$route.params.id,
       updatedUsername: "",
       isFormHidden: true,
       nameRules: [
@@ -42,9 +38,6 @@ export default {
   methods: {
     showForm() {
       this.isFormHidden = !this.isFormHidden;
-    },
-    cancelUpdate() {
-      this.$refs.form.reset();
     },
 
     updateUser() {
