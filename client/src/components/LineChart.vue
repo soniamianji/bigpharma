@@ -26,8 +26,7 @@ export default {
       type: "line", // the type of chart
       data: {
         labels: [],
-        datasets: [],
-        options: {}
+        datasets: []
       },
       observations: [],
       effectNamesWithNoDups: "",
@@ -83,7 +82,28 @@ export default {
           labels: this.data.labels,
           datasets: this.data.datasets
         },
-        options: this.options
+        options: {
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  color: "rgba(255, 255, 255, 0.1)"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  color: "rgba(255, 255, 255, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "Effect Intensity"
+                }
+              }
+            ]
+          }
+        }
       });
     }
   }
