@@ -1,5 +1,3 @@
-const effectClient = require('./SDK/effectsSDK');
-
 module.exports.chartFunction = function chartFunction(observations) {
 	const rawData = [];
 	for (var i = 0; i < observations.length; i++) {

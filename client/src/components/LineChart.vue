@@ -5,6 +5,7 @@
 
 <script>
 const observationsClient = require("../SDK/observationSDK");
+const effectClient = require("../SDK/effectsSDK");
 const chartFunction = require("../chartFunc");
 import Chart from "chart.js";
 import * as ss from "simple-statistics";
@@ -37,10 +38,22 @@ export default {
           this.observations = observations;
           this.returnedValues = chartFunction.chartFunction(observations);
           console.log(this.returnedValues);
-          this.data.labels = this.returnedValues[0];
-          this.data.datasets = this.returnedValues[1];
-          console.log(this.data.datasets);
-          this.createChart("lineChart");
+
+          console.log(this.returnedValues[1][0]);
+          //loop through the returned datasets
+          this.returnedValues[1].forEach(element => {
+            //get the effectName by effectId
+            effectClient.getEffectById(element.effectId, (err, effect) => {
+              if (err.length == 0) {
+                element.label = effect[0].effectName;
+                this.data.labels = this.returnedValues[0];
+                this.data.datasets = this.returnedValues[1];
+                this.createChart("lineChart");
+              } else {
+                console.log(err);
+              }
+            });
+          });
         } else {
           this.errors = err;
         }
