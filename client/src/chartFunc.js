@@ -1,5 +1,3 @@
-const effectClient = require("./SDK/effectsSDK");
-
 module.exports.chartFunction = function chartFunction(observations) {
   const rawData = [];
   for (var i = 0; i < observations.length; i++) {
@@ -154,29 +152,17 @@ module.exports.chartFunction = function chartFunction(observations) {
   var timeLineDivisor = timeLineDivisor(avgIntensity);
   console.log(timeLineDivisor);
 
-  //get the effectName by effectId
-  fx.forEach(element => {
-    effectClient.getEffectById(element.effectId, (err, effect) => {
-      if (err.length == 0) {
-        element.effectName = effect[0].effectName;
-      } else {
-        console.log(err);
-      }
-    });
-  });
-
   console.log("fx:", fx);
   var labels = [1, 2, 3, 4];
   var datasets = [];
   fx.forEach(element => {
     var obj = {
-      label: element.effectName,
+      effectId: element.effectId,
+      label: "",
       data: element.avgIntensity
     };
-    console.log(element);
     datasets.push(obj);
   });
   var values = [labels, datasets];
-  console.log(datasets);
   return values;
 };
