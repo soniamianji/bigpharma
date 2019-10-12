@@ -34,24 +34,11 @@ router.get("/", (req, res, next) => {
         res.status(500).end();
       }
     });
-
-    //get surveys by compund Id
-  } else if (req.query.compoundId) {
-    const compoundId = req.query.compoundId;
-    db.getSurveyByCompoundId(compoundId, function(errors, survey) {
-      if (errors.length == 0) {
-        res.body = survey;
-        next();
-        // res.status(200).json(survey);
-      } else if (errors.includes("compoundNotFound")) {
-      } else {
-        res.status(500).end();
-      }
-    });
   }
   //get surveys by status
-  else if (req.query.status && req.query.compoundId) {
-    const status = req.query.status;
+  else if (req.query.completed && req.query.compoundId) {
+    console.log("status query");
+    const status = req.query.completed;
     const compoundId = req.query.compoundId;
     db.getSurveyByCompoundIdAndStatus(compoundId, status, function(
       errors,
@@ -67,6 +54,7 @@ router.get("/", (req, res, next) => {
     //get all surveys
     db.getAllSurveys(function(errors, surveys) {
       if (errors.length == 0) {
+        console.log("all query");
         res.body = surveys;
         next();
         // res.status(200).json(surveys);

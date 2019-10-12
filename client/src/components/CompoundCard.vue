@@ -22,14 +22,15 @@
       </thead>
       <tbody>
         <tr>
-          <td>Headache</td>
-          <td>-26%</td>
+          <td>{{compound.indicationName}}</td>
+          <td>{{this.deltaIndication}}%</td>
         </tr>
       </tbody>
     </v-simple-table>
     <v-divider></v-divider>
     <v-card-text>
       <p>Dataset is based on {{numberOfSurvyes}} surveys from {{numberOfParticipants}} subjects with a total of {{numberOfObservations}} datapoints.</p>
+      <p>{{sideEffects.length}} side Effects are reported.</p>
     </v-card-text>
 
     <v-card-actions>
@@ -47,7 +48,9 @@ export default {
     "numberOfObservations",
     "compound",
     "account",
-    "isUserSignedIn"
+    "isUserSignedIn",
+    "sideEffects",
+    "deltaIndication"
   ],
   data() {
     return {

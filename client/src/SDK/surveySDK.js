@@ -150,7 +150,7 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
 
 module.exports.getSurveysByCompoundIdAndStatus = async function(
   compoundId,
-  status,
+  completed,
   callback
 ) {
   let response;
@@ -158,7 +158,7 @@ module.exports.getSurveysByCompoundIdAndStatus = async function(
   try {
     response = await sendRequest.sendRequest(
       "GET",
-      "/surveys?compoundId=" + compoundId + "&status=" + status
+      "/surveys?completed=" + completed + "&compoundId=" + compoundId
     );
   } catch (errors) {
     callback(errors);

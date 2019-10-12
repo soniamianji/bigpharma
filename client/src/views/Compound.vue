@@ -12,10 +12,17 @@
           :numberOfSurvyes="numberOfSurvyes"
           :numberOfParticipants="numberOfParticipants"
           :numberOfObservations="observationsToBeEvaluated.length"
+          :sideEffects="sideEffects"
+          :deltaIndication="deltaIndication"
         ></CompoundCard>
       </v-flex>
       <v-flex xs8>
-        <LineChart :compoundId="id" :observations="observationsToBeEvaluated" :key="componentKey"></LineChart>
+        <LineChart
+          :compoundId="id"
+          :observations="observationsToBeEvaluated"
+          :key="componentKey"
+          @avragedData="avgData"
+        ></LineChart>
       </v-flex>
     </v-layout>
   </v-container>
@@ -30,6 +37,7 @@ import CompoundCard from "../components/CompoundCard";
 const compoundClient = require("../SDK/compoundSDK");
 const surveyClient = require("../SDK/surveySDK");
 const observationClient = require("../SDK/observationSDK");
+const effectClient = require("../SDK/effectsSDK");
 export default {
   components: { HeadPic, LineChart, CompoundCard },
   props: ["account", "isUserSignedIn"],
@@ -41,7 +49,10 @@ export default {
       numberOfSurvyes: "",
       numberOfParticipants: "",
       observationsToBeEvaluated: "",
-      componentKey: 0
+      componentKey: 0,
+      sideEffects: "",
+      indicationsId: "",
+      deltaIndication: ""
     };
   },
   created() {
@@ -49,10 +60,8 @@ export default {
     compoundClient.getCompoundById(this.id, (errors, compound) => {
       if (errors.length == 0) {
         this.compound = compound;
-        console.log(compound);
       } else {
         this.errors = errors;
-        console.log(errors);
       }
     });
     //get surveys based on status and compound id
@@ -63,6 +72,7 @@ export default {
       status,
       (err, surveys) => {
         if (err.length == 0) {
+          console.log(surveys);
           this.numberOfSurvyes = surveys.length;
           let userIdsfromSurveys = [];
           for (var i = 0; i < surveys.length; i++) {
@@ -78,6 +88,25 @@ export default {
               if (err.length == 0) {
                 this.observationsToBeEvaluated = observations;
                 this.componentKey += 1;
+                //get the effects to figure
+                effectClient.getAllEffects((err, effects) => {
+                  if (err.length == 0) {
+                    let sideEffectNames = [];
+                    for (var i = 0; i < effects.length; i++) {
+                      if (
+                        effects[i].effectName == this.compound.indicationName
+                      ) {
+                        this.indicationId = effects[i].id;
+                      }
+                    }
+                    for (var i = 0; i < observations.length; i++) {
+                      if (observations[i].effectId !== this.indicationId) {
+                        sideEffectNames.push(observations[i].effectId);
+                      }
+                    }
+                    this.sideEffects = [...new Set(sideEffectNames)];
+                  }
+                });
               } else {
                 this.errors = err;
               }
@@ -88,6 +117,27 @@ export default {
         }
       }
     );
+  },
+  methods: {
+    avgData(value) {
+      console.log(value[0].data);
+      var iAlpha = value[0].data[0];
+      var iOmega = value[0].data[value[0].data.length - 1];
+      var percentage = (((iAlpha - iOmega) / iAlpha) * 100).toFixed(2);
+      var parcedPercentage = parseFloat(percentage);
+      console.log(iAlpha);
+      if (iAlpha > iOmega) {
+        console.log("iAlpha > iOmega");
+        var deltaIntensity = -Math.abs(parcedPercentage);
+        this.deltaIndication = deltaIntensity;
+        console.log(deltaIntensity);
+      } else {
+        console.log("iAlpha < iOmega");
+        var deltaIntensity = Math.abs(parcedPercentage);
+        this.deltaIndication = deltaIntensity;
+        console.log(deltaIntensity);
+      }
+    }
   }
 };
 </script>

@@ -49,6 +49,7 @@ export default {
             element.label = effect[0].effectName;
             this.data.labels = this.returnedValues[0];
             this.data.datasets = this.returnedValues[1];
+            this.$emit("avragedData", this.data.datasets);
             this.createChart("lineChart");
           } else {
             console.log(err);
