@@ -59,7 +59,6 @@ export default {
                     this.returnedValues = chartFunction.chartFunction(
                       observations
                     );
-
                     console.log(this.returnedValues[1][0]);
                     //loop through the returned datasets
                     this.returnedValues[1].forEach(element => {
