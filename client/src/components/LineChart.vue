@@ -83,6 +83,9 @@ export default {
           datasets: this.data.datasets
         },
         options: {
+          legend: {
+            position: "right"
+          },
           scales: {
             xAxes: [
               {
