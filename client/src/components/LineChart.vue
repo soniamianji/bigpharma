@@ -40,7 +40,7 @@ export default {
     //1 represnts true and 0 represents false in db
     const status = 1;
     //getting the surveys by compoundId and status of completion so we can only use the observations that are completed
-    surveyClient.getSurveyByCompoundIdAndStatus(
+    surveyClient.getSurveysByCompoundIdAndStatus(
       compoundid,
       status,
       (err, survey) => {

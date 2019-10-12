@@ -148,7 +148,7 @@ module.exports.getSurveyByCompoundId = async function(compoundId, callback) {
   callback(errors, survey);
 };
 
-module.exports.getSurveyByCompoundIdAndStatus = async function(
+module.exports.getSurveysByCompoundIdAndStatus = async function(
   compoundId,
   status,
   callback
@@ -166,12 +166,12 @@ module.exports.getSurveyByCompoundIdAndStatus = async function(
   }
 
   let errors = [];
-  let survey = null;
+  let surveys = null;
 
   switch (response.status) {
     case 200:
       let yamlSurvey = await response.text();
-      survey = YAML.parse(yamlSurvey);
+      surveys = YAML.parse(yamlSurvey);
       break;
 
     case 404:
@@ -190,7 +190,7 @@ module.exports.getSurveyByCompoundIdAndStatus = async function(
       errors = ["unknown response code"];
   }
 
-  callback(errors, survey);
+  callback(errors, surveys);
 };
 
 module.exports.createSurvey = async function(survey, callback) {

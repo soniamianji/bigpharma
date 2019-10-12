@@ -35,7 +35,7 @@
                   </td>
                   <td>{{ item.indication }}</td>
                   <td>{{ item.numberOfParticipants }}</td>
-                  <td>{{ item.numberOfObservations }}</td>
+                  <td>{{ item.numberOfSurveys }}</td>
                 </tr>
               </tbody>
             </template>
@@ -50,8 +50,9 @@
 
 <script>
 import HeadPic from "../components/HeadPic";
-const compound = require("../SDK/compoundSDK");
-const obsClient = require("../SDK/observationSDK");
+const compoundClient = require("../SDK/compoundSDK");
+const observationClient = require("../SDK/observationSDK");
+const surveyClient = require("../SDK/surveySDK");
 export default {
   props: ["account", "isUserSignedIn"],
   components: { HeadPic },
@@ -60,6 +61,7 @@ export default {
       selected: [],
       errors: "",
       search: "",
+      completedSurveyObservations: [],
       headers: [
         {
           text: "Name of compound",
@@ -69,43 +71,49 @@ export default {
         },
         { text: "Indication", value: "indication" },
         { text: "Number Of Participants", value: "numberOfParticipants" },
-        { text: "Number Of Observations", value: "numberOfObservations" }
+        { text: "Number Of Surveys completed", value: "numberOfSurveys" }
       ],
       items: []
     };
   },
   created() {
-    compound.getAllCompounds((errors, compounds) => {
+    compoundClient.getAllCompounds((errors, compounds) => {
       if (errors.length == 0) {
         for (var i = 0; i < compounds.length; i++) {
           const compoundObj = {
             name: compounds[i].compoundName,
             indication: compounds[i].indicationName,
             numberOfParticipants: 0,
-            numberOfObservations: "",
+            numberOfSurveys: "",
             id: compounds[i].id
           };
 
-          //get obs by compound id to figure out the number of obs for each compound
-          obsClient.getObservationsByCompoundId(compoundObj.id, (err, obs) => {
-            if (err.length == 0) {
-              if (obs !== null) {
-                compoundObj.numberOfObservations = obs.length;
-
-                //to find the number of participants on each compound
-                let userIdsfromobs = [];
-                for (var i = 0; i < obs.length; i++) {
-                  userIdsfromobs.push(obs[i].userId);
+          //get number of observations that belong to the completed surveys
+          //first get the surveys by compoundId and status of completion
+          const status = 1; //means completed
+          surveyClient.getSurveysByCompoundIdAndStatus(
+            compoundObj.id,
+            status,
+            (err, surveys) => {
+              if (err.length == 0) {
+                //now get the number of obs for each survey
+                if (surveys !== null) {
+                  compoundObj.numberOfSurveys = surveys.length;
+                  console.log(compoundObj.numberOfSurveys);
+                  let userIdsfromSurveys = [];
+                  for (var i = 0; i < surveys.length; i++) {
+                    userIdsfromSurveys.push(surveys[i].userId);
+                  }
+                  let participantArray = [...new Set(userIdsfromSurveys)];
+                  compoundObj.numberOfParticipants = participantArray.length;
+                } else {
+                  compoundObj.numberOfSurveys = 0;
                 }
-                let participantArray = [...new Set(userIdsfromobs)];
-                compoundObj.numberOfParticipants = participantArray.length;
               } else {
-                compoundObj.numberOfObservations = 0;
+                this.errors = err;
               }
-            } else {
-              this.errors = err;
             }
-          });
+          );
 
           this.items.push(compoundObj);
         }
