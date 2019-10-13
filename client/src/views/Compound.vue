@@ -4,7 +4,7 @@
   <!-- Provides the application the proper gutter -->
   <v-container fluid dark class="grey darken-3 fill-height">
     <v-layout row class="mx-auto" mt-10>
-      <v-flex xs4>
+      <v-flex xs12 md4 pl-10 pr-5>
         <CompoundCard
           :account="account"
           :isUserSignedIn="isUserSignedIn"
@@ -17,7 +17,7 @@
           :key="componentKey"
         ></CompoundCard>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs12 md8 pl-5 pr-10>
         <LineChart
           :compoundId="id"
           :observations="observationsToBeEvaluated"
