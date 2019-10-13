@@ -14,6 +14,7 @@
           :numberOfObservations="observationsToBeEvaluated.length"
           :sideEffects="sideEffects"
           :deltaIndication="deltaIndication"
+          :key="componentKey"
         ></CompoundCard>
       </v-flex>
       <v-flex xs8>
@@ -52,7 +53,8 @@ export default {
       componentKey: 0,
       sideEffects: "",
       indicationsId: "",
-      deltaIndication: ""
+      deltaIndication: "",
+      componentKey: 0
     };
   },
   created() {
@@ -60,6 +62,7 @@ export default {
     compoundClient.getCompoundById(this.id, (errors, compound) => {
       if (errors.length == 0) {
         this.compound = compound;
+        this.componentKey += 1;
       } else {
         this.errors = errors;
       }

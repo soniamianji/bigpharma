@@ -23,7 +23,8 @@
       <tbody>
         <tr>
           <td>{{compound.indicationName}}</td>
-          <td>{{this.deltaIndication}}%</td>
+          <td v-if="deltaIndication !== NaN || deltaIndication !== null ">{{deltaIndication}}%</td>
+          <td v-else>--</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -64,6 +65,7 @@ export default {
   },
   created() {
     console.log(this.compound.compoundName);
+
     this.urlImg =
       "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/" +
       this.compound.compoundName +

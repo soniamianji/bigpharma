@@ -23,13 +23,14 @@
               <td>{{ item.name }}</td>
 
               <td>{{ item.createdAt }}</td>
-              <router-link
-                class="customColor"
-                :to="'/observations?surveyId=' + item.surveyId + '&compoundId=' + item.compound_id"
-              >
-                <td class="pt-2" v-if="item.status === 0">Not completed</td>
-                <td class="pt-2" v-else>completed</td>
-              </router-link>
+
+              <td class="pt-2" v-if="item.status === 0">
+                <router-link
+                  class="customColor"
+                  :to="'/observations?surveyId=' + item.surveyId + '&compoundId=' + item.compound_id"
+                >Not completed</router-link>
+              </td>
+              <td class="pt-2" v-else>completed</td>
 
               <DeleteSurvey :surveyId="item.surveyId" @surveyDeleted="deletedSurvey"></DeleteSurvey>
             </tr>
