@@ -37,7 +37,6 @@ router.get("/", (req, res, next) => {
   }
   //get surveys by status
   else if (req.query.completed && req.query.compoundId) {
-    console.log("status query");
     const status = req.query.completed;
     const compoundId = req.query.compoundId;
     db.getSurveyByCompoundIdAndStatus(compoundId, status, function(
@@ -54,7 +53,6 @@ router.get("/", (req, res, next) => {
     //get all surveys
     db.getAllSurveys(function(errors, surveys) {
       if (errors.length == 0) {
-        console.log("all query");
         res.body = surveys;
         next();
         // res.status(200).json(surveys);

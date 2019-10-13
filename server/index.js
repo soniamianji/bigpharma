@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
     res.setHeader("Content-Type", "application/x-yaml");
     //convert the jsonfile to yaml
     res.body = YAML.stringify(res.body);
-    console.log(res.body);
+
     //send the response
     res.status(200).send(res.body);
   } else if (req.accepts("application/json")) {

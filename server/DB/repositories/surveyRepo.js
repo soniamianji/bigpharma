@@ -90,7 +90,6 @@ exports.getSurveyByCompoundIdAndStatus = function(
   status,
   callback
 ) {
-  console.log("status", status);
   const query = `
     SELECT * FROM surveys WHERE compoundId=? AND completed =? ORDER BY id`;
   const values = [compoundId, status];
