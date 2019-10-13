@@ -1,5 +1,5 @@
 <template>
-  <v-btn right dark x-small text color="red" @click="deleteSurvey">
+  <v-btn right dark x-small text color="red" @click="deleteSurvey" class="mt-3">
     <v-icon left>{{ icons.mdiDelete }}</v-icon>
   </v-btn>
 </template>
