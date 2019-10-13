@@ -36,6 +36,10 @@
     <v-card-actions>
       <v-btn text color block outlined class="grey darken-2" @click="contribute">Participate</v-btn>
     </v-card-actions>
+    <p
+      v-if="errors !== ''"
+      class="red--text text-center"
+    >Someting went wrong, please try again later.</p>
   </v-card>
 </template>
 
@@ -54,7 +58,8 @@ export default {
   ],
   data() {
     return {
-      urlImg: ""
+      urlImg: "",
+      errors: ""
     };
   },
   created() {

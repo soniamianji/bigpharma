@@ -4,7 +4,7 @@
       <v-text-field color="success" loading disabled></v-text-field>
     </v-overlay>
 
-    <div v-else-if="noObservationsEntered == false" class="grey darken-3 pt-5">
+    <div v-else-if="noObservationsEntered == false" class="grey darken-3 pt-5 pa-3">
       <div v-for="(obs) in observationsArr" :key="obs.id">
         <EditObs
           v-if="obs.isEditClicked ==true"

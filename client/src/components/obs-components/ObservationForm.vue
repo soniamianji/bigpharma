@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid class="mt-12">
+  <v-container fluid>
     <!--START of INPUTS -->
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-card max-width="600" class="mx-auto mt-n12 grey lighten-4">
+      <v-card max-width="600" class="mx-auto grey lighten-4">
         <v-menu bottom left>
           <template v-slot:activator="{ on }">
             <v-btn text small v-on="on">
@@ -147,7 +147,7 @@ export default {
         if (err.length == 0) {
           this.newObsCreated = true;
           this.intensity = 0;
-          this.selectedEffect = this.indication;
+          // this.selectedEffect = this.indication;
           this.$emit("obsCretaed", this.newObsCreated);
         } else {
           this.errors = err;

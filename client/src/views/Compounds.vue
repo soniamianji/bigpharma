@@ -1,49 +1,47 @@
 <template>
-  <v-layout row class="mx-auto mt-n8">
-    <v-flex xs12>
-      <div class="pa-12">
-        <v-layout row class="mx-auto">
-          <v-flex xs12>
-            <div class="pa-12">
-              <div class="mx-auto text-center" width="800">
-                <div class="headline">Compounds</div>
-                <div
-                  class="font-weight-light mt-0"
-                >Below youll find the list of compounds being investigated.</div>
-              </div>
+  <v-app>
+    <div class="pa-12">
+      <v-layout row class="mx-auto">
+        <v-flex xs12>
+          <div class="pa-12">
+            <div class="mx-auto text-center" width="800">
+              <div class="headline">Compounds</div>
+              <div
+                class="font-weight-light mt-0"
+              >Below youll find the list of compounds being investigated.</div>
             </div>
-          </v-flex>
-        </v-layout>
-        <v-card dark width="70%" class="mx-auto">
-          <v-card-title>
-            <div class="subtitle-1 font-weight-medium">Compounds</div>
-            <div class="flex-grow-1"></div>
-            <v-text-field
-              v-model="search"
-              append-icon="fa-search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table v-model="selected" :headers="headers" :items="items" :search="search">
-            <template v-slot:body="{ items }">
-              <tbody>
-                <tr v-for="item in items" :key="item.id" @click="selectItem(item)">
-                  <td>
-                    <v-btn small text>{{ item.name }}</v-btn>
-                  </td>
-                  <td>{{ item.indication }}</td>
-                  <td>{{ item.numberOfParticipants }}</td>
-                  <td>{{ item.numberOfSurveys }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-data-table>
-        </v-card>
-      </div>
-    </v-flex>
-  </v-layout>
+          </div>
+        </v-flex>
+      </v-layout>
+      <v-card dark width="70%" class="mx-auto">
+        <v-card-title>
+          <div class="subtitle-1 font-weight-medium">Compounds</div>
+          <div class="flex-grow-1"></div>
+          <v-text-field
+            v-model="search"
+            append-icon="fa-search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table v-model="selected" :headers="headers" :items="items" :search="search">
+          <template v-slot:body="{ items }">
+            <tbody>
+              <tr v-for="item in items" :key="item.id" @click="selectItem(item)">
+                <td>
+                  <v-btn small text>{{ item.name }}</v-btn>
+                </td>
+                <td>{{ item.indication }}</td>
+                <td>{{ item.numberOfParticipants }}</td>
+                <td>{{ item.numberOfSurveys }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-data-table>
+      </v-card>
+    </div>
+  </v-app>
 </template>
              
 

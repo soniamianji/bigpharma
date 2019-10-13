@@ -62,12 +62,10 @@
         @accountDeleted="accountDeleted"
       />
 
-      <v-footer color="grey darken-4" :padless="padless">
+      <v-footer color="grey darken-3" :padless="padless">
         <v-row justify="center" no-gutters>
-          <v-col class="grey darken-3 py-1 text-center grey--text" cols="12">
-            &copy; {{ new Date().getFullYear() }} —
-            <strong>bigpharma</strong>
-          </v-col>
+          &copy; {{ new Date().getFullYear() }} —
+          <strong>bigpharma</strong>
         </v-row>
       </v-footer>
     </v-content>
