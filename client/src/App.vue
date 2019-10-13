@@ -62,10 +62,11 @@
         @accountDeleted="accountDeleted"
       />
 
-      <v-footer color="grey darken-3" :padless="padless">
-        <v-row justify="center" no-gutters>
-          &copy; {{ new Date().getFullYear() }} —
-          <strong>bigpharma</strong>
+      <v-footer color="grey lighten-3" :padless="padless">
+        <v-row justify="center mt-5 mb-5" no-gutters>
+          <strong class="mr-1">bigpharma -</strong>
+          &copy;
+          {{ new Date().getFullYear() }}
         </v-row>
       </v-footer>
     </v-content>
