@@ -19,7 +19,6 @@ const surveyClient = require("../SDK/surveySDK");
 const chartFunction = require("../chartFunc");
 import Chart from "chart.js";
 import * as ss from "simple-statistics";
-import lodash from "lodash";
 export default {
   props: ["compoundId", "observations"],
   data() {
