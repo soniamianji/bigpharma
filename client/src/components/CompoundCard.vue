@@ -64,8 +64,6 @@ export default {
     };
   },
   created() {
-    console.log(this.compound.compoundName);
-
     this.urlImg =
       "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/" +
       this.compound.compoundName +
@@ -73,6 +71,7 @@ export default {
   },
   methods: {
     contribute: function() {
+      //if user is not logged in redirect the user to login page otherwise create survey and go to observation page
       if (this.isUserSignedIn == true) {
         const userId = this.account.id;
         const surveyObj = {

@@ -63,7 +63,6 @@ module.exports.chartFunction = function chartFunction(observations) {
 
   // Remove duplicates of effectIDs.
   effectIDs = removeDuplicates(fxIDs);
-  console.log("effectIDs", effectIDs);
 
   //For each effect id compile an object with effectID as property and the resulting
   var fx = [];
@@ -150,7 +149,6 @@ module.exports.chartFunction = function chartFunction(observations) {
     return someSeries[indexOfLongestArray].length;
   }
   var timeLineDivisor = timeLineDivisor(avgIntensity);
-  console.log(timeLineDivisor);
 
   console.log("fx:", fx);
 
@@ -167,8 +165,6 @@ module.exports.chartFunction = function chartFunction(observations) {
   rawData.forEach(element => {
     allEntryTimes.push(element.entryTime);
   });
-
-  console.log("allEntryTimes:", allEntryTimes);
 
   // Get tAlpha & tOmega
   var tAlpha = allEntryTimes[0];
@@ -189,18 +185,11 @@ module.exports.chartFunction = function chartFunction(observations) {
     ":" +
     nowttOmega.getSeconds();
 
-  console.log("tAlpha:", timeLpha);
-  console.log("tOmega:", timetOmega);
-
   // Calculate timeline
   var timeline = tOmega - tAlpha;
-  console.log("timeline:", timeline);
-
-  console.log("timeLineDivisor:", timeLineDivisor);
 
   // Sequence
   var sequence = timeline / timeLineDivisor;
-  console.log("sequence:", sequence);
 
   // Labels
   var labels = [];
@@ -215,8 +204,6 @@ module.exports.chartFunction = function chartFunction(observations) {
       labels.push(time);
     }
   }
-
-  console.log("lables:", labels);
 
   var datasets = [];
   fx.forEach(element => {

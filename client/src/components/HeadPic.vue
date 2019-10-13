@@ -1,6 +1,5 @@
 <template>
   <!-- Sizes your content based upon application components -->
-
   <v-parallax dark src="../assets/homebg.png">
     <v-container fluid>
       <v-layout row wrap mr-12 ml-0 mt-n12>
@@ -18,7 +17,6 @@
       </v-layout>
     </v-container>
   </v-parallax>
-  <!-- Provides the application the proper gutter -->
 </template> 
 
 

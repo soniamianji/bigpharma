@@ -1,7 +1,4 @@
 <template>
-  <!-- App.vue -->
-
-  <!-- Provides the application the proper gutter -->
   <v-container fluid dark class="grey darken-3 fill-height">
     <v-layout row class="mx-auto" mt-10>
       <v-flex xs4>
@@ -122,13 +119,25 @@ export default {
     );
   },
   methods: {
+    //get the data from lineChart component once the chart has recieved the data
     avgData(value) {
-      console.log(value[0].data);
-      var iAlpha = value[0].data[0];
-      var iOmega = value[0].data[value[0].data.length - 1];
+      //evaluating the efficacy of the compound
+      console.log(value);
+      //first entered intenisty point of the indication
+      var iAlpha = "";
+      //last entered intensity point of the indication
+      var iOmega = "";
+      for (var i = 0; i < value.length; i++) {
+        if (value[i].label == this.compound.indicationName) {
+          iAlpha = value[i].data[0];
+          iOmega = value[i].data[value[i].data.length - 1];
+        }
+      }
+      //calculate percentage
       var percentage = (((iAlpha - iOmega) / iAlpha) * 100).toFixed(2);
       var parcedPercentage = parseFloat(percentage);
-      console.log(iAlpha);
+
+      //find the + or -
       if (iAlpha > iOmega) {
         console.log("iAlpha > iOmega");
         var deltaIntensity = -Math.abs(parcedPercentage);

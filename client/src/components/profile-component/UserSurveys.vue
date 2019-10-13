@@ -17,13 +17,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in compoundArr" :key="item.index  ">
+            <tr v-for="item in compoundArr" :key="item.index">
               <td>{{ item.surveyId }}</td>
-
               <td>{{ item.name }}</td>
-
               <td>{{ item.createdAt }}</td>
-
               <td class="pt-2" v-if="item.status === 0">
                 <router-link
                   class="customColor"
@@ -31,7 +28,6 @@
                 >Not completed</router-link>
               </td>
               <td class="pt-2" v-else>completed</td>
-
               <DeleteSurvey :surveyId="item.surveyId" @surveyDeleted="deletedSurvey"></DeleteSurvey>
             </tr>
           </tbody>
@@ -66,7 +62,6 @@ export default {
             "You have not contributed to any survyes yet! Please check out the compounds page!";
         }
         this.surveys = surveys;
-
         for (var i = 0; i < surveys.length; i++) {
           const compoundId = surveys[i].compoundId;
           const surveyId = surveys[i].id;
