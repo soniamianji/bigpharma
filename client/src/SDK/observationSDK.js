@@ -177,7 +177,6 @@ module.exports.getObservationsByUserIdAndCompoundId = async function(
     case 200:
       let yamlObservations = await response.text();
       observations = YAML.parse(yamlObservations);
-      // observations = await response.json();
       break;
 
     case 404:
@@ -219,11 +218,11 @@ module.exports.createObservation = async function(observation, callback) {
       break;
 
     case 400:
-      errors = await response.json();
+      errors = ["please select an effect from the list"];
       break;
 
     case 422:
-      errors = ["You must select an effect to continue."];
+      errors = ["please select an effect from the list"];
       break;
 
     case 500:
@@ -263,7 +262,8 @@ module.exports.updateObservationById = async function(
       break;
 
     case 400:
-      errors = await response.json();
+      _errors = await response.text();
+      errors = YAML.parse(_errors);
       break;
 
     case 422:
@@ -298,7 +298,8 @@ module.exports.deleteObservationById = async function(id, callback) {
       break;
 
     case 401:
-      errors = await response.json();
+      _errors = await response.text();
+      errors = YAML.parse(_errors);
       break;
 
     case 404:

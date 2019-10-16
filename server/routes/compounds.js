@@ -3,11 +3,10 @@ const router = new express.Router();
 const db = require("../DB/repositories/compoundRepo");
 
 //get all compounds
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   db.getAllCompounds(function(errors, compounds) {
     if (errors.length == 0) {
-      res.body = compounds;
-      next();
+      res.status(200).sendBack(compounds);
     } else {
       res.status(500).end();
     }
@@ -15,13 +14,11 @@ router.get("/", (req, res, next) => {
 });
 
 // get compound by id
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req, res) => {
   const compoundId = req.params.id;
   db.getCompoundById(compoundId, function(errors, compound) {
     if (errors.length == 0) {
-      res.body = compound;
-      next();
-      // res.status(200).json(compound);
+      res.status(200).sendBack(compound);
     } else if (errors.includes("databaseError")) {
     } else {
       res.status(500).end();

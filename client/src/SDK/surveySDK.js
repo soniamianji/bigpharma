@@ -213,11 +213,8 @@ module.exports.createSurvey = async function(survey, callback) {
       break;
 
     case 400:
-      errors = await response.json();
-      break;
-
-    case 401:
-      errors = ["You are not authorised."];
+      _errors = await response.text();
+      errors = YAML.parse(_errors);
       break;
 
     case 422:
@@ -283,7 +280,8 @@ module.exports.deleteSurveyById = async function(id, callback) {
       break;
 
     case 401:
-      errors = await response.json();
+      _errors = await response.text();
+      errors = YAML.parse(_errors);
       break;
 
     case 404:

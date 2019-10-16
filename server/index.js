@@ -4,11 +4,15 @@ const cors = require("cors");
 const app = express();
 const YAML = require("yaml");
 
-app.use(bodyParser.urlencoded({ extended: true }));
+//json bodyparser
+app.use(bodyParser.json());
+
+app.use(express.urlencoded({ extended: true }));
+
 //if contenttype is Yaml modify the req.body
 app.use(function(req, res, next) {
   var contype = req.headers["content-type"];
-  if (!contype || contype.indexOf("application/x-yaml") == 0) {
+  if (!contype || contype.indexOf("application/x-yaml") === 0) {
     var data = "";
     req.on("data", function(chunk) {
       data += chunk;
@@ -18,17 +22,30 @@ app.use(function(req, res, next) {
       req.body = YAML.parse(data);
       next();
     });
-  } else if (
-    !contype ||
-    contype.indexOf("application/x-www-form-urlencoded") == 0
-  ) {
-    bodyParser.urlencoded({ extended: true }); // for parsing
+  } else {
     next();
   }
 });
 
-//json bodyparser
-app.use(bodyParser.json());
+//modify response.body
+app.use(function(req, res, next) {
+  res.sendBack = function(resource) {
+    if (req.accepts("application/json")) {
+      res.setHeader("Content-Type", "application/json");
+      //send the response
+      res.json(resource);
+    } else {
+      // send the reponse in yaml format which is a default format,
+      res.setHeader("Content-Type", "application/x-yaml");
+      //convert the jsonfile to yaml
+      res.body = YAML.stringify(resource);
+      //send the response
+      res.send(res.body);
+    }
+  };
+  next();
+});
+
 //enable cors
 app.use(cors({ exposedHeaders: ["Location"] }));
 
@@ -50,24 +67,6 @@ app.use("/surveys", surveys);
 
 const google = require("./routes/google");
 app.use("/google", google);
-
-// if the it accepts x-yaml modify the res.body
-app.use(function(req, res, next) {
-  //if request accpts YAML format
-  if (req.accepts("application/x-yaml")) {
-    //set the content-type to YAML
-    res.setHeader("Content-Type", "application/x-yaml");
-    //convert the jsonfile to yaml
-    res.body = YAML.stringify(res.body);
-
-    //send the response
-    res.status(200).send(res.body);
-  } else if (req.accepts("application/json")) {
-    res.setHeader("Content-Type", "application/json");
-    //send the response
-    res.status(200).json(res.body);
-  }
-});
 
 const port = 3000;
 

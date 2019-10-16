@@ -1,5 +1,6 @@
 const sendRequest = require("./sendRequest");
 const jwtDecode = require("jwt-decode");
+const YAML = require("yaml");
 
 const account = {
   id: "",
@@ -30,7 +31,8 @@ module.exports.googleAuthentication = async function(authCode, callback) {
 
   switch (response.status) {
     case 200:
-      body = await response.json();
+      _body = await response.text();
+      body = YAML.parse(_body);
 
       account.accessToken = body.access_token;
       const payload = jwtDecode(body.id_token);
@@ -42,13 +44,13 @@ module.exports.googleAuthentication = async function(authCode, callback) {
       break;
 
     case 400:
-      body = await response.json();
+      _body = await response.text();
+      body = YAML.parse(_body);
 
       switch (body.error) {
         default:
           errors = [body.error];
       }
-
     case 500:
       errors = ["backendError"];
       break;

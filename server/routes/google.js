@@ -1,12 +1,12 @@
 const express = require("express");
 const router = new express.Router();
 const { google } = require("googleapis");
-// const db = require("../DB/repositories/googleAccountRepo");
 const db = require("../DB/repositories/accountRepo");
 const secretTokenKey = "a secret phrase";
 const jwt = require("jsonwebtoken");
 
-router.post("/", (req, res, next) => {
+router.post("/", (req, res) => {
+  console.log("hola");
   const code = req.body.code;
   const oauth2Client = new google.auth.OAuth2(
     "915574057626-gsaemb5fgstrn2fr3kf8h46r8oirmfau.apps.googleusercontent.com",
@@ -18,12 +18,14 @@ router.post("/", (req, res, next) => {
   oauth2Client
     .getToken(code)
     .then(res => {
+      console.log("hola");
       const tokens = res.tokens;
       oauth2Client.setCredentials(tokens);
       const oauth2 = google.oauth2({ version: "v2" });
       return oauth2.userinfo.get();
     })
     .then(userData => {
+      console.log("hola");
       console.log(userData.data);
       //check if user has already logged in with their googleAccount
       db.getAccountByGoogleId(userData.data.id, (err, account) => {
@@ -47,7 +49,7 @@ router.post("/", (req, res, next) => {
                 },
                 secretTokenKey
               );
-              res.status(200).json({
+              res.status(200).sendBack({
                 message: "Auth Success.",
                 id_token: id_token,
                 access_token: access_token
@@ -68,7 +70,7 @@ router.post("/", (req, res, next) => {
             },
             secretTokenKey
           );
-          res.status(200).json({
+          res.status(200).sendBack({
             message: "Auth Success.",
             id_token: id_token,
             access_token: access_token

@@ -18,7 +18,7 @@ const secretTokenKey = "a secret phrase";
 const saltRounds = 10;
 
 //User sign up _ creating a new account
-router.post("/", (request, response, next) => {
+router.post("/", (request, response) => {
   const account = request.body;
   // Check that the account contains all expected properties.
   const accountTypes = {
@@ -49,14 +49,14 @@ router.post("/", (request, response, next) => {
   }
 
   if (0 < validationErrors.length) {
-    response.status(400).json(validationErrors);
+    response.status(400).sendBack(validationErrors);
     return;
   }
 
   //hash the password
   bcrypt.hash(request.body.password, saltRounds, (err, hash) => {
     if (err) {
-      return response.status(500).json({
+      return response.status(500).sendBack({
         error: err
       });
     } else {
@@ -65,11 +65,11 @@ router.post("/", (request, response, next) => {
       db.createAccount(account, function(errors, id) {
         if (errors.length == 0) {
           response.setHeader("Location", "/accounts/" + id);
-          response.status(201).json({ id });
+          response.status(201).sendBack({ id });
 
           console.log(account);
         } else if (errors.includes("emial is taken.")) {
-          response.status(400).json(errors);
+          response.status(400).sendBack(errors);
         } else {
           response.status(500).end();
         }
@@ -79,9 +79,9 @@ router.post("/", (request, response, next) => {
 });
 
 //login to the account
-router.post("/login-session", (req, res, next) => {
+router.post("/token", (req, res) => {
   const grantInfo = req.body;
-  console.log(req.body);
+
   // Check that grantInfo contains all expected properties.
   const grantInfoTypes = {
     email: String,
@@ -90,12 +90,12 @@ router.post("/login-session", (req, res, next) => {
   };
 
   if (!hasTypes(grantInfo, grantInfoTypes)) {
-    res.status(400).json({ error: "invalid_request" });
+    res.status(400).sendBack({ error: "invalid_request" });
     return;
   }
   // Check that the grant type is supported.
   if (grantInfo.grant_type != "password") {
-    res.status(400).json({ error: "unsupported_grant_type" });
+    res.status(400).sendBack({ error: "unsupported_grant_type" });
     return;
   }
 
@@ -103,7 +103,7 @@ router.post("/login-session", (req, res, next) => {
     if (err.includes("databaseError")) {
       res.status(500).end();
     } else if (!account) {
-      res.status(400).json({ error: "invalid_grant" });
+      res.status(400).sendBack({ error: "invalid_grant" });
     } else if (err.length == 0) {
       //verify hashed password
       bcrypt.compare(grantInfo.password, account.password, function(
@@ -125,10 +125,9 @@ router.post("/login-session", (req, res, next) => {
             id_token: id_token,
             access_token: access_token
           };
-          res.body = body;
-          next();
+          res.status(200).sendBack(body);
         } else {
-          res.status(401).json({ error: "invalid_grant" });
+          res.status(401).sendBack({ error: "invalid_grant" });
         }
       });
     } else {
@@ -137,29 +136,12 @@ router.post("/login-session", (req, res, next) => {
   });
 });
 
-//get all the accounts
-router.get("/", checkAauth, function(request, response, next) {
-  db.getAllAccounts(function(errors, accounts) {
-    if (errors.length == 0) {
-      accounts.forEach(account => delete account.password);
-      response.body = accounts;
-      next();
-      // response.status(200).json(accounts);
-    } else {
-      response.status(500).end();
-    }
-  });
-});
-
 //get account by id
-router.get("/:id", checkAauth, (req, res, next) => {
+router.get("/:id", checkAauth, (req, res) => {
   const accountId = req.params.id;
   db.getAccountById(accountId, function(errors, account) {
     if (errors.length == 0) {
-      res.body = account;
-      next();
-      // res.status(200).json(account);
-    } else if (errors.includes("databaseError")) {
+      res.status(200).sendBack(account);
     } else {
       res.status(500).end();
     }
@@ -187,7 +169,7 @@ router.put("/:id", checkAauth, (req, res) => {
   }
 
   if (0 < validationErrors.length) {
-    res.status(400).json(validationErrors);
+    res.status(400).sendBack(validationErrors);
     return;
   }
 

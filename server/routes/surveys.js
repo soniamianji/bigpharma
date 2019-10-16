@@ -5,13 +5,11 @@ const checkAauth = require("../middleware/check-auth");
 const hasTypes = require("./has-types");
 
 //get surveys by id
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req, res) => {
   const surveyId = req.params.id;
   db.getSurveyById(surveyId, function(errors, survey) {
     if (errors.length == 0) {
-      res.body = survey;
-      next();
-      // res.status(200).json(survey);
+      res.status(200).sendBack(survey);
     } else if (errors.includes("databaseError")) {
     } else {
       res.status(500).end();
@@ -20,14 +18,12 @@ router.get("/:id", (req, res, next) => {
 });
 
 //get surveys by userid
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   if (req.query.userId) {
     const userId = req.query.userId;
     db.getSurveyByUserId(userId, function(errors, surveys) {
       if (errors.length == 0) {
-        res.body = surveys;
-        next();
-        // res.status(200).json(surveys);
+        res.status(200).sendBack(surveys);
       } else if (errors.includes("userNotFound")) {
         res.status(404).end();
       } else {
@@ -44,7 +40,7 @@ router.get("/", (req, res, next) => {
       survey
     ) {
       if (errors.length == 0) {
-        res.status(200).json(survey);
+        res.status(200).sendBack(survey);
       } else {
         res.status(500).end();
       }
@@ -53,9 +49,7 @@ router.get("/", (req, res, next) => {
     //get all surveys
     db.getAllSurveys(function(errors, surveys) {
       if (errors.length == 0) {
-        res.body = surveys;
-        next();
-        // res.status(200).json(surveys);
+        res.status(200).sendBack(surveys);
       } else {
         res.status(500).end();
       }
@@ -85,7 +79,7 @@ router.post("/", checkAauth, (req, res) => {
     validationErrors.push("invalidDate");
   }
   if (0 < validationErrors.length) {
-    res.status(400).json(validationErrors);
+    res.status(400).sendBack(validationErrors);
     return;
   }
   db.createSurvey(survey, function(errors, id) {
@@ -93,7 +87,7 @@ router.post("/", checkAauth, (req, res) => {
       res.setHeader("Location", "/surveys/" + id);
       res.status(201).end();
     } else if (errors.includes("compound or user NotFound")) {
-      res.status(400).json(errors);
+      res.status(400).sendBack(errors);
     } else {
       res.status(500).end();
     }

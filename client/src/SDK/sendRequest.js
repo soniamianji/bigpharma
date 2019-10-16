@@ -10,6 +10,9 @@ async function sendRequest(
   let bodyToSend = "";
   const headers = new Headers();
 
+  //accept yaml unless otherwise specified
+  headers.append("Accept", "application/x-yaml");
+
   // let accessToken = null;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (userInfo && userInfo.accessToken !== null) {
@@ -33,15 +36,11 @@ async function sendRequest(
           data.append(key, body[key]);
         }
         bodyToSend = data.toString();
-        headers.append("Accept", "application/json");
-
         break;
 
       case "application/x-yaml":
-        console.log("triggered yaml");
         bodyToSend = YAML.stringify(body);
         headers.append("Accept", "application/x-yaml");
-
         break;
 
       default:

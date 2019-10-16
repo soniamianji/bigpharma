@@ -110,6 +110,7 @@ export default {
     setAuthenticated(status) {
       if (status !== undefined) {
         this.isUserSignedIn = true;
+        this.account.email = status.email;
         this.account.username = status.username;
         this.account.id = status.id;
       } else {

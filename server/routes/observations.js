@@ -4,18 +4,13 @@ const db = require("../DB/repositories/observationRepo");
 const hasTypes = require("./has-types");
 const checkAauth = require("../middleware/check-auth");
 
-//validate timestamps and check inputs not empty before populating the database
-
 //get obs
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   if (req.query.compoundId) {
     const compoundId = req.query.compoundId;
-
     db.getObservationsByCompoundId(compoundId, function(errors, observations) {
       if (observations) {
-        res.body = observations;
-        next();
-        // res.status(200).json(observations);
+        res.status(200).sendBack(observations);
       } else if (errors.includes("compoundId Not Found")) {
         res.status(404).end();
       } else {
@@ -32,11 +27,9 @@ router.get("/", (req, res, next) => {
       observations
     ) {
       if (errors.length == 0) {
-        res.body = observations;
-        next();
-        // res.status(200).json(observations);
+        res.status(200).sendBack(observations);
       } else if (errors.includes("compoundId or userId Not Found")) {
-        response.status(400).json(errors);
+        response.status(400).sendBack(errors);
       } else {
         res.status(500).end();
       }
@@ -45,9 +38,7 @@ router.get("/", (req, res, next) => {
     const surveyId = req.query.surveyId;
     db.getObservationsBySurveyId(surveyId, function(errors, observations) {
       if (errors.length == 0) {
-        res.body = observations;
-        next();
-        // res.status(200).json(survey);
+        res.status(200).sendBack(observations);
       } else if (errors.includes("databaseError")) {
       } else {
         res.status(500).end();
@@ -61,9 +52,7 @@ router.get("/", (req, res, next) => {
       observations
     ) {
       if (errors.length == 0) {
-        res.body = observations;
-        next();
-        // res.status(200).json(survey);
+        res.status(200).sendBack(observations);
       } else if (errors.includes("databaseError")) {
       } else {
         res.status(500).end();
@@ -101,7 +90,7 @@ router.post("/", checkAauth, (req, res) => {
       res.setHeader("Location", "/observations/" + id);
       res.status(201).end();
     } else if (errors.includes("account, user , survey or effect NotFound")) {
-      res.status(400).json(errors);
+      res.status(400).end();
     } else {
       res.status(500).end();
     }
@@ -111,10 +100,8 @@ router.post("/", checkAauth, (req, res) => {
 //To update an observation based on observationId
 router.put("/:id", checkAauth, function(req, res) {
   const id = req.params.id;
-  console.log(req.body);
   const updatedObservation = req.body;
 
-  console.log("number 2");
   //Check that the observation contains all expected properties.
   const observationTypes = {
     entryTime: Number,
@@ -123,7 +110,6 @@ router.put("/:id", checkAauth, function(req, res) {
   };
 
   if (!hasTypes(updatedObservation, observationTypes)) {
-    console.log("issues with type");
     res.status(422).end();
     return;
   }
@@ -133,7 +119,7 @@ router.put("/:id", checkAauth, function(req, res) {
       // Try to update the observation.
       db.editObservationById(id, updatedObservation, function(errors) {
         if (errors.length == 0) {
-          res.status(204).json({ updatedObservation });
+          res.status(204).sendBack({ updatedObservation });
         } else {
           res.status(500).end();
         }
@@ -148,14 +134,12 @@ router.put("/:id", checkAauth, function(req, res) {
 });
 
 //get observation by id
-router.get("/:id", checkAauth, (req, res, next) => {
+router.get("/:id", checkAauth, (req, res) => {
   const id = req.params.id;
   db.getObservationById(id, (err, observation) => {
     if (err.length == 0) {
       if (observation) {
-        // res.status(200).send(observation);
-        res.body = observation;
-        next();
+        res.status(200).sendBack(observation);
       } else {
         res.status(404).end();
       }

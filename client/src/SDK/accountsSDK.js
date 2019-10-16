@@ -1,5 +1,6 @@
 const sendRequest = require("./sendRequest");
 const jwtDecode = require("jwt-decode");
+const YAML = require("yaml");
 
 const account = {
   id: "",
@@ -11,36 +12,6 @@ const account = {
 //parse info localstorage
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 module.exports.userInfo = userInfo;
-
-//get all accounts
-module.exports.getAllAccounts = async function(callback) {
-  let response;
-
-  try {
-    response = await sendRequest.sendRequest("GET", "/accounts");
-  } catch (errors) {
-    callback(errors);
-    return;
-  }
-
-  let errors = [];
-  let accounts = [];
-
-  switch (response.status) {
-    case 200:
-      accounts = await response.json();
-      break;
-
-    case 500:
-      errors = ["backendError"];
-      break;
-
-    default:
-      errors = ["unknown status code"];
-  }
-
-  callback(errors, accounts);
-};
 
 module.exports.getAccountById = async function(id, callback) {
   let response;
@@ -57,7 +28,8 @@ module.exports.getAccountById = async function(id, callback) {
 
   switch (response.status) {
     case 200:
-      account = await response.json();
+      _account = await response.text();
+      account = YAML.parse(_account);
       break;
 
     case 404:
@@ -95,7 +67,8 @@ module.exports.createAccount = async function(account, callback) {
       break;
 
     case 400:
-      errors = await response.json();
+      _errors = await response.text();
+      errors = YAML.parse(_errors);
       break;
 
     case 422:
@@ -125,7 +98,7 @@ module.exports.logIn = async function(email, password, callback) {
   try {
     response = await sendRequest.sendRequest(
       "POST",
-      "/accounts/login-session",
+      "/accounts/token",
       bodyToSend,
       "application/x-www-form-urlencoded"
     );
@@ -140,7 +113,9 @@ module.exports.logIn = async function(email, password, callback) {
 
   switch (response.status) {
     case 200:
-      body = await response.json();
+      _body = await response.text();
+      body = YAML.parse(_body);
+
       account.accessToken = body.access_token;
       const payload = jwtDecode(body.id_token);
       account.id = payload.id;
@@ -152,7 +127,8 @@ module.exports.logIn = async function(email, password, callback) {
       break;
 
     case 400:
-      body = await response.json();
+      _body = await response.text();
+      body = YAML.parse(_body);
 
       switch (body.error) {
         case "invalid_grant":
@@ -168,7 +144,7 @@ module.exports.logIn = async function(email, password, callback) {
 
       switch (body.error) {
         case "invalid_grant":
-          errors = ["Incorrect email or password."];
+          errors = ["Incorrect password."];
           break;
 
         default:
@@ -249,6 +225,9 @@ module.exports.updateAccountById = async function(id, username, callback) {
 
     case 422:
       errors = ["invalidUsername"];
+      break;
+    case 400:
+      errors = ["username must be at least 3 and at most 10 characters."];
       break;
 
     case 500:
