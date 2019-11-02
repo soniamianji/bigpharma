@@ -10,15 +10,14 @@ async function sendRequest(
   let bodyToSend = "";
   const headers = new Headers();
 
-  //accept yaml unless otherwise specified
-  headers.append("Accept", "application/x-yaml");
-
   // let accessToken = null;
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (userInfo && userInfo.accessToken !== null) {
     let accessToken = userInfo.accessToken;
     headers.append("Authorization", "Bearer " + accessToken);
   }
+  //accept yaml unless otherwise specified
+  headers.append("Accept", "application/x-yaml");
 
   // Add the body if available.
   if (body != null) {

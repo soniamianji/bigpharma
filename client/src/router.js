@@ -7,7 +7,6 @@ import Compounds from "./views/Compounds.vue";
 import Compound from "./views/Compound.vue";
 import Observations from "./views/Observations.vue";
 import Profile from "./views/Profile.vue";
-import Surveys from "./views/Surveys.vue";
 
 Vue.use(Router);
 
@@ -51,12 +50,6 @@ export default new Router({
       path: "/observations",
       name: "observations",
       component: Observations,
-      props: true
-    },
-    {
-      path: "/surveys",
-      name: "surveys",
-      component: Surveys,
       props: true
     }
   ]
