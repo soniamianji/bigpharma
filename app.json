@@ -1,0 +1,19 @@
+{
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "description": "it is a prototype of a survey app",
+  "env": {
+  },
+  "formation": {
+  },
+  "name": "bigpharma",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
