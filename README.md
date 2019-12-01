@@ -126,10 +126,10 @@ Response.body => errors: backendError |
 
 Get all the compounds |
 ------------ | 
-**Request HTTP/1.1 **
+**Request HTTP/1.1**
 GET/compounds
 Request.header = Accept: application/x-yaml
-**Response HTTP/1.1 **
+**Response HTTP/1.1**
 If there is no errors Success code 200 OK
 Response.body = id: Number name: String indicatioName: String
 Content-Type: application/x-yaml
@@ -152,10 +152,10 @@ Response.body => errors: backendError
  
  Get all effects |
  ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 GET/effects  
 Request.header = Accept: application/x-yaml 
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Success code 200 OK
 Response.body => id:Number name:String indicatinName: String
 Content-Type: application/x-yaml
@@ -188,10 +188,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Get all observations by user id and compound id |
 ------------ | 
-**Request HTTP/1.1 **
+**Request HTTP/1.1**
 GET /observations?compoundId= 2&userId=3  
 Request.header = Accept: application/x-yaml
-**Response HTTP/1.1 **
+**Response HTTP/1.1**
 If there are no errors Success code 200 OK 
 Response.body => id:Number userId:Number compoundId:Number entryTime:Number effectIntensity: Number 
 Content-Type: application/x-yaml 
@@ -200,10 +200,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
  Get observations by survey id  |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 GET/observations?surveyid=surveyId 
 Request.header =  Accept: application/x-yaml
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Success code 200 OK 
 Response.body = id:Number userId:Number compoundId:Number entryTime:Number effectIntensity: Number 
 Content-Type: application/x-yaml 
@@ -213,13 +213,13 @@ If there is an error with the server Error status code 500 Internal Server Error
  
 Create observation - Authorization needed |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 POST /observations 
-Req.body => id:Number userId:Number compoundId:Number entryTime:Number effectIntensity: Number  Request.header = {Host: http://localhost:3000, Accept: application/x-yaml, Content-Type : application/xyaml 
-Response HTTP/1.1 
+Req.body => id:Number userId:Number compoundId:Number entryTime:Number effectIntensity: Number  
+Request.header =Accept: application/x-yaml, Content-Type : application/xyaml 
+**Response HTTP/1.1**
 If there are no errors Success code 201 Created 
-Response.body = id:Number userId:Number compoundId:Number entryTime:Number effectIntensity: 
-Number  
+Response.body = id:Number userId:Number compoundId:Number entryTime:Number effectIntensity:Number  
 Location: /observations/2 
 Content-Type: application/x-yaml 
 If request is faulty Error status 400 Bad request 
@@ -228,10 +228,10 @@ If the type of the inputs were wrong Error status 422 Unprocessable Entity |
 
 Update observation -Authorization needed  |
 ------------ |
-Request HTTP/1.1  
+**Request HTTP/1.1** 
 request.body = id:Number userId:Number compoundId:Number entryTime: Number effectIntensity:Number 
 Request.header =Accept: application/x-yaml, Content-Type : application/ xyaml 
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Success code 204 No content 
 Content-Type: application/x-yaml 
 If faulty request Error status 400 Bad request 
@@ -243,20 +243,20 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Delete observation Authorization needed |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1** 
 DELETE/observations/:Id 
 Request.header = Accept: application/x-yaml, Content-Type : application/ xyaml 
-Response HTTP/1.1  
+**Response HTTP/1.1** 
 If there are no errors Success code 204 No content 
 If the user is not authorized Error status code 401 Authorization error Response.body = msg: Auth failed.  
 If there is an error with the server Error status code 500 Internal Server Error Response.body => errors: backendError 
 
  Get surveys |
  ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 GET/surveys 
 Request.header = Accept: application/x-yaml 
-Response HTTP/1.1 
+**Response HTTP/1.1** 
 If there are no errors Status code 200 OK 
 Content-Type = application/x-yaml 
 Response.body = id:Number compoundId:Number, userId:Number, completed: Number(0 or 1) 
@@ -265,10 +265,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Get surveys by id |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1** 
 GET/surveys/:id 
-Request.header = Host: http://localhost:3000, Accept: application/x-yaml 
-Response HTTP/1.1 
+Request.header = Accept: application/x-yaml 
+**Response HTTP/1.1**
 If there are no errors Status code 200 OK 
 Content-Type = application/x-yaml 
 Response.body = id:Number compoundId:Number, userId:Number, completed: Number(0 or 1) Location: /surveys/id 
@@ -277,10 +277,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Get surveys by user id  |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 GET/surveys?userId = userId 
-Request.header = Host: http://localhost:3000, Accept: application/x-yaml  
-Response HTTP/1.1 
+Request.header = Accept: application/x-yaml  
+**Response HTTP/1.1**
 Status code 200 OK 
 Response.body = id:Number compoundId:Number, userId:Number, completed: Number(0 or 1) 
 If the resource was not found Error status code 404 Not found 
@@ -289,10 +289,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Get surveys by compound id  |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 GET/compounds/:id 
 Request.header = Accept: application/x-yaml  
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Success status code 200 OK 
 Response.body = id:Number compoundId:Number, userId:Number, completed: Number(0 or 1) 
 If the resource was not found Error status code 404 Not found 
@@ -300,10 +300,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Get surveys by status |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1** 
 GET/surveys?completed=status 
 Request.header = Accept: application/x-yaml 
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Success status code 200 OK 
 Response.body = id:Number compoundId:Number, userId:Number, completed: Number(0 or 1) 
 If the resource was not found Error status code 404 Not found 
@@ -311,11 +311,11 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Create a survey -Authorization needed |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1** 
 POST/surveys 
 Request.header = Accept: application/x-yaml, Content-Type: application/x-yaml 
 Request.body => compoundId:Number, userId:Number, completed: Number(0 or 1) 
-Response HTTP/1.1 
+**Response HTTP/1.1** 
 If there are no errors Success status 201 Created Location: /surveys/id 
 Content-Type = application/x-yaml 
 If the user is not authorized Error status code 401 Unauthorized  
@@ -326,11 +326,11 @@ If there is an error with the server Error status code 500 Internal Server Error
 
  Update survey by id - Authorization needed |
  ------------ |
- Request HTTP/1.1 
+**Request HTTP/1.1**
 PUT/surveys/:id 
-Request.header = Host: http://localhost:3000, Accept: application/x-x-yaml, Content-Type: application/xyaml  
+Request.header = Accept: application/x-x-yaml, Content-Type: application/xyaml  
 Request.body => id: Number compoundId: Number, userId: Number, completed: Number (1 or 0) 
-Response HTTP/1.1 
+**Response HTTP/1.1**
 If there are no errors Status code 204 No Content 
 Content-Type = application/x-yaml 
 If the user is not authorized Error status code 401 Unauthorized  
@@ -339,10 +339,10 @@ If there is an error with the server Error status code 500 Internal Server Error
 
 Delete survey by id - Authorization needed |
 ------------ |
-Request HTTP/1.1 
+**Request HTTP/1.1**
 DELETE/surveys/:id 
-Request.header = Host: http://localhost:3000, Accept: application/x-yaml  
-Response HTTP/1.1 
+Request.header = Accept: application/x-yaml  
+**Response HTTP/1.1**
 If there are no errors Status code 204 No Content 
 Content-Type = application/x-yaml 
 If the resource was not found Error status code 404 Not Found  
