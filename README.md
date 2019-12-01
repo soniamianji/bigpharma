@@ -1,4 +1,4 @@
-# bigpharma
+# bigpharma - [check it out live](https://inspiring-feynman-0b43cb.netlify.com/#/)
 Bigpharma is a prototype of an app that aim to standardize these experiences into a computable format unto which statistical models can be applied in order to curate the collective experience of these compounds and help the user stay informed in his/her decision-making process. Further it provides a means for the user to share his/her own experience and contribute back to the community, expanding the datasets and improving the accuracy of the statistical results, in essence improving the quality of information the user and the users peers rely on in their respective decision making process.
 
 
