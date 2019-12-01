@@ -4,11 +4,11 @@ Bigpharma is a prototype of an app that aim to standardize these experiences int
 
 ## Table of Contents
 * [Architecture](#architecture)
-* [DataBase](db)
-* [REST API design](rest)
-* [Backend Application](backend)
-* [Frontend Application](front)
-* [SDK](sdk)
+* [DataBase](#db)
+* [REST API design](#rest)
+* [Backend Application](#back)
+* [Frontend Application](#front)
+* [SDK](#sdk)
 
 <a name="architecture"></a>
 ## Architechture
