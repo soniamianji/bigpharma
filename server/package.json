@@ -22,7 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
     "sqlite3": "^4.1.0",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "yaml": "^1.7.0"
   },
   "devDependencies": {
