@@ -19,7 +19,7 @@
 		"vue-gapi": "0.0.10",
 		"vue-google-oauth2": "^1.4.0",
 		"vue-router": "^3.0.3",
-		"vuetify": "^2.0.0",
+		"vuetify": "^2.6.10",
 		"yaml": "^1.7.0"
 	},
 	"devDependencies": {
